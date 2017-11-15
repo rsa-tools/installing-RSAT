@@ -1,3 +1,13 @@
-# installing-RSAT
+# Installing RSAT
 
-Installation guides for the Regulatory Sequence Analysis Tools (RSAT) software suite
+This repository contains installation guides for the Regulatory Sequence Analysis Tools (RSAT) software suite. 
+
+## From the scratch
+
+## Via conda
+
+## Docker container 
+
+## Local virtual machine
+
+## Virtual machine on the IFB cloud
