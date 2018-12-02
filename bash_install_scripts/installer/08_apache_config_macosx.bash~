@@ -1,0 +1,16 @@
+source installer/00_config.bash
+
+
+echo
+echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+echo "!!!!!!!     BEWARE: INSTALLATION REQUIRES SUDO RIGHTS       !!!!"
+echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+echo
+
+cd ${RSAT}; source RSAT_config.bashrc ## Reload the (updated) RSAT environment variables
+
+################################################################
+## Configure the Apache Web server
+
+export APACHE_CONFIG_FOLDER=/etc/apache2/
+# on Centos: APACHE_CONFIG_FOLDER=/etc/httpd/ but the rest is different as well -> best solution is to edit manually
