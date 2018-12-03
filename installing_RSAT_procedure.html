@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Jacques van Helden" />
+
+<meta name="date" content="2018-12-03" />
+
+<title>Installing RSAT</title>
+
+<script src="installing_RSAT_procedure_files/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="installing_RSAT_procedure_files/bootstrap-3.3.5/css/cerulean.min.css" rel="stylesheet" />
+<script src="installing_RSAT_procedure_files/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="installing_RSAT_procedure_files/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="installing_RSAT_procedure_files/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="installing_RSAT_procedure_files/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="installing_RSAT_procedure_files/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="installing_RSAT_procedure_files/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="installing_RSAT_procedure_files/navigation-1.1/tabsets.js"></script>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; background-color: #303030; color: #cccccc; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; }
+td.sourceCode { padding-left: 5px; }
+pre, code { color: #cccccc; background-color: #303030; }
+code > span.kw { color: #f0dfaf; } /* Keyword */
+code > span.dt { color: #dfdfbf; } /* DataType */
+code > span.dv { color: #dcdccc; } /* DecVal */
+code > span.bn { color: #dca3a3; } /* BaseN */
+code > span.fl { color: #c0bed1; } /* Float */
+code > span.ch { color: #dca3a3; } /* Char */
+code > span.st { color: #cc9393; } /* String */
+code > span.co { color: #7f9f7f; } /* Comment */
+code > span.ot { color: #efef8f; } /* Other */
+code > span.al { color: #ffcfaf; } /* Alert */
+code > span.fu { color: #efef8f; } /* Function */
+code > span.er { color: #c3bf9f; } /* Error */
+code > span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
+code > span.cn { color: #dca3a3; font-weight: bold; } /* Constant */
+code > span.sc { color: #dca3a3; } /* SpecialChar */
+code > span.vs { color: #cc9393; } /* VerbatimString */
+code > span.ss { color: #cc9393; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { } /* Variable */
+code > span.cf { color: #f0dfaf; } /* ControlFlow */
+code > span.op { color: #f0efd0; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #ffcfaf; font-weight: bold; } /* Preprocessor */
+code > span.at { } /* Attribute */
+code > span.do { color: #7f9f7f; } /* Documentation */
+code > span.an { color: #7f9f7f; font-weight: bold; } /* Annotation */
+code > span.cv { color: #7f9f7f; font-weight: bold; } /* CommentVar */
+code > span.in { color: #7f9f7f; font-weight: bold; } /* Information */
+</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3,h4",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Installing RSAT</h1>
+<h4 class="author"><em>Jacques van Helden</em></h4>
+<h4 class="date"><em>2018-12-03</em></h4>
+
+</div>
+
+
+<hr />
+<div id="introduction" class="section level1">
+<h1><span class="header-section-number">1</span> Introduction</h1>
+<hr />
+</div>
+<div id="overview-of-the-nstallation-steps" class="section level1">
+<h1><span class="header-section-number">2</span> Overview of the nstallation steps</h1>
+<hr />
+</div>
+<div id="downloading-rsat" class="section level1">
+<h1><span class="header-section-number">3</span> Downloading RSAT</h1>
+<ol style="list-style-type: decimal">
+<li>Go to the RSAT portal (<strong><a href="http:rsat.eu/" class="uri">http:rsat.eu/</a></strong>)</li>
+<li>Select any server.</li>
+<li>In the left-sided menu, click on the <strong>Download</strong> link.</li>
+<li>Fill in your name and coordinates and accept the license.</li>
+</ol>
+<p>You now have access to the download page containing the links to</p>
+<ul>
+<li><p>the latest stable release named <code>rsat_20XX-XX-XX.tar.gz</code> (XX-XX-XX must be replaced by the release date).</p></li>
+<li><p>the previous release archives available in the folder <code>previous_versions</code>.</p></li>
+</ul>
+<div id="downloading-the-latest-rsat-release-via-the-web-installer" class="section level2">
+<h2><span class="header-section-number">3.1</span> Downloading the latest RSAT release via the Web installer</h2>
+<ol start="5" style="list-style-type: decimal">
+<li>Download the tar archive named</li>
+</ol>
+<p><code>rsat_20XX-XX-XX.tar.gz</code></p>
+<p>where <code>XX-XX-XX</code> is the latest release date and put it in your chosen directory.</p>
+<ol start="6" style="list-style-type: decimal">
+<li>Uncompress the archive. This will create a directory named <code>rsat</code> where we will continue the install procedure.</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="bu">export</span> <span class="va">RELEASE=</span>20XX.XX.XX
+<span class="co">## e.g. export RELEASE=2018.12.03</span>
+
+<span class="co">## By default we install the package a folder named packages. </span>
+<span class="co">## This should be adapted according to your local setup. </span>
+<span class="bu">export</span> <span class="va">INSTALL_ROOT=</span>~/packages
+<span class="fu">mkdir</span> -p <span class="va">${INSTALL_ROOT}</span>
+
+<span class="co">## Download the archive from the RSAT distribution site</span>
+<span class="bu">export</span> <span class="va">DOWNLOAD_BASE=</span>http://pedagogix-tagc.univ-mrs.fr/download_rsat
+<span class="bu">export</span> <span class="va">RSAT_TGZ=</span>rsat_<span class="va">${RELEASE}</span>.tar.gz
+<span class="bu">export</span> <span class="va">DOWNLOAD_URL=${DOWNLOAD_BASE}</span>/<span class="va">${RSAT_TGZ}</span>
+<span class="bu">echo</span> <span class="st">&quot;Downloading RSAT from URL\t</span><span class="va">${DOWNLOAD_URL}</span><span class="st">&quot;</span>
+<span class="fu">wget</span> --no-clobber <span class="va">${DOWNLOAD_URL}</span>
+<span class="fu">tar</span> -C <span class="va">${INSTALL_ROOT}</span>/ -xpvzf <span class="va">${RSAT_TGZ}</span>
+<span class="bu">cd</span> <span class="va">${INSTALL_ROOT}</span>/rsat</code></pre></div>
+<hr />
+</div>
+</div>
+<div id="configuring-your-local-rsat-instance" class="section level1">
+<h1><span class="header-section-number">4</span> Configuring your local RSAT instance</h1>
+<p>We will start by auto-configuring RSAT in order to deine suitable basic parameters.</p>
+<div id="getting-the-ip-address-of-your-machine" class="section level2">
+<h2><span class="header-section-number">4.1</span> Getting the IP address of your machine</h2>
+<p>Replace [your.server.IP] by the actual IP address of your server. (e.g.: for Virtualbox Virtual Machines, we set the IP to 192.168.56.101).</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="co">## Get your IP address and check if it is 192.168.56.101</span>
+<span class="ex">ifconfig</span> <span class="kw">|</span> <span class="fu">grep</span> <span class="st">&#39;inet &#39;</span>
+<span class="bu">export</span> <span class="va">MY_IP=</span>XXX.XXX.XXX.XXX
+<span class="co">## e.g. export MY_IP=192.168.56.101</span></code></pre></div>
+<p>Note: if you install RSAT on a personal PC (e.g. a laptop) and intend to use it only from this machine, you can configure it with the local network.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Configure RSAT to be used internally inly
+export MY_IP=<span class="fl">127.0</span>.<span class="fl">0.1</span></code></pre></div>
+</div>
+<div id="choose-a-site-name-for-your-rsat-instance" class="section level2">
+<h2><span class="header-section-number">4.2</span> Choose a site name for your RSAT instance</h2>
+<p>You can choose an arbitrary name for your RSAT instance. For this tutorial, we will call it “my_rsat”, but you are welcome to use another site name.</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="bu">export</span> <span class="va">RSAT_SITE=</span>my_rsat</code></pre></div>
+</div>
+<div id="automatic-configuration-of-rsat-parameters" class="section level2">
+<h2><span class="header-section-number">4.3</span> Automatic configuration of RSAT parameters</h2>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">
+<span class="co">## Check that the IP site of your machine has been specified</span>
+<span class="bu">echo</span> <span class="va">${MY_IP}</span>
+
+<span class="co">## Check that you defined a site name for your RSAT instance</span>
+<span class="bu">echo</span> <span class="va">${RSAT_SITE}</span>
+
+<span class="co">## Semi-auto configuration for VirtualBox VM</span>
+<span class="co">## (adapt IP address if required)</span>
+<span class="fu">perl</span> perl-scripts/configure_rsat.pl -auto  \
+  rsat_site=<span class="va">${RSAT_SITE}</span> \
+  rsat_www=http://<span class="va">${MY_IP}</span>/rsat/ \
+  rsat_ws=http://<span class="va">${MY_IP}</span>/rsat/ \
+  ucsc_tools=1 \
+  ensembl_tools=1</code></pre></div>
+<p>You can add some additional option, e.g. enter your mail address as server admin, activate some specific tools that are disabled by default.</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="va">rsat_server_admin=</span>your.mail<span class="ex">@your.mail.server</span>
+<span class="va">variation_tools=</span>1</code></pre></div>
+<!--
+
+## For the IFB cloud
+
+RSAT has been ported on the cloud of the [**Institut Français de Bioinformatique**](http://www.france-bioinformatique.fr) (**IFB**). The tools are available as an appliance which enables each user to automatically start an RSAT server, that can be used in a terminal, via a Web interface, or invoked remotely as Web services. 
+
+
+Since the IP address is allocated dynamically during at the start of the instance booting, we use an automatic configuration. 
+
+
+```bash
+perl perl-scripts/configure_rsat.pl -auto  \
+  rsat_site=rsatvm-ifb-2018-05 \
+  RSAT=${INSTALL_ROOT}/rsat \
+  rsat_www=auto \
+  rsat_ws=auto \
+  phylo_tools=0 \
+  compara_tools=0 \
+  variations_tools=0 \
+  ucsc_tools=0 \
+  ensembl_tools=0 \
+  SUDO=sudo
+  
+chmod 755 /root # required for apache user to access the packages
+```
+-->
+</div>
+<div id="advanced-rsat-configuration" class="section level2">
+<h2><span class="header-section-number">4.4</span> Advanced RSAT configuration</h2>
+<p>In order to see all options, you can run the script <code>configure_rsat.pl</code> without the option <code>--auto</code></p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="fu">perl</span> perl-scripts/configure_rsat.pl</code></pre></div>
+<p>You can now refine the configuration by choosing custom parameter to your RSAT instance (for example the email of the local admin, the organism group, …).</p>
+<hr />
+</div>
+</div>
+<div id="installing-rsat" class="section level1">
+<h1><span class="header-section-number">5</span> Installing RSAT</h1>
+<p>Before running the installation, it might be worth updating the Linux distribution (<code>apt-get update</code>) in order to get the latest versions of the basic packages.</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="co">## This requires admin privileges</span>
+<span class="fu">sudo</span> bash
+
+<span class="co">## Check who you are  (should be root)</span>
+<span class="fu">whoami</span>
+
+<span class="co">## Define your operating system (currently supported: ubuntu, macosx) by running one (and only one) of the commands below. </span>
+<span class="bu">export</span> <span class="va">MY_OS=</span>macosx
+<span class="bu">export</span> <span class="va">MY_OS=</span>ubuntu
+
+
+<span class="co">## Go to the RSAT directory</span>
+<span class="bu">export</span> <span class="va">INSTALL_ROOT=</span>~/packages
+<span class="bu">cd</span> <span class="va">${INSTALL_ROOT}</span>/rsat
+
+<span class="co">## Read config and run bash installation scripts</span>
+<span class="bu">source</span> RSAT_config.bashrc <span class="kw">&amp;&amp;</span> <span class="ex">\ </span>
+<span class="fu">bash</span> installer/01_<span class="va">${MY_OS}</span>_packages.bash <span class="kw">&amp;&amp;</span> <span class="kw">\</span>
+<span class="fu">bash</span> installer/02_python_packages.bash  <span class="kw">&amp;&amp;</span> <span class="kw">\</span>
+<span class="fu">bash</span> installer/03_install_rsat.bash <span class="kw">&amp;&amp;</span> <span class="kw">\</span>
+<span class="fu">bash</span> installer/04_perl_packages.bash  <span class="kw">&amp;&amp;</span> <span class="kw">\</span>
+<span class="fu">bash</span> installer/06_install_organisms.bash <span class="kw">&amp;&amp;</span> <span class="kw">\</span>
+<span class="fu">bash</span> installer/07_R-and-packages.bash  <span class="kw">&amp;&amp;</span> <span class="kw">\</span>
+<span class="fu">bash</span> installer/08_apache_config.bash <span class="kw">&amp;&amp;</span> <span class="kw">\</span>
+<span class="fu">bash</span> installer/09_rsat_ws.bash <span class="kw">&amp;&amp;</span> <span class="kw">\</span>
+<span class="fu">bash</span> installer/10_clean_unnecessary_files.bash
+
+<span class="co">## Restore rsat as owner of the $RSAT folder</span>
+<span class="co">## </span><span class="al">NOTE</span><span class="co">: the following command should be adapted to the login and group of the user owing the rsat package.</span>
+<span class="fu">chown</span> -R rsat.rsat <span class="va">$RSAT</span>
+
+<span class="co">## Exit sudo session</span>
+<span class="bu">exit</span>
+
+<span class="co">## Check who you are (should be back to normal user identity)</span>
+<span class="fu">whoami</span> <span class="co">## This should give &#39;rsat&#39;</span></code></pre></div>
+<hr />
+</div>
+<div id="testing-the-command-lines" class="section level1">
+<h1><span class="header-section-number">6</span> Testing the command lines</h1>
+<p>The script <code>makefile/install_tests.mk</code> runs a series of tests for different components of the <em>RSAT</em> suite. Each test result is stored in a separate file in the test directory (<code>./install_tests</code> by default). Output file names are printed out after each test.</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="co">## Load the RSAT configuration</span>
+<span class="bu">source</span> RSAT_config.bashrc
+
+<span class="bu">cd</span> <span class="va">$RSAT</span>
+<span class="fu">make</span> -f makefiles/install_tests.mk all
+
+<span class="co">## Check the results</span>
+<span class="fu">ls</span> -ltr install_tests</code></pre></div>
+<hr />
+</div>
+<div id="testing-the-web-server" class="section level1">
+<h1><span class="header-section-number">7</span> Testing the Web server</h1>
+<p>The web site can be tested by selecting any supported tool, clicking on the demo button and checking the result.</p>
+<p>We usually use the following tools as diagnostic of the proper functioning of a server.</p>
+<ol style="list-style-type: decimal">
+<li><p><strong>Supported organisms</strong> to check if the default organisms have been installed.</p></li>
+<li><p><strong>Fetch sequences from UCSC</strong>:</p>
+<ul>
+<li>is the list of organisms is correctly displayed (obtained dynamically from UCSC) ?</li>
+<li>run the demo: do you obtain fasta sequences ?</li>
+</ul></li>
+<li><p><strong>retrieven Ensembl seq</strong>:</p>
+<ul>
+<li>is the list of organisms is correctly displayed (obtained dynamically from Ensembl) ?</li>
+<li>run the demo 1 (single organism): do you obtain fasta sequences ?</li>
+</ul></li>
+<li><p><strong>convert-matrix</strong>: check that logos are properly generated</p></li>
+<li><p><strong>gene-info</strong> to <strong>feature-map</strong>: check that the genes are well returned with gene-info, then successively send the results throught the following tools:</p>
+<ul>
+<li><p><strong>gene-info</strong> demo -&gt; gene list. Check if you obtain a table with genes. If so, under <em>Next steps</em>, click the button <em>retrieve sequences</em>.</p></li>
+<li><p><strong>retrieve sequences</strong>. Click “Run Analysis” then “GO”. In the result, check the fasta file. Next step: <em>oligo-analysis</em>.</p></li>
+<li><p><strong>oligo-analysis</strong>. In the result, check the k-mers (oligos) then the matrices and the logos. In the Next step box, end the result to <em>string-based pattern matching</em>.</p></li>
+<li><p><strong>dna-pattern</strong></p></li>
+<li><p><strong>feature-map</strong> check that the png figure is properly generated and displayed.</p></li>
+</ul></li>
+</ol>
+<p>At the end of this process the results should look like the figure <installer/images/feature-map_web_result.png></p>
+<div class="figure">
+<img src="installer/images/feature-map_web_result.png" alt="Feature-map result at the end of the pipeline from gene-info to feature-map." />
+<p class="caption"><strong>Feature-map result</strong> at the end of the pipeline from gene-info to feature-map.</p>
+</div>
+<hr />
+</div>
+<div id="supplementary-information" class="section level1">
+<h1><span class="header-section-number">8</span> Supplementary information</h1>
+<div id="files" class="section level2">
+<h2><span class="header-section-number">8.1</span> Files</h2>
+<p><code>rsat_YYYY.MM.DD.tar.gz</code></p>
+<p>Stand-alone versions + web servers for RSAT and NeAT (except the metabolic tools).</p>
+<p><code>metabolic-tools_YYYYMMDD.tar.gz</code></p>
+<p>Metabolic pathway analysis tools (supported on some NeAT servers).</p>
+</div>
+<div id="rsatneat-installation-and-user-guides" class="section level2">
+<h2><span class="header-section-number">8.2</span> RSAT/NeAT installation and user guides</h2>
+<p>After having uncompressed the archive, you will find the installation and user guides in the <code>doc/manuals</code> directory</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="fu">ls</span> -1 public_html/release/*.pdf</code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th>Guide</th>
+<th>File</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>RSAT installation guide</td>
+<td>RSAT_install_guide.pdf</td>
+</tr>
+<tr class="even">
+<td>RSAT Web configuration guide</td>
+<td>rsat_web_server.pdf</td>
+</tr>
+<tr class="odd">
+<td>RSAT Command-linde user guide</td>
+<td>tutorial_shell_rsat.pdf</td>
+</tr>
+<tr class="even">
+<td>NeAT Web server configuration</td>
+<td>neat_web_server.pdf</td>
+</tr>
+<tr class="odd">
+<td>NeAT Command-line user guide</td>
+<td>neat_tutorial.pdf</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p>Define an environment variable specifying the path of RSAT directory</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="co">## Go th the main RSAT directory</span>
+<span class="bu">cd</span> <span class="va">${RSAT}</span>
+
+<span class="co">## Parameters to change</span>
+<span class="co">##   rsat_site   rsat-vm-2016-03</span>
+<span class="co">##   rsat_server_admin    I don&#39;t specify it, because I don&#39;t want to receive notifications from all the VMs</span>
+<span class="co">## I activate the optional tools ucsc_tools and ensembl_tools, but not the other ones because they require many genomes (phylo tools) or big genomes (compara_tools, variation_tools).</span>
+
+<span class="co">## Load the (updated) RSAT environment variables</span>
+<span class="bu">cd</span> <span class="va">${RSAT}</span><span class="kw">;</span> <span class="bu">source</span> RSAT_config.bashrc
+
+<span class="co">## Check that the RSAT environment variable has been properly</span>
+<span class="co">## configured. Note: I also define it in the beginning of the script</span>
+<span class="co">## because I will beed it for the different installation chunks.</span>
+<span class="bu">echo</span> <span class="st">&quot;RSAT path: </span><span class="va">${RSAT}</span><span class="st">&quot;</span>
+<span class="bu">cd</span> <span class="va">${RSAT}</span>
+
+<span class="co">## Initialise RSAT folders</span>
+<span class="fu">make</span> -f makefiles/init_rsat.mk init
+
+<span class="co">################################################################</span>
+<span class="co">## Next steps require to be done as rsat administrator user</span>
+
+<span class="co">## compile RSAT programs written in C</span>
+<span class="bu">cd</span> <span class="va">${RSAT}</span>
+<span class="fu">make</span> -f makefiles/init_rsat.mk compile_all
+<span class="fu">df</span> -m <span class="op">&gt;</span> <span class="va">${RSAT}</span>/install_logs/df_<span class="va">$(</span><span class="fu">date</span> +%Y-%m-%d_%H-%M-%S<span class="va">)</span>_rsat_app_compiled.txt
+
+<span class="co">## !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</span>
+<span class="co">## !!!!!!!!!!!!!!!!!!!!!!!!!!!  </span><span class="al">BUG</span><span class="co">    !!!!!!!!!!!!!!!!!!!!!!!!!!!!</span>
+<span class="co">## !!!! I HAVE A PROBLEM TO COMPILE KWALKS. SHOULD BE CHECKED !!!!!</span>
+<span class="co">## !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</span>
+
+
+<span class="co">################################################################</span>
+<span class="co">## Install some third-party programs required by some RSAT scripts.</span>
+<span class="bu">cd</span> <span class="va">${RSAT}</span>
+<span class="fu">make</span> -f makefiles/install_software.mk list_ext_apps
+<span class="fu">make</span> -f makefiles/install_software.mk install_ext_apps
+<span class="fu">df</span> -m <span class="op">&gt;</span> <span class="va">${RSAT}</span>/install_logs/df_<span class="va">$(</span><span class="fu">date</span> +%Y-%m-%d_%H-%M-%S<span class="va">)</span>_rsat_extapp_installed.txt</code></pre></div>
+</div>
+</div>
+<div id="dependencies" class="section level1">
+<h1><span class="header-section-number">9</span> Dependencies</h1>
+<div id="mkvtree-and-vmatch" class="section level2">
+<h2><span class="header-section-number">9.1</span> mkvtree and vmatch</h2>
+<p>The RSAT program <code>purge-sequences</code> is used to mask redundant sequences, which is strongly recommended before running motif discovery, since the over-representation statistics rely on the hypothesis of independence.</p>
+<p>This perl script relies on the tools <code>mkvtree</code> and <code>vmatch</code> developed by Stefan Kurtz.</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="bu">cd</span> <span class="va">${RSAT}</span>
+
+<span class="co">## List dependencies for external applications</span>
+<span class="fu">make</span> -f makefiles/install_software.mk list_ext_apps
+
+<span class="co">## Install</span>
+<span class="fu">make</span> -f makefiles/install_software.mk install_vmatch</code></pre></div>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
