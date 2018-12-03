@@ -177,7 +177,7 @@ See information at: <https://www.virtualbox.org/manual/ch06.html#network_bridged
 - Attached to : *Bridged Adapter*
 - Name: choose an option corresponding to the actual internet connection of the host machine (e.g. ethernet cable, Wi-Fi, ...).
 
-[![Configuration for a bridged network via an Ethernet (cable) connection](images/vm_settings_network_bridged.png){width="400"}](images/vm_settings_network_bridged.png)
+[![Configuration for a bridged network via an Ethernet (cable) connection](images/vm_settings_network_bridged.png){width="400"}](images/vm_settings_network_bridged.png){width="400"}
 
 If you are connected via Wi-Fi (wireless), you may need to set up advanced option **for Wi-Fi connection**. 
 
@@ -186,7 +186,7 @@ If you are connected via Wi-Fi (wireless), you may need to set up advanced optio
 - Uncheck the option **cable connected** (not sure this is required, but seems reasonable to disactivate cable for a wireless connection).
 
 
-![Advanced settings to enable bridged network via a Wi-Fi connection](images/vm_settings_network_bridged_for_wireless.png)
+![Advanced settings to enable bridged network via a Wi-Fi connection](images/vm_settings_network_bridged_for_wireless.png){width="400"}
 
 **Note:** you can also activate a fourth adapter, for example to support both an ethernet card (Adapter 3) and a Wi-Fi connection (Adapter 4). This is particularly useful for laptop computers, whose network parameters vary from place to place. 
 
@@ -211,14 +211,14 @@ The desktop version of Ubuntu presents the advantage of letting users work direc
 
 - Start the default installation: Click the button: **Install Ubuntu**
 
-![Install Ubuntu](images/virtualbox_ubuntu_16.04.1_install/ub16.04.1_snapshot01.png)
+![Install Ubuntu](images/virtualbox_ubuntu_16.04.1_install/ub16.04.1_snapshot01.png){width="400"}
 
 - Dialog box **Preparing to install Ubuntu**. 
 
     - Make sure the option *Download updates while installing Ubuntu* is unchecked (we will update the packages after installation). 
     - Leave the other parameters unchanged and click **Continue**.
     
-![Preparing to install Ubuntu](images/virtualbox_ubuntu_16.04.1_install/ub16.04.1_snapshot02.png)
+![Preparing to install Ubuntu](images/virtualbox_ubuntu_18.04.1_install/ub18.04.1_snapshot02.png){width="400"}
 
 - **Installation type**: 
 
@@ -228,18 +228,18 @@ The desktop version of Ubuntu presents the advantage of letting users work direc
     - Click **Install Now**. 
     - There will be a warning message **Write the changes to disk?**. Click **Continue**. 
 
-![Installation type](images/virtualbox_ubuntu_16.04.1_install/ub16.04.1_snapshot04.png)
+![Installation type](images/virtualbox_ubuntu_18.04.1_install/ub18.04.1_snapshot04.png){width="400"}
 
 In the dialog box **Write the changes to disk?** click **Continue**. 
 
-![Write changes on disk](images/virtualbox_ubuntu_16.04.1_install/ub16.04.1_snapshot05.png)
+![Write changes on disk](images/virtualbox_ubuntu_18.04.1_install/ub18.04.1_snapshot05.png){width="400"}
 
 
 - **Where are you?**
 
     If you VM has a suitable Internet connexion, your location should be detected automatically. If not, choose the right location.
 
-![Where are you?](images/virtualbox_ubuntu_16.04.1_install/ub16.04.1_snapshot06.png)
+![Where are you?](images/virtualbox_ubuntu_16.04.1_install/ub16.04.1_snapshot06.png){width="400"}
 
 - **Keyboard layout**: make your choice^[I have a *French - French Macintosh*, so I use it for installation, but I will later add an English keybord for the distribution.]
 
@@ -259,11 +259,11 @@ In the dialog box **Write the changes to disk?** click **Continue**.
 | Log in automatically | I activate it because this will greatly facilitate the use of the Destkop version |
 | | Click **Continue** |
 
-![Who are you?](images/virtualbox_ubuntu_16.04.1_install/ub16.04.1_snapshot07.png)
+![Who are you?](images/virtualbox_ubuntu_18.04.1_install/ub18.04.1_snapshot07.png){width="400"}
 
 Ubuntu now installs the system, this should take a few minutes^[**Note** if you did  activate the option to update Ubuntu packages in the previous window, the installation can take several minutes].
 
-![Ubuntu installation](images/virtualbox_ubuntu_16.04.1_install/ub16.04.1_snapshot08.png)
+![Ubuntu installation](images/virtualbox_ubuntu_16.04.1_install/ub16.04.1_snapshot08.png){width="400"}
 
 
 - After installation, Ubuntu  displays a message *"Installation is complete. You need to restart ..."*. Click **Restart now**. 
@@ -274,7 +274,7 @@ Ubuntu now installs the system, this should take a few minutes^[**Note** if you 
 
 - For the sake of convenience, I disactivate the lock screen and password prompt options. Indeed, since the VM is running under my account on the hosting system, there is no need to double the security options. For this, click on the **Settings** icon (toothed wheels) on the top-right corner of the Ubuntu display. Select **All Settings** and click on the panell **Brightness and Lock**. Set **Lock** to *off* and uncheck **Require my password when waking from suspend**. 
 
-![Disactivate lock screen and password prompt after suspend. ](images/virtualbox_ubuntu_16.04.1_install/disactivate_lock_screen.png)
+![Disactivate lock screen and password prompt after suspend. ](images/virtualbox_ubuntu_16.04.1_install/disactivate_lock_screen.png){width="400"}
 
 ###  Screen resolution (for Desktop version 14.04)
 
