@@ -256,6 +256,10 @@ ls -ltr install_tests
 ****************************************************************
 # Testing the Web server
 
+The RSAT Web site can be found at your host IP address followed by rsat: http://[my.computer.ip.address]/rsat/
+
+e.g. for VirtualBox VM: <http://192.168.56.101/rsat/>
+
 The web site can be tested by selecting any supported tool, clicking on the demo button and checking the result. 
 
 We usually use the following tools as diagnostic of the proper functioning of a server. 
