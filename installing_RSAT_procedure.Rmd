@@ -141,6 +141,7 @@ echo "RSAT_SITE ${RSAT_SITE}"
 ## Semi-auto configuration for VirtualBox VM
 ## (adapt IP address if required)
 perl perl-scripts/configure_rsat.pl -auto  \
+  rsat=${INSTALL_ROOT}/rsat
   rsat_site=${RSAT_SITE} \
   rsat_www=http://${MY_IP}/rsat/ \
   rsat_ws=http://${MY_IP}/rsat/ \
