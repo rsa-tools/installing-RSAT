@@ -4,7 +4,7 @@ This repository will contain installation guides for the **Regulatory Sequence A
 
 ## Folders
 
-- **<RSAT-VM>**: installation and configuration of a VirtualBox virtual machine to install an RSAT server (via ubuntu).
+- **[RSAT-VM](RSAT-VM)**: installation and configuration of a VirtualBox virtual machine to install an RSAT server (via ubuntu).
 - **<bash_install_scripts>** Local installation from the scratch (Ubuntu 18.04.1)
 
 ## To be added soon
