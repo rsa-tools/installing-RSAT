@@ -53,7 +53,7 @@ knitr::opts_chunk$set(
 ****************************************************************
 # Downloading RSAT
 
-1. Go to the RSAT portal (**<http:rsat.eu/>**)
+1. Go to the RSAT portal (**<http://rsat.eu/>**)
 2. Select any server. 
 3. In the left-sided menu,  click on the **Download** link. 
 4. Fill in your name and coordinates and accept the license.
@@ -133,10 +133,10 @@ export RSAT_SITE=my_rsat
 ```{bash}
 
 ## Check that the IP site of your machine has been specified
-echo ${MY_IP}
+echo "MY_IP ${MY_IP}"
 
 ## Check that you defined a site name for your RSAT instance
-echo ${RSAT_SITE}
+echo "RSAT_SITE ${RSAT_SITE}"
 
 ## Semi-auto configuration for VirtualBox VM
 ## (adapt IP address if required)
@@ -148,7 +148,7 @@ perl perl-scripts/configure_rsat.pl -auto  \
   ensembl_tools=1
 ```
 
-You can add some additional option, e.g. enter your mail address as server admin, activate some specific tools that are disabled by default. 
+You can add some additional options to the previous command, e.g. enter your mail address as server admin, activate some specific tools that are disabled by default. 
 
 ```{bash}
 rsat_server_admin=your.mail@your.mail.server
@@ -291,110 +291,116 @@ We usually use the following tools as diagnostic of the proper functioning of a 
       
       - **feature-map** check that the png figure is properly generated and displayed. 
 
-At the end of this process the results should look like the figure <installer/images/feature-map_web_result.png>
+At the end of this process the results should look like the figure below. 
 
-![**Feature-map result** at the end of the pipeline from gene-info to feature-map.](installer/images/feature-map_web_result.png)
-
-****************************************************************
-# Supplementary information
-
-## Files
-
-`rsat_YYYY.MM.DD.tar.gz`
-
-   Stand-alone versions + web servers for RSAT and NeAT (except the
-   metabolic tools).
-
-`metabolic-tools_YYYYMMDD.tar.gz`
-
-   Metabolic pathway analysis tools (supported on some NeAT servers).
-
-## RSAT/NeAT installation and user guides
-
-After having uncompressed the archive, you will find the installation and user guides in the `doc/manuals` directory
-
-```{bash}
-ls -1 public_html/release/*.pdf
+```{r eval=TRUE, echo=FALSE, out.width="60%", fig.cap="**Feature-map result** at the end of the pipeline from *gene-info* to *feature-map*."}
+library(knitr)
+include_graphics("images/feature-map_web_result.png")
 ```
 
 
-| Guide | File |
-|------------------------|---------------------------|
-| RSAT installation guide |   RSAT_install_guide.pdf |
-| RSAT Web configuration guide |   rsat_web_server.pdf |
-| RSAT Command-linde user guide |  tutorial_shell_rsat.pdf |
-| NeAT Web server configuration |  neat_web_server.pdf |
-| NeAT Command-line user guide |   neat_tutorial.pdf |
+<!-- **************************************************************** -->
+<!-- # Supplementary information -->
 
-****************************************************************
+<!-- ## Files -->
 
 
+<!-- Stand-alone version + web servers for RSAT -->
 
-Define an environment variable specifying the path of RSAT directory
-
-```{bash}
-## Go th the main RSAT directory
-cd ${RSAT}
-
-## Parameters to change
-##   rsat_site   rsat-vm-2016-03
-##   rsat_server_admin    I don't specify it, because I don't want to receive notifications from all the VMs
-## I activate the optional tools ucsc_tools and ensembl_tools, but not the other ones because they require many genomes (phylo tools) or big genomes (compara_tools, variation_tools).
-
-## Load the (updated) RSAT environment variables
-cd ${RSAT}; source RSAT_config.bashrc
-
-## Check that the RSAT environment variable has been properly
-## configured. Note: I also define it in the beginning of the script
-## because I will beed it for the different installation chunks.
-echo "RSAT path: ${RSAT}"
-cd ${RSAT}
-
-## Initialise RSAT folders
-make -f makefiles/init_rsat.mk init
-
-################################################################
-## Next steps require to be done as rsat administrator user
-
-## compile RSAT programs written in C
-cd ${RSAT}
-make -f makefiles/init_rsat.mk compile_all
-df -m > ${RSAT}/install_logs/df_$(date +%Y-%m-%d_%H-%M-%S)_rsat_app_compiled.txt
-
-## !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-## !!!!!!!!!!!!!!!!!!!!!!!!!!!  BUG    !!!!!!!!!!!!!!!!!!!!!!!!!!!!
-## !!!! I HAVE A PROBLEM TO COMPILE KWALKS. SHOULD BE CHECKED !!!!!
-## !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+<!-- `rsat_YYYY.MM.DD.tar.gz` -->
 
 
-################################################################
-## Install some third-party programs required by some RSAT scripts.
-cd ${RSAT}
-make -f makefiles/install_software.mk list_ext_apps
-make -f makefiles/install_software.mk install_ext_apps
-df -m > ${RSAT}/install_logs/df_$(date +%Y-%m-%d_%H-%M-%S)_rsat_extapp_installed.txt
+<!-- Metabolic pathway analysis tools (previously supported on the NeAT server, not maintained anymore). -->
 
-```
+<!-- `metabolic-tools_YYYYMMDD.tar.gz` -->
 
 
-# Dependencies
+<!-- ## RSAT installation and user guides -->
 
-## mkvtree and vmatch
+<!-- After having uncompressed the archive, you will find the installation and user guides in the `doc/manuals` directory -->
 
-The RSAT program `purge-sequences` is used to mask redundant sequences, which is strongly recommended before running motif discovery, since the over-representation statistics rely on the hypothesis of independence. 
+<!-- ```{bash} -->
+<!-- ls -1 public_html/release/*.pdf -->
+<!-- ``` -->
 
-This perl script relies on the tools `mkvtree` and `vmatch` developed by Stefan Kurtz. 
 
-```{bash eval=FALSE}
-cd ${RSAT}
+<!-- | Guide | File | -->
+<!-- |------------------------|---------------------------| -->
+<!-- | RSAT installation guide |   RSAT_install_guide.pdf | -->
+<!-- | RSAT Web configuration guide |   rsat_web_server.pdf | -->
+<!-- | RSAT Command-linde user guide |  tutorial_shell_rsat.pdf | -->
+<!-- | NeAT Web server configuration |  neat_web_server.pdf | -->
+<!-- | NeAT Command-line user guide |   neat_tutorial.pdf | -->
 
-## List dependencies for external applications
-make -f makefiles/install_software.mk list_ext_apps
+<!-- **************************************************************** -->
 
-## Install
-make -f makefiles/install_software.mk install_vmatch
 
-```
+
+<!-- Define an environment variable specifying the path of RSAT directory -->
+
+<!-- ```{bash} -->
+<!-- ## Go th the main RSAT directory -->
+<!-- cd ${RSAT} -->
+
+<!-- ## Parameters to change -->
+<!-- ##   rsat_site   rsat-vm-2016-03 -->
+<!-- ##   rsat_server_admin    I don't specify it, because I don't want to receive notifications from all the VMs -->
+<!-- ## I activate the optional tools ucsc_tools and ensembl_tools, but not the other ones because they require many genomes (phylo tools) or big genomes (compara_tools, variation_tools). -->
+
+<!-- ## Load the (updated) RSAT environment variables -->
+<!-- cd ${RSAT}; source RSAT_config.bashrc -->
+
+<!-- ## Check that the RSAT environment variable has been properly -->
+<!-- ## configured. Note: I also define it in the beginning of the script -->
+<!-- ## because I will beed it for the different installation chunks. -->
+<!-- echo "RSAT path: ${RSAT}" -->
+<!-- cd ${RSAT} -->
+
+<!-- ## Initialise RSAT folders -->
+<!-- make -f makefiles/init_rsat.mk init -->
+
+<!-- ################################################################ -->
+<!-- ## Next steps require to be done as rsat administrator user -->
+
+<!-- ## compile RSAT programs written in C -->
+<!-- cd ${RSAT} -->
+<!-- make -f makefiles/init_rsat.mk compile_all -->
+<!-- df -m > ${RSAT}/install_logs/df_$(date +%Y-%m-%d_%H-%M-%S)_rsat_app_compiled.txt -->
+
+<!-- ## !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+<!-- ## !!!!!!!!!!!!!!!!!!!!!!!!!!!  BUG    !!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+<!-- ## !!!! I HAVE A PROBLEM TO COMPILE KWALKS. SHOULD BE CHECKED !!!!! -->
+<!-- ## !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+
+
+<!-- ################################################################ -->
+<!-- ## Install some third-party programs required by some RSAT scripts. -->
+<!-- cd ${RSAT} -->
+<!-- make -f makefiles/install_software.mk list_ext_apps -->
+<!-- make -f makefiles/install_software.mk install_ext_apps -->
+<!-- df -m > ${RSAT}/install_logs/df_$(date +%Y-%m-%d_%H-%M-%S)_rsat_extapp_installed.txt -->
+
+<!-- ``` -->
+
+
+<!-- # Dependencies -->
+
+<!-- ## mkvtree and vmatch -->
+
+<!-- The RSAT program `purge-sequences` is used to mask redundant sequences, which is strongly recommended before running motif discovery, since the over-representation statistics rely on the hypothesis of independence.  -->
+
+<!-- This perl script relies on the tools `mkvtree` and `vmatch` developed by Stefan Kurtz.  -->
+
+<!-- ```{bash eval=FALSE} -->
+<!-- cd ${RSAT} -->
+
+<!-- ## List dependencies for external applications -->
+<!-- make -f makefiles/install_software.mk list_ext_apps -->
+
+<!-- ## Install -->
+<!-- make -f makefiles/install_software.mk install_vmatch -->
+
+<!-- ``` -->
 
 
 
