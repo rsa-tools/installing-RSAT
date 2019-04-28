@@ -419,6 +419,10 @@ export MY_IP=<span class="fl">127.0</span>.<span class="fl">0.1</span></code></p
 <h2><span class="header-section-number">4.3</span> Automatic configuration of RSAT parameters</h2>
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">
 <span class="co">## Check that the IP site of your machine has been specified</span>
+<span class="bu">export</span> <span class="va">RSAT=${INSTALL_ROOT}</span>/rsat
+<span class="bu">echo</span> <span class="st">&quot;RSAT </span><span class="va">${RSAT}</span><span class="st">&quot;</span>
+
+<span class="co">## Check that the IP site of your machine has been specified</span>
 <span class="bu">echo</span> <span class="st">&quot;MY_IP </span><span class="va">${MY_IP}</span><span class="st">&quot;</span>
 
 <span class="co">## Check that you defined a site name for your RSAT instance</span>
@@ -427,6 +431,7 @@ export MY_IP=<span class="fl">127.0</span>.<span class="fl">0.1</span></code></p
 <span class="co">## Semi-auto configuration for VirtualBox VM</span>
 <span class="co">## (adapt IP address if required)</span>
 <span class="fu">perl</span> perl-scripts/configure_rsat.pl -auto  \
+  rsat=<span class="va">${RSAT}</span> \
   rsat_site=<span class="va">${RSAT_SITE}</span> \
   rsat_www=http://<span class="va">${MY_IP}</span>/rsat/ \
   rsat_ws=http://<span class="va">${MY_IP}</span>/rsat/ \

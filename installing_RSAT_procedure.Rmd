@@ -133,6 +133,10 @@ export RSAT_SITE=my_rsat
 ```{bash}
 
 ## Check that the IP site of your machine has been specified
+export RSAT=${INSTALL_ROOT}/rsat
+echo "RSAT ${RSAT}"
+
+## Check that the IP site of your machine has been specified
 echo "MY_IP ${MY_IP}"
 
 ## Check that you defined a site name for your RSAT instance
@@ -141,7 +145,7 @@ echo "RSAT_SITE ${RSAT_SITE}"
 ## Semi-auto configuration for VirtualBox VM
 ## (adapt IP address if required)
 perl perl-scripts/configure_rsat.pl -auto  \
-  rsat=${INSTALL_ROOT}/rsat
+  rsat=${RSAT} \
   rsat_site=${RSAT_SITE} \
   rsat_www=http://${MY_IP}/rsat/ \
   rsat_ws=http://${MY_IP}/rsat/ \
