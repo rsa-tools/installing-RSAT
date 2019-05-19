@@ -47,7 +47,14 @@ knitr::opts_chunk$set(
 
 
 ****************************************************************
-# Overview of the nstallation steps
+# Overview of the installation steps
+
+1. Download a tarball archive with RSAT code.
+2. Configure your local installation.
+3. If your OS is Ubuntu, run the installation bash scripts. If not some adaptation of these scripts will be necessary (e.g. system libraries).
+4. Test the command lines
+5. Test the Web server
+6. Test the Web services (SOAP/WSDL and REST)
 
 
 ****************************************************************
@@ -56,7 +63,7 @@ knitr::opts_chunk$set(
 1. Go to the RSAT portal (**<http://rsat.eu/>**)
 2. Select any server. 
 3. In the left-sided menu,  click on the **Download** link. 
-4. Fill in your name and coordinates and accept the license.
+4. Fill in your name and coordinates and access to the download site.
 
 
 You now have access to the download page containing the links to  
@@ -303,6 +310,12 @@ library(knitr)
 include_graphics("images/feature-map_web_result.png")
 ```
 
+
+# Testing the Web services
+
+## SOAP/WSDL interface
+
+## REST interface
 
 <!-- **************************************************************** -->
 <!-- # Supplementary information -->
