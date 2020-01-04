@@ -127,11 +127,16 @@ conda install -c bioconda rsat-core
 # Testing the rsat-core environment
 
 We can perform a quick test of the rsat-core package.
+
+## Locating the rsat command
+
 We will first locate the `rsat` command. 
 
 ```{bash eval=FALSE}
 which rsat
 ```
+
+## Listing rsat subcommands
 
 The `rsat` command enables to run all the RSAT tools as sub-commands. We can list them with the option `--list`, or get a short description with the option `--help`. 
 
@@ -141,6 +146,38 @@ rsat --list | wc -l ## count the number of supported RSAT subcommands
 rsat --help ## Get a short description of the RSAT subcommands
 ```
 
+## Getting help for an rsat subcommand
+
+The help page of an RSAT command can be obtained by running
+
+`rsat [subcommand] -h`
+
+For example:
+
+```{bash eval=FALSE}
+rsat random-seq -h
+```
+
+## Testing some RSAT commands
+
+Generate 3 random sequences of length 100. 
+
+```{bash eval=FALSE}
+rsat random-seq -l 100 -n 3
+```
+
+Generate random sequences and send them as input to `oligo-analysis`  to count the dinucleotide occurrences. Note that the result of an RSAT command can be directly used as input by another command with the pipe symbol `|`.
+
+```{bash eval=FALSE}
+rsat random-seq -l 100 -n 3 \
+  | rsat oligo-analysis -v 1 -l 2 -1str -return occ,freq
+```
+
+## More tests
+
+```{bash eval=FALSE}
+
+```
 
 
 ****************************************************************

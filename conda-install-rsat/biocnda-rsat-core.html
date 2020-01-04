@@ -389,26 +389,48 @@ div.tocify {
 </div>
 <div id="testing-the-rsat-core-environment" class="section level1">
 <h1><span class="header-section-number">5</span> Testing the rsat-core environment</h1>
-<p>We can perform a quick test of the rsat-core package. We will first locate the <code>rsat</code> command.</p>
+<p>We can perform a quick test of the rsat-core package.</p>
+<div id="locating-the-rsat-command" class="section level2">
+<h2><span class="header-section-number">5.1</span> Locating the rsat command</h2>
+<p>We will first locate the <code>rsat</code> command.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="fu">which</span> rsat</a></code></pre></div>
+</div>
+<div id="listing-rsat-subcommands" class="section level2">
+<h2><span class="header-section-number">5.2</span> Listing rsat subcommands</h2>
 <p>The <code>rsat</code> command enables to run all the RSAT tools as sub-commands. We can list them with the option <code>--list</code>, or get a short description with the option <code>--help</code>.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="ex">rsat</span> --list <span class="co">## List the names of RSAT subcommands</span></a>
 <a class="sourceLine" id="cb7-2" data-line-number="2"><span class="ex">rsat</span> --list <span class="kw">|</span> <span class="fu">wc</span> -l <span class="co">## count the number of supported RSAT subcommands</span></a>
 <a class="sourceLine" id="cb7-3" data-line-number="3"><span class="ex">rsat</span> --help <span class="co">## Get a short description of the RSAT subcommands</span></a></code></pre></div>
+</div>
+<div id="getting-help-for-an-rsat-subcommand" class="section level2">
+<h2><span class="header-section-number">5.3</span> Getting help for an rsat subcommand</h2>
+<p>The help page of an RSAT command can be obtained by running</p>
+<p><code>rsat [subcommand] -h</code></p>
+<p>For example:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="ex">rsat</span> random-seq -h</a></code></pre></div>
+</div>
+<div id="testing-some-rsat-commands" class="section level2">
+<h2><span class="header-section-number">5.4</span> Testing some RSAT commands</h2>
+<p>Generate 3 random sequences of length 100.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="ex">rsat</span> random-seq -l 100 -n 3</a></code></pre></div>
+<p>Generate random sequences and send them as input to <code>oligo-analysis</code> to count the dinucleotide occurrences. Note that the result of an RSAT command can be directly used as input by another command with the pipe symbol <code>|</code>.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="ex">rsat</span> random-seq -l 100 -n 3 \</a>
+<a class="sourceLine" id="cb10-2" data-line-number="2">  <span class="kw">|</span> <span class="ex">rsat</span> oligo-analysis -v 1 -l 2 -1str -return occ,freq</a></code></pre></div>
 <hr />
+</div>
 </div>
 <div id="uninstalling-rsat-core" class="section level1">
 <h1><span class="header-section-number">6</span> Uninstalling rsat-core</h1>
 <p>To uninstall rsat-core, you should simply remove the package from conda. The way to proceed depends on whether you installed rsat-core in a specific conda environment (rsat) or in the base environment.</p>
 <div id="uninstalling-rsat-core-from-the-base-environment" class="section level2">
 <h2><span class="header-section-number">6.1</span> Uninstalling rsat-core from the base environment</h2>
-<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="ex">conda</span> activate  ## Activate the base environment</a>
-<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="ex">conda</span> remove rsat-core</a></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="ex">conda</span> activate  ## Activate the base environment</a>
+<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="ex">conda</span> remove rsat-core</a></code></pre></div>
 </div>
 <div id="uninstalling-the-rsat-conda-environment-and-all-its-packages" class="section level2">
 <h2><span class="header-section-number">6.2</span> Uninstalling the rsat conda environment (and all its packages)</h2>
-<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="ex">conda</span> deactivate <span class="co">## make sure you are not in the rsat environment</span></a>
-<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="ex">conda</span> remove -n rsat --all</a></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="ex">conda</span> deactivate <span class="co">## make sure you are not in the rsat environment</span></a>
+<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="ex">conda</span> remove -n rsat --all</a></code></pre></div>
 </div>
 </div>
 
