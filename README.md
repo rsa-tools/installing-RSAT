@@ -2,16 +2,20 @@
 
 This repository will contain installation guides for the **Regulatory Sequence Analysis Tools** (**RSAT**; **<http://rsat.eu>**) software suite. 
 
-- [Installation procedure for Ubuntu](installing_RSAT_procedure.html)
+The suite can be installed in various ways, depending on your computing environment and on your needs. 
 
-## Folders
+## Installation procedures
 
-- **[RSAT-VM](RSAT-VM)**: installation and configuration of a VirtualBox virtual machine to install an RSAT server (via ubuntu).
+| Packages |  Description | Environment | Doc |
+|-----------|---------------------------------------|---------------|--------------|
+| rsat-core | command-line tools only (via conda) | Linux, Mac OS X |
+| Web server | command line tools + web server + web services | Unix, Mac OS X | [Installation procedure for Ubuntu](installing_RSAT_procedure.html) | 
+| RSAT-VM | Ready-to-use RSAT VM (via Virtualbox) | Linux, Mac OS X, Windows | [RSAT VM tutorial](RSAT-VM/RSAT-VM_tuto.html) |
+| RSAT-VM | Install and RSAT VM from the scratch (via Virtualbox) | Linux, Mac OS X, Windows | [RSAT VM creation](RSAT-VM/virtualbox_vm_creation.html) |
 
 
 ## To be added soon
 
-- Local installation with **conda**
 - **Docker** container 
 - Virtual machine on the **IFB cloud**
 
