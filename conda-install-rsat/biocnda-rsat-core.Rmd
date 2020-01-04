@@ -1,0 +1,164 @@
+---
+title: "Installing rsat-core via conda"
+author: "Jacques van Helden"
+date: '`r Sys.Date()`'
+output:
+  html_document:
+    self_contained: no
+    fig_caption: yes
+    highlight: zenburn
+    number_sections: yes
+    theme: cerulean
+    toc: yes
+    toc_depth: 4
+    toc_float: yes
+  pdf_document:
+    fig_caption: yes
+    highlight: zenburn
+    number_sections: yes
+    toc: yes
+    toc_depth: 4
+  word_document: default
+editor_options: 
+  chunk_output_type: console
+#css: ../../course.css
+---
+
+
+```{r setup, include=FALSE}
+library(knitr, warn.conflicts = FALSE)
+
+knitr::opts_chunk$set(
+  echo = TRUE, 
+  eval = FALSE, 
+  cache = TRUE, 
+  message = FALSE, 
+  warning = FALSE, 
+  comment = "",  
+  fig.align = "center",
+  fig.width = 7, 
+  fig.height = 5,
+  out.width = "90%",
+  fig.path = "figures/")
+```
+
+****************************************************************
+# Introduction
+
+This page explains how to install the core package of the Regulatory Sequence Analysis Tools (**rsat-core**) via the [conda](https://docs.conda.io/) package manager. 
+
+The rsat-core package contains the RSAT command line tools, but no web server or web services. 
+
+****************************************************************
+# Requirements
+
+## Availability
+
+The conda package **rsat-core** is available on the [**anaconda**](https://anaconda.org/) server, in the [**bioconda**](https://anaconda.org/bioconda/) channel: 
+
+- <https://anaconda.org/bioconda/rsat-core>
+
+## Operating systems
+
+- The package has been compiled for Linux and Mac OS X. 
+
+- It is not directly available as a conda package for Windows, but it could easily be included in a Docker or Singularity container. 
+
+## Miniconda
+
+This tutorial assumes that the conda package manager is installed on your operating system. 
+
+If it is not the case, you can easily install  [miniconda3](https://docs.conda.io/en/latest/miniconda.html). Note that for this you do not need to have admin rights. 
+
+
+****************************************************************
+# Conda environment
+
+It may be convenient to create a specific conda environment rather than in the default environment. 
+
+**Advantage:**  RSAT and all its dependencies are isolated from the other packages installed on your operating system. This may avoid conflicts between  incompatible versions of languages or libraries required by other conda packages. 
+
+**Inconvenient:** the installation may take more space on your storage device since all the dependencies have to be installed in the rsat-specific environment folder. 
+
+**If you prefer to install rsat-core in the basic conda environment, just skip this section. **
+
+
+## Creating a conda environment
+
+```{bash eval=FALSE}
+conda create -n rsat
+```
+
+Check that the environment has well been created
+
+```{bash eval=FALSE}
+conda env list
+conda env list | grep rsat
+```
+
+## Activating the rsat environment
+
+We will now activate the newly created conda environemnt `rsat` and check its package content. 
+
+```{bash eval=FALSE}
+conda activate rsat
+```
+
+The name of the current conda environment should appear at the beginning of your prompt, for example:  
+
+`(rsat) %`
+
+In principle, at this stage, the environment should contain no package since we just created it. We can check this by listing the packages. 
+
+```{bash eval=FALSE}
+conda list ## List the packages in the environment
+```
+
+
+****************************************************************
+# Installing rsat-core
+
+
+```{bash eval=FALSE}
+conda install -c bioconda rsat-core
+```
+
+****************************************************************
+# Testing the rsat-core environment
+
+We can perform a quick test of the rsat-core package.
+We will first locate the `rsat` command. 
+
+```{bash eval=FALSE}
+which rsat
+```
+
+The `rsat` command enables to run all the RSAT tools as sub-commands. We can list them with the option `--list`, or get a short description with the option `--help`. 
+
+```{bash rsat}
+rsat --list ## List the names of RSAT subcommands
+rsat --list | wc -l ## count the number of supported RSAT subcommands
+rsat --help ## Get a short description of the RSAT subcommands
+```
+
+
+
+****************************************************************
+# Uninstalling rsat-core
+
+To uninstall rsat-core, you should simply remove the package from conda. The way to proceed depends on whether you installed rsat-core in a specific conda environment (rsat) or in the base environment. 
+
+## Uninstalling rsat-core from the base environment
+
+```{bash eval=FALSE}
+conda activate  ## Activate the base environment
+conda remove rsat-core
+```
+
+## Uninstalling the rsat conda environment (and all its packages)
+
+```{bash eval=FALSE}
+conda deactivate ## make sure you are not in the rsat environment
+conda remove -n rsat --all
+```
+
