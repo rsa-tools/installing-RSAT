@@ -173,11 +173,70 @@ rsat random-seq -l 100 -n 3 \
   | rsat oligo-analysis -v 1 -l 2 -1str -return occ,freq
 ```
 
-## More tests
+
+## Locating the RSAT components
+
+The path of the RSAT components depends on your local configuration of conda. 
+
+You can find them as subfolders of the conda path, which may itself be generic (base environment) or specific to rsat (rsat environment). 
 
 ```{bash eval=FALSE}
+echo $CONDA_PREFIX
+```
+
+The rsat command is found in the bin directory, together with some RSAT compiled programs (e.g. `count-words`, `matrix-scan-quick`, `variation-scan`). All the programs found in this bin directory are automatically in your path as soon as you activate conda. 
+
+```{bash eval=FALSE}
+ls -ltr $CONDA_PREFIX/bin/rsat
+```
+
+Additional files of the RSAT suite are found in the folder `share/rsat` of the conda directory, which includes Perl, python, R scripts, makefiles, as well as RSAT configuration files.
+
+
+```{bash eval=FALSE}
+ls -l $CONDA_PREFIX/share/rsat
+```
+
+
+
+## More tests
+
+RSAT includes a set of tests for different commands, which can be run individually via a makefile. 
+
+```{bash eval=FALSE}
+export RSAT=$CONDA_PREFIX/share/rsat
+make -f $RSAT/makefiles/subcommand_tests.mk
+```
+
+This displays the list of `make` targets, which can be called individually by appending them to the previous command. For example, we can run the target `randseq` in order to test the RSAT program `random-seq`. 
+
+```{bash eval=FALSE}
+make -f $RSAT/makefiles/subcommand_tests.mk randseq
+```
+
+This will generate a random sequence, store it in a local file, and display the path on the result. The same can be done for each other target. The full RSAT command is systematically displayed, which indicates the parameters used for some typical analyses. 
+
+The target `all` runs all the test commands (this can take some time, because it includes downloading the yeast genome, running the `peak-motifs` workflow, ...). 
+
+
+## Optional: direct access to each tool
+
+```{bash eval=FALSE}
+## Before: the individual RSAT Perl and python scripts are not in the path
+which random-seq    ## a Perl script
+which random-motif  ## a python script
+
+## Load the bashrc file with RSAT environment variables
+cd $CONDA_PREFIX/share/rsat
+source RSAT_config.bashrc
+
+## After: the Perl and python scripts are now in the path
+which random-seq    ## a Perl script
+which random-motif  ## a python script
 
 ```
+
+After having loaded `RSAT_config.bashrc`, the commands are avaiable in the path, and can thus be invoked directly (e.g. running `random-seq -l 100` would do the same as `rsat random-seq -l 100`). 
 
 
 ****************************************************************
@@ -198,4 +257,8 @@ conda remove rsat-core
 conda deactivate ## make sure you are not in the rsat environment
 conda remove -n rsat --all
 ```
+
+
+****************************************************************
+
 

@@ -12,7 +12,7 @@
 
 <meta name="author" content="Jacques van Helden" />
 
-<meta name="date" content="2020-01-04" />
+<meta name="date" content="2020-01-05" />
 
 <title>Installing rsat-core via conda</title>
 
@@ -323,7 +323,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Installing rsat-core via conda</h1>
 <h4 class="author">Jacques van Helden</h4>
-<h4 class="date">2020-01-04</h4>
+<h4 class="date">2020-01-05</h4>
 
 </div>
 
@@ -416,6 +416,41 @@ div.tocify {
 <p>Generate random sequences and send them as input to <code>oligo-analysis</code> to count the dinucleotide occurrences. Note that the result of an RSAT command can be directly used as input by another command with the pipe symbol <code>|</code>.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="ex">rsat</span> random-seq -l 100 -n 3 \</a>
 <a class="sourceLine" id="cb10-2" data-line-number="2">  <span class="kw">|</span> <span class="ex">rsat</span> oligo-analysis -v 1 -l 2 -1str -return occ,freq</a></code></pre></div>
+</div>
+<div id="locating-the-rsat-components" class="section level2">
+<h2><span class="header-section-number">5.5</span> Locating the RSAT components</h2>
+<p>The path of the RSAT components depends on your local configuration of conda.</p>
+<p>You can find them as subfolders of the conda path, which may itself be generic (base environment) or specific to rsat (rsat environment).</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="bu">echo</span> <span class="va">$CONDA_PREFIX</span></a></code></pre></div>
+<p>The rsat command is found in the bin directory, together with some RSAT compiled programs (e.g. <code>count-words</code>, <code>matrix-scan-quick</code>, <code>variation-scan</code>). All the programs found in this bin directory are automatically in your path as soon as you activate conda.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="fu">ls</span> -ltr <span class="va">$CONDA_PREFIX</span>/bin/rsat</a></code></pre></div>
+<p>Additional files of the RSAT suite are found in the folder <code>share/rsat</code> of the conda directory, which includes Perl, python, R scripts, makefiles, as well as RSAT configuration files.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="fu">ls</span> -l <span class="va">$CONDA_PREFIX</span>/share/rsat</a></code></pre></div>
+</div>
+<div id="more-tests" class="section level2">
+<h2><span class="header-section-number">5.6</span> More tests</h2>
+<p>RSAT includes a set of tests for different commands, which can be run individually via a makefile.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="bu">export</span> <span class="va">RSAT=$CONDA_PREFIX</span>/share/rsat</a>
+<a class="sourceLine" id="cb14-2" data-line-number="2"><span class="fu">make</span> -f <span class="va">$RSAT</span>/makefiles/subcommand_tests.mk</a></code></pre></div>
+<p>This displays the list of <code>make</code> targets, which can be called individually by appending them to the previous command. For example, we can run the target <code>randseq</code> in order to test the RSAT program <code>random-seq</code>.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="fu">make</span> -f <span class="va">$RSAT</span>/makefiles/subcommand_tests.mk randseq</a></code></pre></div>
+<p>This will generate a random sequence, store it in a local file, and display the path on the result. The same can be done for each other target. The full RSAT command is systematically displayed, which indicates the parameters used for some typical analyses.</p>
+<p>The target <code>all</code> runs all the test commands (this can take some time, because it includes downloading the yeast genome, running the <code>peak-motifs</code> workflow, …).</p>
+</div>
+<div id="optional-direct-access-to-each-tool" class="section level2">
+<h2><span class="header-section-number">5.7</span> Optional: direct access to each tool</h2>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="co">## Before: the individual RSAT Perl and python scripts are not in the path</span></a>
+<a class="sourceLine" id="cb16-2" data-line-number="2"><span class="fu">which</span> random-seq    ## a Perl script</a>
+<a class="sourceLine" id="cb16-3" data-line-number="3"><span class="fu">which</span> random-motif  ## a python script</a>
+<a class="sourceLine" id="cb16-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb16-5" data-line-number="5"><span class="co">## Load the bashrc file with RSAT environment variables</span></a>
+<a class="sourceLine" id="cb16-6" data-line-number="6"><span class="bu">cd</span> <span class="va">$CONDA_PREFIX</span>/share/rsat</a>
+<a class="sourceLine" id="cb16-7" data-line-number="7"><span class="bu">source</span> RSAT_config.bashrc</a>
+<a class="sourceLine" id="cb16-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb16-9" data-line-number="9"><span class="co">## After: the Perl and python scripts are now in the path</span></a>
+<a class="sourceLine" id="cb16-10" data-line-number="10"><span class="fu">which</span> random-seq    ## a Perl script</a>
+<a class="sourceLine" id="cb16-11" data-line-number="11"><span class="fu">which</span> random-motif  ## a python script</a></code></pre></div>
+<p>After having loaded <code>RSAT_config.bashrc</code>, the commands are avaiable in the path, and can thus be invoked directly (e.g. running <code>random-seq -l 100</code> would do the same as <code>rsat random-seq -l 100</code>).</p>
 <hr />
 </div>
 </div>
@@ -424,13 +459,14 @@ div.tocify {
 <p>To uninstall rsat-core, you should simply remove the package from conda. The way to proceed depends on whether you installed rsat-core in a specific conda environment (rsat) or in the base environment.</p>
 <div id="uninstalling-rsat-core-from-the-base-environment" class="section level2">
 <h2><span class="header-section-number">6.1</span> Uninstalling rsat-core from the base environment</h2>
-<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="ex">conda</span> activate  ## Activate the base environment</a>
-<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="ex">conda</span> remove rsat-core</a></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="ex">conda</span> activate  ## Activate the base environment</a>
+<a class="sourceLine" id="cb17-2" data-line-number="2"><span class="ex">conda</span> remove rsat-core</a></code></pre></div>
 </div>
 <div id="uninstalling-the-rsat-conda-environment-and-all-its-packages" class="section level2">
 <h2><span class="header-section-number">6.2</span> Uninstalling the rsat conda environment (and all its packages)</h2>
-<div class="sourceCode" id="cb12"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="ex">conda</span> deactivate <span class="co">## make sure you are not in the rsat environment</span></a>
-<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="ex">conda</span> remove -n rsat --all</a></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="ex">conda</span> deactivate <span class="co">## make sure you are not in the rsat environment</span></a>
+<a class="sourceLine" id="cb18-2" data-line-number="2"><span class="ex">conda</span> remove -n rsat --all</a></code></pre></div>
+<hr />
 </div>
 </div>
 
