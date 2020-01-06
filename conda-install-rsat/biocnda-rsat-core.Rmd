@@ -123,6 +123,24 @@ conda list ## List the packages in the environment
 conda install -c bioconda rsat-core
 ```
 
+
+
+****************************************************************
+## Temporary patches
+
+In the 2020.01.04 release, some Perl libraries are still missing from conda.
+
+We will soon package them for conda. In the meantime, it is easy to install them manually using `cpan` (especially if you created a conda environment for rsat, in which case you don't need admin rights to install Perl modules in the environment).
+
+
+```{bash eval=FALSE}
+cpan install Statistics::Distributions
+cpan install Email::Sender::Simple
+cpan install Parallel::ForkManager
+cpan install MCE::Shared
+```
+
+
 ****************************************************************
 # Testing the rsat-core environment
 
@@ -186,20 +204,25 @@ echo $CONDA_PREFIX
 
 The rsat command is found in the bin directory, together with some RSAT compiled programs (e.g. `count-words`, `matrix-scan-quick`, `variation-scan`). All the programs found in this bin directory are automatically in your path as soon as you activate conda. 
 
+The two following commands should in principle return the same path. 
+
 ```{bash eval=FALSE}
-ls -ltr $CONDA_PREFIX/bin/rsat
+echo $CONDA_PREFIX/bin/rsat
+which rsat
 ```
 
-Additional files of the RSAT suite are found in the folder `share/rsat` of the conda directory, which includes Perl, python, R scripts, makefiles, as well as RSAT configuration files.
+Additional files of the RSAT suite are found in the folder `share/rsat` of the conda directory. 
+
 
 
 ```{bash eval=FALSE}
 ls -l $CONDA_PREFIX/share/rsat
 ```
 
+This includes Perl, python, R scripts, makefiles, as well as RSAT configuration files.
 
 
-## More tests
+## A battery of tests for rsat subcommands
 
 RSAT includes a set of tests for different commands, which can be run individually via a makefile. 
 
