@@ -12,7 +12,7 @@
 
 <meta name="author" content="Jacques van Helden" />
 
-<meta name="date" content="2020-01-06" />
+<meta name="date" content="2020-01-15" />
 
 <title>Installing rsat-core via conda</title>
 
@@ -323,7 +323,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Installing rsat-core via conda</h1>
 <h4 class="author">Jacques van Helden</h4>
-<h4 class="date">2020-01-06</h4>
+<h4 class="date">2020-01-15</h4>
 
 </div>
 
@@ -390,10 +390,16 @@ div.tocify {
 <h2><span class="header-section-number">4.1</span> Temporary patches</h2>
 <p>In the 2020.01.04 release, some Perl libraries are still missing from conda.</p>
 <p>We will soon package them for conda. In the meantime, it is easy to install them manually using <code>cpan</code> (especially if you created a conda environment for rsat, in which case you don’t need admin rights to install Perl modules in the environment).</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="ex">cpan</span> install Statistics::Distributions</a>
-<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="ex">cpan</span> install Email::Sender::Simple</a>
-<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="ex">cpan</span> install Parallel::ForkManager</a>
-<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="ex">cpan</span> install MCE::Shared</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="co">## Activate the conda environment </span></a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="co">## (either base or rsat depending on the configuration</span></a>
+<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="co">## you chose above)</span></a>
+<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="ex">conda</span> activate</a>
+<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="ex">conda</span> activate rsat</a>
+<a class="sourceLine" id="cb6-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb6-7" data-line-number="7"><span class="ex">cpan</span> install Statistics::Distributions</a>
+<a class="sourceLine" id="cb6-8" data-line-number="8"><span class="ex">cpan</span> install Email::Sender::Simple</a>
+<a class="sourceLine" id="cb6-9" data-line-number="9"><span class="ex">cpan</span> install Parallel::ForkManager</a>
+<a class="sourceLine" id="cb6-10" data-line-number="10"><span class="ex">cpan</span> install MCE::Shared</a></code></pre></div>
 <hr />
 </div>
 </div>

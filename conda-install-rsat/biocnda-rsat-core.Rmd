@@ -134,10 +134,17 @@ We will soon package them for conda. In the meantime, it is easy to install them
 
 
 ```{bash eval=FALSE}
+## Activate the conda environment 
+## (either base or rsat depending on the configuration
+## you chose above)
+conda activate
+conda activate rsat
+
 cpan install Statistics::Distributions
 cpan install Email::Sender::Simple
 cpan install Parallel::ForkManager
 cpan install MCE::Shared
+
 ```
 
 
