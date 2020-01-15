@@ -135,8 +135,8 @@ We will soon package them for conda. In the meantime, it is easy to install them
 
 ```{bash eval=FALSE}
 ## Activate the conda environment 
-## (either base or rsat depending on the configuration
-## you chose above)
+## 
+## Choose either base or rsat depending on your configuration
 conda activate
 conda activate rsat
 
