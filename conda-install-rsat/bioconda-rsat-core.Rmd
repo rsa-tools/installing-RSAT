@@ -68,8 +68,9 @@ The conda package **rsat-core** is available on the [**anaconda**](https://anaco
 
 This tutorial assumes that the conda package manager is installed on your operating system. 
 
-If it is not the case, you can easily install  [miniconda3](https://docs.conda.io/en/latest/miniconda.html). Note that for this you do not need to have admin rights. 
+If it is not the case, you can easily install  [miniconda3](https://docs.conda.io/en/latest/miniconda.html). Note that for this it is not necessary to have admin rights. 
 
+For **Mac OS X** conda can now be installed with the standard Mac OS X package installer. 
 
 ****************************************************************
 # Conda environment
@@ -132,6 +133,7 @@ In the 2020.01.04 release, some Perl libraries are still missing from conda.
 
 We will soon package them for conda. In the meantime, it is easy to install them manually using `cpan` (especially if you created a conda environment for rsat, in which case you don't need admin rights to install Perl modules in the environment).
 
+First, if not done yet, you need to activate the conda environment where rsat-core has been installed. 
 
 ```{bash eval=FALSE}
 ## Activate the conda environment 
@@ -140,6 +142,11 @@ We will soon package them for conda. In the meantime, it is easy to install them
 conda activate
 conda activate rsat
 
+```
+
+We can now install the Perl modules with cpan. At the first usage, cpan might ask you which install mode you prefer between local::lib, sudo or manual. Simply type the enter key to choose the default (local::lib), in order to install the modules in the same environment as your rsat-core package. 
+
+```{bash eval=FALSE}
 cpan install Statistics::Distributions
 cpan install Email::Sender::Simple
 cpan install Parallel::ForkManager
