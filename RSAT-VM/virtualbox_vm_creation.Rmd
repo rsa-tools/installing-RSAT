@@ -69,11 +69,12 @@ Ubuntu Desktop: current RSAT-VM releases are based on Ubuntu 16.04, but the inst
 
 3. Parameters
 
-- Name and operating system
+- Name and operating system (replace YYYY-MM by the curent year and month)
 
-    - Name: rsat-vb-2018-12
+    - Name: rsat-vb-YYYY-MM
     - Type: Linux
     - Version: Ubuntu (64 bits)
+
 
 - Memory size:	2048 Mb (this can be modified afterwards). 
 
@@ -92,7 +93,7 @@ Ubuntu Desktop: current RSAT-VM releases are based on Ubuntu 16.04, but the inst
 
 - File location and size
 
-    - name of virtual hard drive file:    rsat-vb-2018-12_hdd
+    - name of virtual hard drive file:    rsat-vb-YYYY-MM_hdd
     - max size of virtual hard drive:	    18GB
 
         **Note:** the size has to be larger than your real needs, because Ubuntu will automatically create some big  partitions (/dev and /run/shm). Since we allow dynamical memory allocation, it is fine to set the max size to 18Gb, which will be grossly assigned as follows:
@@ -253,7 +254,7 @@ In the dialog box **Write the changes to disk?** click **Continue**.
 | Field | Value |
 |--------------------------------------|-------------------------------------------------------|
 | Your name |	RSAT admin |
-| Your computer's name | rsat-vb-2018-12 |
+| Your computer's name | rsat-vb-YYYY-MM |
 | Pick a username | rsat |
 | Password | tochng^[This password is obviously not safe, but it will be changed at the end of the installation] |
 | Log in automatically | I activate it because this will greatly facilitate the use of the Destkop version |
@@ -575,7 +576,7 @@ appliance.
 
 - In VirtualBox, open "File -> Export Appliance ...", and select the VM.
 
-    - Save as: *rsat-vb-2018-12.ova*
+    - Save as: *rsat-vb-YYYY-MM.ova*
     - Files of Type: *Open Virtualization Format 1*
     - Storage Settings
     - Format: OVF 1.0
@@ -587,13 +588,13 @@ appliance.
 
 | Parameter    |    Value                                        |
 |:-------------|:------------------------------------------------|
-|  Name  		  | rsat-vb-2018-12 |
+|  Name  		  | rsat-vb-YYYY-MM |
 |	Product		  | Regulatory Sequences Analysis Tools |
 |	Product-URL	| http://rsat.eu/ |
 |	Vendor		  | Jacques van Helden |
 |	Vendor URL	| http://jacques.van-helden.perso.luminy.univ-amu.fr/ |
-|	Version		  | 2018-12 |
-|	Description	| Regulatory Sequence Analysis Tools (RSAT, http://rsat.eu/), version 2018-12, installed on an Ubuntu 16.04 Virtual Machine. |
+|	Version		  | YYYY-MM |
+|	Description	| Regulatory Sequence Analysis Tools (RSAT, http://rsat.eu/), version YYYY-MM, installed on an Ubuntu 16.04 Virtual Machine. |
 |	License	    |	Free of use for academic users, non-commercial and non-military usage. |
 | | |
 
@@ -606,7 +607,7 @@ Prepare the VM + accompanying material on a USB key, to ensure distribution in t
 
 ```
 SOURCE_DIR=/no_backup/VirtualBox_VMs/appliances
-VERSION=2018-12
+VERSION=YYYY-MM
 
 ## Specification of the target location
 KEY_NB=02
@@ -624,7 +625,7 @@ This can be useful for two purposes.
 ```
 SPLIT_SIZE=3999m
 mkdir -p ${TARGET_DIR}/appliances
-time split -b ${SPLIT_SIZE} ${SOURCE_DIR}/rsat-vb-2018-12_${VERSION}.ova ${TARGET_DIR}/appliances/rsat-vb-2018-12_${VERSION}.ova.split${SPLIT_SIZE}_
+time split -b ${SPLIT_SIZE} ${SOURCE_DIR}/rsat-vb-YYYY-MM_${VERSION}.ova ${TARGET_DIR}/appliances/rsat-vb-YYYY-MM_${VERSION}.ova.split${SPLIT_SIZE}_
 ```
 
 ****************************************************************
