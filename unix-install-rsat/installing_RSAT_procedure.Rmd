@@ -84,7 +84,7 @@ where `XX-XX-XX` is the latest release date and put it in your chosen directory.
 
 ```{bash}
 export RELEASE=20XX.XX.XX
-## e.g. export RELEASE=2020.01.04
+## e.g. export RELEASE=2020.02.02
 
 ## By default we install the package a folder named packages. 
 ## This should be adapted according to your local setup. 
@@ -95,7 +95,7 @@ mkdir -p ${INSTALL_ROOT}
 export DOWNLOAD_BASE=http://pedagogix-tagc.univ-mrs.fr/download_rsat
 export RSAT_TGZ=rsat_${RELEASE}.tar.gz
 export DOWNLOAD_URL=${DOWNLOAD_BASE}/${RSAT_TGZ}
-echo "Downloading RSAT from URL\t${DOWNLOAD_URL}"
+echo "Downloading RSAT from URL   ${DOWNLOAD_URL}"
 wget --no-clobber ${DOWNLOAD_URL}
 tar -C ${INSTALL_ROOT}/ -xpvzf ${RSAT_TGZ}
 cd ${INSTALL_ROOT}/rsat
@@ -113,14 +113,14 @@ Replace [your.server.IP] by the actual IP address of your server.
 
 ```{bash}
 ## Get your IP address
-ifconfig | grep 'inet '
+ip -c a | grep 'inet '
 export MY_IP=XXX.XXX.XXX.XXX
 ## e.g. export MY_IP=192.168.56.101
 ```
 
 Note: if you install RSAT on a personal PC (e.g. a laptop) and intend to use it only from this machine, you can configure it with the local network.
 
-```{r}
+```{bash}
 ## Configure RSAT to be used internally inly
 export MY_IP=127.0.0.1
 ```
