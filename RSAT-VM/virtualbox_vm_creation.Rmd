@@ -46,7 +46,7 @@ Ubuntu Desktop: current RSAT-VM releases are based on Ubuntu 16.04, but the inst
 
 ### Recommended Ubuntu release
 
-- **Ubuntu 18.04.1 (Bionic Beaver)** [ubuntu-18.04-desktop-amd64.iso](http://releases.ubuntu.com/releases/18.04/ubuntu-18.04.1-desktop-amd64.iso) ( Gb).
+- **Ubuntu 18.04.1 (Bionic Beaver)** [ubuntu-18.04-desktop-amd64.iso](http://releases.ubuntu.com/releases/18.04/ubuntu-18.04.3-desktop-amd64.iso) (1.9 Gb).
 
 
 ### Alternative Ubuntu release
@@ -83,8 +83,8 @@ Ubuntu Desktop: current RSAT-VM releases are based on Ubuntu 16.04, but the inst
 - Hard drive file type: *VMDK* (Virtual Machine Disk). 
 
     I chose this option because it ensures a wider compatibility with other OS and Virtual Machine management systems. 
-
-	   Another potential advantage of VMDK is that it enables to split virtual disks into files <=2Gb, which is convenient to store them on FAT partitions. However, for the distribution I avoid to activate this option because it is simpler to put a single dwnloable file on the server. 
+    
+    Another potential advantage of VMDK is that it enables to split virtual disks into files <=2Gb, which is convenient to store them on FAT partitions. However, for the distribution I avoid to activate this option because it is simpler to put a single dwnloable file on the server. 
 
 - Storage on physical hard drive
     - Select *Dynamically allocated*
@@ -390,23 +390,17 @@ For the desktop version of Ubuntu, it is convenient to enable copy-paste between
 ## Remote log in to the VM
 
 
-<!--
+
 So far the virtual machine does not support remote access.
 To add support for `ssh` access, we need to install the appropriate package. 
 
 - In the virtual machine, open a terminal and type the following command. 
 
 ```
-## Note: for Ubuntu 16.04.3 there is a need to do an apt-get update
-## because the ssh package coming with the distribution has unmet
-## dependencies. 
 sudo apt-get install --quiet --assume-yes ssh
 sudo apt-get install --quiet --assume-yes net-tools
+sudo apt-get install --quiet --assume-yes openssh-server
 ```
-
-The package `net-tools` includes the `ifconfig` command, which will be useful to get the IP addresses of your VM. 
-
--->
 
 - From the ***host*** machine, open a terminal and type the following command. 
 
@@ -416,7 +410,7 @@ ssh rsat@192.168.56.101
 
 **Notes**: 
 
-- The IP address above may be different on your computer, depending on the network settings of your VirtualBox and on the number of Virtual Machines currently running. If the address `192.168.56.101` does not work, you can obtain the IP address by typing `ifconfig` in a terminal on your virtual machine. 
+- The IP address above may be different on your computer, depending on the network settings of your VirtualBox and on the number of Virtual Machines currently running. If the address `192.168.56.101` does not work, you can obtain the IP address by typing `ip -c a` in a terminal on your virtual machine. 
 
 - I personnally find it convenient to establish an ssh connection to the VM, in order to perform the subsequent installation steps from a terminal on my own operating system, but the next installation steps can as well be performed from the terminal in the Virtual Machine's graphical environment. 
 
