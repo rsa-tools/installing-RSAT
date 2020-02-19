@@ -147,10 +147,21 @@ conda activate rsat
 We can now install the Perl modules with cpan. At the first usage, cpan might ask you which install mode you prefer between local::lib, sudo or manual. Simply type the enter key to choose the default (local::lib), in order to install the modules in the same environment as your rsat-core package. 
 
 ```{bash eval=FALSE}
+## Statistics::Distributions exists in conda but for some reason it is not working
 cpan install Statistics::Distributions
+
+## Email::Sender::Simple is required for the Web server + some particular scripts
 cpan install Email::Sender::Simple
+
+## Required for matrix-clustering
 cpan install Parallel::ForkManager
 cpan install MCE::Shared
+
+## For SOAP::WSDL Web services
+cpan install SOAP::WSDL	
+cpan install XML::Compile::SOAP11	
+cpan install XML::Compile::WSDL11	
+# cpan install XML::Compile::Transport::SOAPHTTP
 
 ```
 
