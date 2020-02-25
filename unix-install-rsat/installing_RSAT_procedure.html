@@ -576,7 +576,7 @@ chmod 755 /root # required for apache user to access the packages
 <a class="sourceLine" id="cb8-2-1-10" data-line-number="10"><span class="fu">Options</span> +ExecCGI +MultiViews +SymLinksIfOwnerMatch +Indexes</a>
 <a class="sourceLine" id="cb8-2-1-11" data-line-number="11"><span class="fu">AddHandler</span> wsgi-script .wsgi .</a>
 <a class="sourceLine" id="cb8-2-1-12" data-line-number="12"><span class="co">...</a>
-<a class="sourceLine" id="cb8-2-1-13" data-line-number="13"><span class="fu">&gt;/Directory&gt;</span></a>
+<a class="sourceLine" id="cb8-2-1-13" data-line-number="13"><span class="fu">&lt;/Directory&gt;</span></a>
 </code></pre></div>
 <p>The RSAT REST API is built using Flask framework. It requires some python modules. These modules should be installed for all users or at least for the Apache user. In Ubuntu, before each installation command, you can add <code>umask 022</code> to make the modules installed for all users</p>
 <div class="sourceCode" id="cb8-2-2"><pre class="sourceCode bash"><code class="sourceCode bash">
