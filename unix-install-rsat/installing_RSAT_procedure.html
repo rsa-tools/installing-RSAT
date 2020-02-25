@@ -563,6 +563,33 @@ chmod 755 /root # required for apache user to access the packages
 </div>
 <div id="rest-interface" class="section level2">
 <h2><span class="header-section-number">8.2</span> REST interface</h2>
+  <p>The RSAT REST API run with the wsgi module of Apache server. We need to install the wsgi module and activate it:</p>
+<div class="sourceCode" id="cb8-2-1"><pre class="sourceCode bash"><code class="sourceCode bash">
+<a class="sourceLine" id="cb8-2-1-1" data-line-number="1"><span class="co">## Install the wsgi module</span></a>
+<a class="sourceLine" id="cb8-2-1-2" data-line-number="2"><span class="fu">sudo apt-get install</span> libapache2-mod-wsgi</a>
+<a class="sourceLine" id="cb8-2-1-3" data-line-number="3"><span class="co">## Activate the wsgi module</span></a>
+<a class="sourceLine" id="cb8-2-1-4" data-line-number="4"><span class="fu">sudo a2enmod</span></a>
+<a class="sourceLine" id="cb8-2-1-5" data-line-number="5"><span class="co">## Activate the handler for wsgi script in rsat server</span></a>
+<a class="sourceLine" id="cb8-2-1-6" data-line-number="7"><span class="co">## In the apache configuration file for rsat (for linux: <code>/etc/apache2/sites-enabled/rsat.conf</code>): </span></a>
+<a class="sourceLine" id="cb8-2-1-7" data-line-number="8"><span class="fu"><Directory</span> "/workspace/rsat/public_html"></a>
+<a class="sourceLine" id="cb8-2-1-8" data-line-number="9"><span class="co">...</a>
+<a class="sourceLine" id="cb8-2-1-10" data-line-number="10"><span class="fu">Options</span> +ExecCGI +MultiViews +SymLinksIfOwnerMatch +Indexes</a>
+<a class="sourceLine" id="cb8-2-1-11" data-line-number="11"><span class="fu">AddHandler</span> wsgi-script .wsgi .</a>
+<a class="sourceLine" id="cb8-2-1-12" data-line-number="12"><span class="co">...</a>
+<a class="sourceLine" id="cb8-2-1-13" data-line-number="13"><span class="fu"><Directory></span></a>
+</code></pre></div>
+<p>The RSAT REST API is built using Flask framework. It requires some python modules. These modules should be installed for all users or at least for the Apache user. In Ubuntu, before each installation command, you can add <code>umask 022</code> to make the modules installed for all users</p>
+<div class="sourceCode" id="cb8-2-2"><pre class="sourceCode bash"><code class="sourceCode bash">
+<a class="sourceLine" id="cb8-2-2-1" data-line-number="1"><span class="co">## Install Flask and Flask-restplus</span></a>
+<a class="sourceLine" id="cb8-2-2-2" data-line-number="2"><span class="fu">umask</span> 022; <span class="fu">sudo pip install</span> flask</a>
+<a class="sourceLine" id="cb8-2-2-3" data-line-number="3"><span class="fu">umask</span> 022; <span class="fu">sudo pip install</span> flask-restplus</a>
+<a class="sourceLine" id="cb8-2-2-4" data-line-number="4"><span class="co">## Install other dependencies</span></a>
+<a class="sourceLine" id="cb8-2-2-5" data-line-number="5"><span class="fu">umask</span> 022; <span class="fu">sudo pip install</span> werkzeug; \</a>
+<a class="sourceLine" id="cb8-2-2-6" data-line-number="6"><span class="fu">sudo pip install</span> jinja2; \</a>
+<a class="sourceLine" id="cb8-2-2-7" data-line-number="7"><span class="fu">sudo pip install</span> click; \</a>
+<a class="sourceLine" id="cb8-2-2-8" data-line-number="8"><span class="fu">sudo pip install</span> itsdangerous; \</a>
+<a class="sourceLine" id="cb8-2-2-9" data-line-number="9"><span class="fu">sudo pip install</span> requests; \</a>
+</code></pre></div>
 <!-- **************************************************************** -->
 <!-- # Supplementary information -->
 <!-- ## Files -->
