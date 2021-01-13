@@ -84,20 +84,24 @@ where `XX-XX-XX` is the latest release date and put it in your chosen directory.
 
 ```{bash}
 export RELEASE=20XX.XX.XX
-## e.g. export RELEASE=2020.02.02
+## e.g. export RELEASE=2021.01.13
 
 ## By default we install the package a folder named packages. 
 ## This should be adapted according to your local setup. 
 export INSTALL_ROOT=~/packages
 mkdir -p ${INSTALL_ROOT}
 
-## Download the archive from the RSAT distribution site
+## Download the archives from the RSAT distribution site
 export DOWNLOAD_BASE=http://pedagogix-tagc.univ-mrs.fr/download_rsat
-export RSAT_TGZ=rsat_${RELEASE}.tar.gz
-export DOWNLOAD_URL=${DOWNLOAD_BASE}/${RSAT_TGZ}
-echo "Downloading RSAT from URL   ${DOWNLOAD_URL}"
-wget --no-clobber ${DOWNLOAD_URL}
-tar -C ${INSTALL_ROOT}/ -xpvzf ${RSAT_TGZ}
+
+for PKG in core web motifdb
+do
+  ARCHIVE=rsat-${PKG}_${RELEASE}.tar.gz
+  DOWNLOAD_URL=${DOWNLOAD_BASE}/${ARCHIVE}
+  echo "Downloading rsat-${PKG} from URL   ${DOWNLOAD_URL}"
+  wget --no-clobber ${DOWNLOAD_URL}
+  tar -C ${INSTALL_ROOT}/ -xpvzf ${ARCHIVE}
+done
 cd ${INSTALL_ROOT}/rsat
 ```
 
