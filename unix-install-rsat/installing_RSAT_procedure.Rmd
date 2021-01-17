@@ -60,6 +60,37 @@ knitr::opts_chunk$set(
 ****************************************************************
 # Downloading RSAT
 
+## Cloning github repositories
+
+
+
+```{bash git_clone, eval=FALSE}
+
+## Choose a directory to install RSAT
+export INSTALL_ROOT=~/packages
+mkdir -p ${INSTALL_ROOT}/
+
+
+## Make a clone of the different RSAT packages
+cd  ${INSTALL_ROOT}/
+git clone https://github.com/rsa-tools/rsat-code.git
+git clone https://github.com/rsa-tools/demo_files.git
+git clone https://github.com/rsa-tools/motif_databases.git
+git clone https://github.com/rsa-tools/sample_outputs.git
+
+## Create soft links to the data repositories
+mv rsat-code rsat
+cd rsat/public_html
+ln -s ../../demo_files
+ln -s ../../sample_outputs
+ln -s ../../motif_databases
+
+
+```
+
+
+## Downloading a tarball archive
+
 1. Go to the RSAT portal (**<http://rsat.eu/>**)
 2. Select any server. 
 3. In the left-sided menu,  click on the **Download** link. 
@@ -71,8 +102,6 @@ You now have access to the download page containing the links to
 - the latest stable release named `rsat_20XX-XX-XX.tar.gz` (XX-XX-XX must be replaced by the release date).
   
 - the previous release archives available in the folder `previous_versions`.
-	 
-## Downloading the latest RSAT release via the Web installer  
 
 5. Download the tar archive named  
 
@@ -121,7 +150,7 @@ export MY_IP=XXX.XXX.XXX.XXX
 Note: if you install RSAT on a personal PC (e.g. a laptop) and intend to use it only from this machine, you can configure it with the local network.
 
 ```{bash}
-## Configure RSAT to be used internally inly
+## Configure RSAT to be used internally only
 export MY_IP=127.0.0.1
 ```
 
@@ -142,6 +171,7 @@ export RSAT_SITE=my_rsat
 ## Check that the IP site of your machine has been specified
 export RSAT=${INSTALL_ROOT}/rsat
 echo "RSAT ${RSAT}"
+cd ${RSAT}
 
 ## Check that the IP site of your machine has been specified
 echo "MY_IP ${MY_IP}"
@@ -210,8 +240,15 @@ You can now refine the configuration by choosing custom parameter to your RSAT i
 Before running the installation, it might be worth updating the Linux distribution (`apt-get update`) in order to get the latest versions of the basic packages. 
 
 ```{bash}
+## Note: you must be in the $INSTALL_ROOT directory before becoming admin
+cd ${INSTALL_ROOT}
+
 ## This requires admin privileges
 sudo bash
+
+## Go to the RSAT directory
+export INSTALL_ROOT=`pwd`
+cd ${INSTALL_ROOT}/rsat
 
 ## Check who you are  (should be root)
 whoami
@@ -221,12 +258,9 @@ export MY_OS=macosx
 export MY_OS=ubuntu
 
 
-## Go to the RSAT directory
-export INSTALL_ROOT=~/packages
-cd ${INSTALL_ROOT}/rsat
 
 ## Read config and run bash installation scripts
-source RSAT_config.bashrc && \ 
+source RSAT_config.bashrc && \
 bash installer/01_${MY_OS}_packages.bash && \
 bash installer/02_python_packages.bash  && \
 bash installer/03_install_rsat.bash && \
@@ -255,6 +289,7 @@ The script `makefile/install_tests.mk` runs a series of tests for different comp
 
 ```{bash}
 ## Load the RSAT configuration
+cd ${INSTALL_ROOT}/rsat
 source RSAT_config.bashrc
 
 cd $RSAT
