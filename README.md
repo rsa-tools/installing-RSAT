@@ -1,5 +1,7 @@
 # Installing RSAT
 
+View website : https://rsa-tools.github.io/installing-RSAT/
+
 This repository will contain installation guides for the **Regulatory Sequence Analysis Tools** (**RSAT**; **<http://rsat.eu>**) software suite. 
 
 The suite can be installed in various ways, depending on your computing environment and on your needs. 

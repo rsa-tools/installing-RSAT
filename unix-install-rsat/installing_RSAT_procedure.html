@@ -11,7 +11,7 @@
 
 <meta name="author" content="Jacques van Helden" />
 
-<meta name="date" content="2021-01-17" />
+<meta name="date" content="2021-01-18" />
 
 <title>Installing RSAT on a Unix operating system</title>
 
@@ -340,7 +340,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Installing RSAT on a Unix operating system</h1>
 <h4 class="author">Jacques van Helden</h4>
-<h4 class="date">2021-01-17</h4>
+<h4 class="date">2021-01-18</h4>
 
 </div>
 
@@ -408,21 +408,25 @@ div.tocify {
 <li>Uncompress the archive. This will create a directory named <code>rsat</code> where we will continue the install procedure.</li>
 </ol>
 <div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="bu">export</span> <span class="va">RELEASE=</span>20XX.XX.XX</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="co">## e.g. export RELEASE=2020.02.02</span></a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="co">## e.g. export RELEASE=2021.01.13</span></a>
 <a class="sourceLine" id="cb2-3" data-line-number="3"></a>
 <a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co">## By default we install the package a folder named packages. </span></a>
 <a class="sourceLine" id="cb2-5" data-line-number="5"><span class="co">## This should be adapted according to your local setup. </span></a>
 <a class="sourceLine" id="cb2-6" data-line-number="6"><span class="bu">export</span> <span class="va">INSTALL_ROOT=</span>~/packages</a>
 <a class="sourceLine" id="cb2-7" data-line-number="7"><span class="fu">mkdir</span> -p <span class="va">${INSTALL_ROOT}</span></a>
 <a class="sourceLine" id="cb2-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb2-9" data-line-number="9"><span class="co">## Download the archive from the RSAT distribution site</span></a>
+<a class="sourceLine" id="cb2-9" data-line-number="9"><span class="co">## Download the archives from the RSAT distribution site</span></a>
 <a class="sourceLine" id="cb2-10" data-line-number="10"><span class="bu">export</span> <span class="va">DOWNLOAD_BASE=</span>http://pedagogix-tagc.univ-mrs.fr/download_rsat</a>
-<a class="sourceLine" id="cb2-11" data-line-number="11"><span class="bu">export</span> <span class="va">RSAT_TGZ=</span>rsat_<span class="va">${RELEASE}</span>.tar.gz</a>
-<a class="sourceLine" id="cb2-12" data-line-number="12"><span class="bu">export</span> <span class="va">DOWNLOAD_URL=${DOWNLOAD_BASE}</span>/<span class="va">${RSAT_TGZ}</span></a>
-<a class="sourceLine" id="cb2-13" data-line-number="13"><span class="bu">echo</span> <span class="st">&quot;Downloading RSAT from URL   </span><span class="va">${DOWNLOAD_URL}</span><span class="st">&quot;</span></a>
-<a class="sourceLine" id="cb2-14" data-line-number="14"><span class="fu">wget</span> --no-clobber <span class="va">${DOWNLOAD_URL}</span></a>
-<a class="sourceLine" id="cb2-15" data-line-number="15"><span class="fu">tar</span> -C <span class="va">${INSTALL_ROOT}</span>/ -xpvzf <span class="va">${RSAT_TGZ}</span></a>
-<a class="sourceLine" id="cb2-16" data-line-number="16"><span class="bu">cd</span> <span class="va">${INSTALL_ROOT}</span>/rsat</a></code></pre></div>
+<a class="sourceLine" id="cb2-11" data-line-number="11"></a>
+<a class="sourceLine" id="cb2-12" data-line-number="12"><span class="kw">for</span> <span class="ex">PKG</span> in core web motifdb</a>
+<a class="sourceLine" id="cb2-13" data-line-number="13"><span class="kw">do</span></a>
+<a class="sourceLine" id="cb2-14" data-line-number="14">  <span class="va">ARCHIVE=</span>rsat-<span class="va">${PKG}</span>_<span class="va">${RELEASE}</span>.tar.gz</a>
+<a class="sourceLine" id="cb2-15" data-line-number="15">  <span class="va">DOWNLOAD_URL=${DOWNLOAD_BASE}</span>/<span class="va">${ARCHIVE}</span></a>
+<a class="sourceLine" id="cb2-16" data-line-number="16">  <span class="bu">echo</span> <span class="st">&quot;Downloading rsat-</span><span class="va">${PKG}</span><span class="st"> from URL   </span><span class="va">${DOWNLOAD_URL}</span><span class="st">&quot;</span></a>
+<a class="sourceLine" id="cb2-17" data-line-number="17">  <span class="fu">wget</span> --no-clobber <span class="va">${DOWNLOAD_URL}</span></a>
+<a class="sourceLine" id="cb2-18" data-line-number="18">  <span class="fu">tar</span> -C <span class="va">${INSTALL_ROOT}</span>/ -xpvzf <span class="va">${ARCHIVE}</span></a>
+<a class="sourceLine" id="cb2-19" data-line-number="19"><span class="kw">done</span></a>
+<a class="sourceLine" id="cb2-20" data-line-number="20"><span class="bu">cd</span> <span class="va">${INSTALL_ROOT}</span>/rsat</a></code></pre></div>
 <hr />
 </div>
 </div>
@@ -555,13 +559,14 @@ chmod 755 /root # required for apache user to access the packages
 <h1><span class="header-section-number">6</span> Testing the command lines</h1>
 <p>The script <code>makefile/install_tests.mk</code> runs a series of tests for different components of the <em>RSAT</em> suite. Each test result is stored in a separate file in the test directory (<code>./install_tests</code> by default). Output file names are printed out after each test.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="co">## Load the RSAT configuration</span></a>
-<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="bu">source</span> RSAT_config.bashrc</a>
-<a class="sourceLine" id="cb10-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb10-4" data-line-number="4"><span class="bu">cd</span> <span class="va">$RSAT</span></a>
-<a class="sourceLine" id="cb10-5" data-line-number="5"><span class="fu">make</span> -f makefiles/install_tests.mk all</a>
-<a class="sourceLine" id="cb10-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb10-7" data-line-number="7"><span class="co">## Check the results</span></a>
-<a class="sourceLine" id="cb10-8" data-line-number="8"><span class="fu">ls</span> -ltr install_tests</a></code></pre></div>
+<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="bu">cd</span> <span class="va">${INSTALL_ROOT}</span>/rsat</a>
+<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="bu">source</span> RSAT_config.bashrc</a>
+<a class="sourceLine" id="cb10-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb10-5" data-line-number="5"><span class="bu">cd</span> <span class="va">$RSAT</span></a>
+<a class="sourceLine" id="cb10-6" data-line-number="6"><span class="fu">make</span> -f makefiles/install_tests.mk all</a>
+<a class="sourceLine" id="cb10-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb10-8" data-line-number="8"><span class="co">## Check the results</span></a>
+<a class="sourceLine" id="cb10-9" data-line-number="9"><span class="fu">ls</span> -ltr install_tests</a></code></pre></div>
 <hr />
 </div>
 <div id="testing-the-web-server" class="section level1">
