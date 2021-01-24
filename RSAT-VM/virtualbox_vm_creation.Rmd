@@ -46,15 +46,22 @@ Ubuntu Desktop: current RSAT-VM releases are based on Ubuntu 16.04, but the inst
 
 ### Recommended Ubuntu release
 
-- **Ubuntu 18.04.1 (Bionic Beaver)** [ubuntu-18.04-desktop-amd64.iso](http://releases.ubuntu.com/releases/18.04/ubuntu-18.04.3-desktop-amd64.iso) (1.9 Gb).
+Ubuntu releases can be found here : <http://releases.ubuntu.com/releases/>
+
+The latest release tested was this one
+
+- **Ubuntu 20.04.1 LTS (Focal Fossa)**
+
+RSAT has also been installed on VirtualBpx VMs with following releases
 
 
-### Alternative Ubuntu release
+- **Ubuntu 18.04.1 (Bionic Beaver)**
 
-- **Ubuntu 16.04.4 LTS (Xenial Xerus):** [ubuntu-16.04.4-desktop-amd64.iso](http://releases.ubuntu.com/releases/16.04/ubuntu-16.04.4-desktop-amd64.iso) (1.4Gb).
+- **Ubuntu 16.04.4 LTS (Xenial Xerus):**
 
-- **Ubuntu 14.04.5 LTS (Trusty Tahr)** [ubuntu-14.04.5-desktop-amd64.iso](http://releases.ubuntu.com/releases/14.04/ubuntu-14.04.5-desktop-amd64.iso) (1.0Gb).
+- **Ubuntu 14.04.5 LTS (Trusty Tahr)**
 
+- **Ubuntu 12.04.5 LTS (Precise Pangolin) ›**
 
 
 
@@ -65,7 +72,7 @@ Ubuntu Desktop: current RSAT-VM releases are based on Ubuntu 16.04, but the inst
 
 1. Open VirtualBox
 
-2. Click on the **New** button. 
+2. In the **Machine** menu, select the  **New** function. 
 
 3. Parameters
 
@@ -214,6 +221,14 @@ The desktop version of Ubuntu presents the advantage of letting users work direc
 
 ![Install Ubuntu](images/virtualbox_ubuntu_16.04.1_install/ub16.04.1_snapshot01.png){width="400"}
 
+- **Keyboard layout**: make your choice^[I have a *French - French Macintosh*, so I use it for installation, but I will later add an English keybord for the distribution.]
+
+
+
+**NOTE CLAVIER FRANÇAIS**: for the French Macintosh keyboard, I spent a lot of time to find the solution to use the 3-component keys
+(e.g. alt-shit-L for the pipe character |). The simplest solution: use the **alt key on the RIGHT side of the space bar**.
+
+
 - Dialog box **Preparing to install Ubuntu**. 
 
     - Make sure the option *Download updates while installing Ubuntu* is unchecked (we will update the packages after installation). 
@@ -242,12 +257,6 @@ In the dialog box **Write the changes to disk?** click **Continue**.
 
 ![Where are you?](images/virtualbox_ubuntu_16.04.1_install/ub16.04.1_snapshot06.png){width="400"}
 
-- **Keyboard layout**: make your choice^[I have a *French - French Macintosh*, so I use it for installation, but I will later add an English keybord for the distribution.]
-
-
-
-**NOTE CLAVIER FRANÇAIS**: for the French Macintosh keyboard, I spent a lot of time to find the solution to use the 3-component keys
-(e.g. alt-shit-L for the pipe character |). The simplest solution: use the **alt key on the RIGHT side of the space bar**.
 
 - **Who are you?**
 
@@ -269,7 +278,7 @@ Ubuntu now installs the system, this should take a few minutes^[**Note** if you 
 
 - After installation, Ubuntu  displays a message *"Installation is complete. You need to restart ..."*. Click **Restart now**. 
 
-- When rebooting, Ubuntu warns you that you need to remove the installation media and close the tray. In our case, the installation media is the iso disk. To remove it, go in the menu **Devices** -> **Optical Drives** -> **Remove Disk from Optical Drive**. If this does not work, close the window with the virtual machine, and restart this virtual machine from VirtualBox. 
+- When rebooting, Ubuntu warns you that you need to remove the installation medium and close the tray. In our case, the installation media is the iso disk. To remove it, go in the menu **Devices** -> **Optical Drives** -> **Remove Disk from Optical Drive**. If this does not work, close the window with the virtual machine, and restart this virtual machine from VirtualBox. 
 
 - After reboot, you will automatically log in as *RSAT admin* user. 
 
@@ -397,8 +406,9 @@ To add support for `ssh` access, we need to install the appropriate package.
 - In the virtual machine, open a terminal and type the following command. 
 
 ```
-sudo apt-get install --quiet --assume-yes ssh
+## Install network and ssh tools
 sudo apt-get install --quiet --assume-yes net-tools
+sudo apt-get install --quiet --assume-yes ssh
 sudo apt-get install --quiet --assume-yes openssh-server
 ```
 
@@ -422,8 +432,8 @@ ssh rsat@192.168.56.101
 It is useful to install some VirtualBox accompanying software on your Ubuntu virtual machine. 
 
 ```
-sudo apt-get install virtualbox
-sudo apt-get install virtualbox-dkms
+sudo apt-get install --assume-yes --quiet virtualbox
+sudo apt-get install--assume-yes --quiet virtualbox-dkms
 ```
 
 ### List running VMs
