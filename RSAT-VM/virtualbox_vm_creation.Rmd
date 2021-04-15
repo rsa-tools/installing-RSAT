@@ -433,7 +433,7 @@ It is useful to install some VirtualBox accompanying software on your Ubuntu vir
 
 ```
 sudo apt-get install --assume-yes --quiet virtualbox
-sudo apt-get install--assume-yes --quiet virtualbox-dkms
+sudo apt-get install --assume-yes --quiet virtualbox-dkms
 ```
 
 ### List running VMs
