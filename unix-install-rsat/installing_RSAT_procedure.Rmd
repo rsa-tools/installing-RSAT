@@ -45,27 +45,53 @@ knitr::opts_chunk$set(
 ****************************************************************
 # Introduction
 
+This tutorial explains how to install the complete [Regulatory Sequence Analysis Tools (RSAT)](<http://rsat.eu/>) suite via GitHub or from a tarball archive in Linux or Mac OS X systems.
+This RSAT distribution contains: (i) the _RSAT command line tools_, (ii) the _web server_ and (iii) the _web services_.
+
+****************************************************************
+# Requirements {.tabset .tabset-fade}
+
+## Linux {.unlisted .unnumbered}
+<br>
+
+1. **Operating system**. If your Linux operating system (OS) is not Ubuntu some adaptation of the scripts used in the installation step will be necessary (e.g. system libraries).
+2. **Package manager**. The `apt-get` package manager should be already installed in the command line and it is recommended to update to the latest version.
+3. **Git and Git LFS**. If you are installing the GitHub repositories the `git` and `git-lfs` applications should be available in the command line. You can install `git` from [here](https://git-scm.com/downloads) and `git lfs` from [here](https://git-lfs.github.com/).
+
+<br>
+
+****************************************************************
+
+## Mac OS X {.unlisted .unnumbered}
+<br>
+
+1. **Operating system**. This RSAT installation protocol is aimed at Mac OS X in Mojave (v10.14) and Catalina (v10.15). RSAT installation in previous Mac OS X versions is feasible but a manual installation of packages (e.g. `brew` packages) is needed and it is beyond the scope of this tutorial.
+2. **Xcode**. The complete version of the _Xcode_ application should already be installed in your Mac OS X. You can download and install _Xcode_ from [here](https://developer.apple.com/download/). Please be aware that downloading _Xcode_ versions for Mac OS X requires an Apple Developer account.
+3. **Package manager**. The `brew` package manager should be already installed in the command line and it is recommended to update to the latest version. You can install `brew` from [here](https://brew.sh/). At the moment `brew` in RSAT is only supported for Mac OS X in Mojave (v10.14) and Catalina (v10.15). 
+4. **Git and Git LFS**. If you are installing the GitHub repositories the `git` and `git-lfs` applications should be available in the command line. You can install `git` from [here](https://git-scm.com/downloads) and `git lfs` from [here](https://git-lfs.github.com/).
+
+<br>
+
 
 ****************************************************************
 # Overview of the installation steps
 
-1. Download RSAT code (either from github or as a tarball).
-2. Configure your local installation.
-3. If your OS is Ubuntu, run the installation bash scripts. If not some adaptation of these scripts will be necessary (e.g. system libraries).
-4. Test the command lines
-5. Test the Web server
-6. Test the Web services (SOAP/WSDL and REST)
+1. Download an RSAT distribution archive.
+2. Configure your RSAT installation.
+3. Install your RSAT instance. 
+4. Test your RSAT installation: the (i) _RSAT command line tools_, (ii) the _web server_ and (iii) the _web services_ (SOAP/WSDL and REST).
+
 
 
 ****************************************************************
-# Downloading RSAT
+# Downloading RSAT {.tabset .tabset-fade}
+You can clone the current RSAT development version from GitHub or download the latest RSAT stable release as a tarball from any of the RSAT servers. 
 
-## Cloning github repositories
-
-
+## ![github_logo](images/GitHub-Mark-32px.png){width=20px}  &nbsp; Cloning GitHub repositories {.unlisted .unnumbered}
+<br>
+The RSAT development version in GitHub is composed of four different repositories: (i) [rsat-code](https://github.com/rsa-tools/rsat-code), (ii) [demo_files](https://github.com/rsa-tools/demo_files), (iii) [motif_databases](https://github.com/rsa-tools/motif_databases) and (iv) [sample_outputs](https://github.com/rsa-tools/sample_outputs). All of these need to be cloned and installed for RSAT complete function. To clone these repositories, the [git](https://git-scm.com/downloads) and [git lfs](https://git-lfs.github.com/) applications should be available in the command line for both Linux and Mac OS X systems. 
 
 ```{bash git_clone, eval=FALSE}
-
 ## Choose a directory to install RSAT
 export INSTALL_ROOT=~/packages
 mkdir -p ${INSTALL_ROOT}/
@@ -84,35 +110,30 @@ cd rsat/public_html
 ln -s ../../demo_files
 ln -s ../../sample_outputs
 ln -s ../../motif_databases
-
-
 ```
 
+****************************************************************
 
-## Downloading a tarball archive
+## ![tar_logo](images/box-seam.svg){width=20px}  &nbsp; Dowloading a tarball archive {.unlisted .unnumbered}
+<br>
 
-1. Go to the RSAT portal (**<http://rsat.eu/>**)
+1. Go to the [RSAT portal](<http://rsat.eu/>)
 2. Select any server. 
-3. In the left-sided menu,  click on the **Download** link. 
+3. In the left-sided menu and the **Help&Contact** section, click on the **Download** link. 
 4. Fill in your name and coordinates and access to the download site.
 
+   You now have access to the download page containing the links to:
+   - the latest stable release named `rsat_20XX-XX-XX.tar.gz` (XX-XX-XX must be replaced by the release date).
+   - the previous release archives available in the folder `previous_versions`.
 
-You now have access to the download page containing the links to  
 
-- the latest stable release named `rsat_20XX-XX-XX.tar.gz` (XX-XX-XX must be replaced by the release date).
-  
-- the previous release archives available in the folder `previous_versions`.
-
-5. Download the tar archive named  
-
-`rsat_20XX-XX-XX.tar.gz`  
-
-where `XX-XX-XX` is the latest release date and put it in your chosen directory.  
+5. Download the tar archive named  `rsat_20XX-XX-XX.tar.gz` where `XX-XX-XX` is the latest release date and put it in your chosen directory.  
 
 6. Uncompress the archive. This will create a directory named `rsat` where we will continue the install procedure.
 
 ```{bash}
-export RELEASE=20XX.XX.XX
+## Set the RSAT release version (same as from the tarball)
+export RELEASE=20XX.XX.XX 
 ## e.g. export RELEASE=2021.01.13
 
 ## By default we install the package a folder named packages. 
@@ -134,54 +155,69 @@ done
 cd ${INSTALL_ROOT}/rsat
 ```
 
+
+
+
 ****************************************************************
-# Configuring your local RSAT instance
+# Configuring RSAT {.tabset .tabset-fade}
 
-We will start by auto-configuring RSAT in order to deine suitable basic parameters. 
 
-## Getting the IP address of your machine
+## Linux  {.unlisted .unnumbered .tabset .tabset-fade}
 
-Replace [your.server.IP] by the actual IP address of your server. 
-(e.g.: for Virtualbox Virtual Machines, we set the IP to 192.168.56.101). 
+
+### Semi-automatic configuration {.unlisted .unnumbered}
+
+<br>
+A semi-automatic configuration of the RSAT installation can be done by providing some minimal parameters such as: (i) an IP address for the web server and services, (ii) a site name for the RSAT instance and (iii) the RSAT main directory. We will customize the first two parameters below, set the RSAT main directory and then run the configuration script.
+
+<br>
+
+##### 5.1 Setting the IP address for your web server {.unlisted .unnumbered .tabset .tabset-fade}
+
+
+######  ![laptop_logo](images/laptop.svg){width=18px} &nbsp; Personal computer {.unlisted .unnumbered}
+If you install RSAT on a personal computer (e.g. a laptop) and intend to use it only for this machine, you can configure it with the local network's IP.
+
+```{bash}
+## Configure RSAT to be used internally only
+export MY_IP="127.0.0.1"
+## Check that the IP site of your machine has been specified
+echo "MY_IP ${MY_IP}"
+```
+
+###### ![server_logo](images/server.svg){width=18px} &nbsp; Server {.unlisted .unnumbered}
+If you install RSAT on a server or if you intend to provide service to external users, please replace `XXX.XXX.XXX.XXX` below by the actual IP address of your server (e.g. for Virtualbox Virtual Machines, we set the IP to 192.168.56.101). The `ip` util should be already available in the command line.
 
 ```{bash}
 ## Get your IP address
 ip -c a | grep 'inet '
-export MY_IP=XXX.XXX.XXX.XXX
-## e.g. export MY_IP=192.168.56.101
+## Configure RSAT to be used for external service
+export MY_IP="XXX.XXX.XXX.XXX" ## e.g. export MY_IP="192.168.56.101"
+## Check that the IP site of your machine has been specified
+echo "MY_IP ${MY_IP}"
 ```
 
-Note: if you install RSAT on a personal PC (e.g. a laptop) and intend to use it only from this machine, you can configure it with the local network.
-
-```{bash}
-## Configure RSAT to be used internally only
-export MY_IP=127.0.0.1
-```
-
-## Choose a site name for your RSAT instance
+##### 5.2 Choose a site name for your RSAT instance {.unlisted .unnumbered}
 
 You can choose an arbitrary name for your RSAT instance. 
 For this tutorial, we will call it `my_rsat`, but you are welcome to use another site name.
 
 ```{bash}
+# Choose your RSAT site name
 export RSAT_SITE=my_rsat
+## Check that you have specified a site name
+echo "RSAT_SITE ${RSAT_SITE}"
 ```
 
-
-## Automatic configuration of RSAT parameters
+##### 5.3 Configuration of RSAT parameters {.unlisted .unnumbered}
 
 ```{bash}
-
-## Check that the IP site of your machine has been specified
+## Set the main RSAT directory path 
 export RSAT=${INSTALL_ROOT}/rsat
 echo "RSAT ${RSAT}"
+
+## Go to the main rsat directory
 cd ${RSAT}
-
-## Check that the IP site of your machine has been specified
-echo "MY_IP ${MY_IP}"
-
-## Check that you defined a site name for your RSAT instance
-echo "RSAT_SITE ${RSAT_SITE}"
 
 ## Semi-auto configuration for VirtualBox VM
 ## (adapt IP address if required)
@@ -190,6 +226,7 @@ perl perl-scripts/configure_rsat.pl -auto  \
   rsat_site=${RSAT_SITE} \
   rsat_www=http://${MY_IP}/rsat/ \
   rsat_ws=http://${MY_IP}/rsat/ \
+  package_manager="apt-get" \
   ucsc_tools=1 \
   ensembl_tools=1
 ```
@@ -200,6 +237,130 @@ You can add some additional options to the previous command, e.g. enter your mai
 rsat_server_admin=your.mail@your.mail.server
 variation_tools=1
 ```
+
+****************************************************************
+
+### Advanced configuration {.unlisted .unnumbered}
+
+<br>
+To configure all options, you can run the script `configure_rsat.pl` as below. An interactive prompt will open and you will be able to refine all the configuration options by choosing custom parameter for your RSAT instance (e.g. the email of the local admin, the organism group, etc. ).
+
+
+```{bash}
+## Set the main RSAT directory path 
+export RSAT=${INSTALL_ROOT}/rsat
+
+## Check that RSAT directory path has been specified
+echo "RSAT ${RSAT}"
+
+## Go to the main rsat directory
+cd ${RSAT}
+
+# Configure all the options
+perl perl-scripts/configure_rsat.pl
+```
+
+
+****************************************************************
+
+
+## Mac OS X {.unlisted .unnumbered .tabset .tabset-fade}
+
+###  Semi-automatic configuration {.unlisted .unnumbered}
+
+<br>
+A semi-automatic configuration of the RSAT installation can be done by providing some minimal parameters such as: (i) an IP address for the web server and services, (ii) a site name for the RSAT instance and (iii) the RSAT main directory. We will customize the first two parameters below, set the RSAT main directory and then run the configuration script.
+
+<br>
+
+##### 5.1 Setting the IP address for your web server {.unlisted .unnumbered .tabset .tabset-fade}
+
+###### Personal computer {.unlisted .unnumbered}
+If you install RSAT on a personal computer (e.g. a laptop) and intend to use it only for this machine, you can configure it with the local network's IP.
+
+```{bash}
+## Configure RSAT to be used internally only
+export MY_IP="127.0.0.1"
+## Check that the IP site of your machine has been specified
+echo "MY_IP ${MY_IP}"
+```
+
+###### ![server_logo](images/server.svg){width=18px} &nbsp; Server {.unlisted .unnumbered}
+If you install RSAT on a server or if you intend to provide service to external users, please replace `XXX.XXX.XXX.XXX` below by the actual IP address of your server (e.g. for Virtualbox Virtual Machines, we set the IP to 192.168.56.101). The `ifconfig` util should be already available in the command line.
+
+```{bash}
+## Get your IP address
+ifconfig | grep "inet " | grep -Fv 127.0.0.1 | awk '{print $2}'
+## Configure RSAT to be used for external service
+export MY_IP="XXX.XXX.XXX.XXX" ## e.g. export MY_IP="192.168.56.101"
+## Check that the IP site of your machine has been specified
+echo "MY_IP ${MY_IP}"
+```
+
+
+##### 5.2 Choose a site name for your RSAT instance {.unlisted .unnumbered}
+
+You can choose an arbitrary name for your RSAT instance. 
+For this tutorial, we will call it `my_rsat`, but you are welcome to use another site name.
+
+```{bash}
+# Choose your RSAT site name
+export RSAT_SITE=my_rsat
+## Check that you have specified a site name
+echo "RSAT_SITE ${RSAT_SITE}"
+```
+
+
+##### 5.3 Configuration of RSAT parameters {.unlisted .unnumbered}
+
+```{bash}
+## Set the main RSAT directory path 
+export RSAT=${INSTALL_ROOT}/rsat
+echo "RSAT ${RSAT}"
+
+## Go to the main rsat directory
+cd ${RSAT}
+
+## Semi-auto configuration for VirtualBox VM
+## (adapt IP address if required)
+perl perl-scripts/configure_rsat.pl -auto  \
+  rsat=${RSAT} \
+  rsat_site=${RSAT_SITE} \
+  rsat_www=http://${MY_IP}/rsat/ \
+  rsat_ws=http://${MY_IP}/rsat/ \
+  package_manager="brew" \
+  ucsc_tools=1 \
+  ensembl_tools=1
+```
+
+You can add some additional options to the previous command, e.g. enter your mail address as server admin, activate some specific tools that are disabled by default. 
+
+```{bash}
+rsat_server_admin=your.mail@your.mail.server
+variation_tools=1
+```
+
+****************************************************************
+
+### Advanced configuration {.unlisted .unnumbered}
+
+<br>
+To configure all options, you can run the script `configure_rsat.pl` as below. An interactive prompt will open and you will be able to refine all the configuration options by choosing custom parameter for your RSAT instance (e.g. the email of the local admin, the organism group, etc. ).
+
+```{bash}
+## Set the main RSAT directory path 
+export RSAT=${INSTALL_ROOT}/rsat
+
+## Check that RSAT directory path has been specified
+echo "RSAT ${RSAT}"
+
+## Go to the main rsat directory
+cd ${RSAT}
+
+# Configure all the options
+perl perl-scripts/configure_rsat.pl
+```
+
 
 <!--
 
@@ -227,24 +388,18 @@ chmod 755 /root # required for apache user to access the packages
 ```
 -->
 
-## Advanced RSAT configuration
 
-In order to see all options, you can run the script `configure_rsat.pl` without the option `--auto`
-
-```{bash}
-perl perl-scripts/configure_rsat.pl
-```
-
-You can now refine the configuration by choosing custom parameter to your RSAT instance (for example the email of the local admin, the organism group, ...).
 
 
 ****************************************************************
-# Installing RSAT
+# Installing RSAT {.tabset .tabset-fade}
 
+## Linux {.unlisted .unnumbered}
 Before running the installation, it might be worth updating the Linux distribution (`apt-get update`) in order to get the latest versions of the basic packages. 
+If your Linux OS is not Ubuntu some adaptation of the scripts used in this step will be necessary (e.g. system libraries).
 
 ```{bash}
-## Note: you must be in the $INSTALL_ROOT directory before becoming admin
+## NOTE: you must now move to the $INSTALL_ROOT directory before becoming admin
 cd ${INSTALL_ROOT}
 
 ## This requires admin privileges
@@ -257,11 +412,8 @@ cd ${INSTALL_ROOT}/rsat
 ## Check who you are  (should be root)
 whoami
 
-## Define your operating system (currently supported: ubuntu, macosx) by running one (and only one) of the commands below. 
-export MY_OS=macosx
+## Define your operating system
 export MY_OS=ubuntu
-
-
 
 ## Read config and run bash installation scripts
 source RSAT_config.bashrc && \
@@ -275,19 +427,68 @@ bash installer/08_apache_config.bash && \
 bash installer/09_rsat_ws.bash && \
 bash installer/10_clean_unnecessary_files.bash
 
-## Restore rsat as owner of the $RSAT folder
-## NOTE: the following command should be adapted to the login and group of the user owing the rsat package.
-chown -R rsat.rsat $RSAT
+## NOTE: the following command should be adapted to your case.
+## Restore the *login* and *group* of the user owing the $RSAT folder.
+chown -R MyLogin:MyGroup $RSAT
 
 ## Exit sudo session
 exit
 
 ## Check who you are (should be back to normal user identity)
-whoami ## This should give 'rsat'
+whoami ## This should give *YourUserName*
+```
+****************************************************************
+
+## Mac OS X {.unlisted .unnumbered}
+
+```{bash}
+## Go to the main rsat directory
+cd ${RSAT}
+
+## Read config file and run bash installation scripts for 'brew' packages
+source RSAT_config.bashrc && \
+bash installer/01_macosx_packages.bash 
+
+## NOTE: you must now move to the $INSTALL_ROOT directory before becoming admin
+cd ${INSTALL_ROOT}
+
+## This requires admin privileges
+sudo bash
+
+## Go to the RSAT directory
+export INSTALL_ROOT=`pwd`
+export RSAT=${INSTALL_ROOT}/rsat
+cd ${RSAT}
+
+## Check who you are  (should be 'root')
+whoami
+
+## Read config file and run the remaining bash installation scripts
+source RSAT_config.bashrc &&
+bash installer/02_python_packages.bash  && \
+bash installer/03_install_rsat.bash && \
+bash installer/04_perl_packages.bash  && \
+bash installer/06_install_organisms.bash && \
+bash installer/07_R-and-packages.bash  && \
+bash installer/08_apache_config.bash && \
+bash installer/09_rsat_ws.bash && \
+bash installer/10_clean_unnecessary_files.bash
+
+## NOTE: the following command should be adapted to your case.
+## Restore the *login* and *group* of the user owing the $RSAT folder.
+chown -R MyLogin:MyGroup $RSAT
+
+## Exit sudo session
+exit
+
+## Check who you are (should be back to normal user identity)
+whoami ## This should give *YourUserName*
 ```
 
 ****************************************************************
-# Testing the command lines
+# Testing your RSAT instance
+
+## Testing the command lines
 
 The script `makefile/install_tests.mk` runs a series of tests for different components of the *RSAT* suite. Each test result is stored in a separate file in the test directory (`./install_tests` by default). Output file names are printed out after each test. 
 
@@ -305,7 +506,7 @@ ls -ltr install_tests
 
 
 ****************************************************************
-# Testing the Web server
+## Testing the Web server
 
 The RSAT Web site can be found at your host IP address followed by rsat: http://[my.computer.ip.address]/rsat/
 
@@ -350,11 +551,11 @@ include_graphics("images/feature-map_web_result.png")
 ```
 
 
-# Testing the Web services
+## Testing the Web services
 
-## SOAP/WSDL interface
+### SOAP/WSDL interface
 
-## REST interface
+### REST interface
 
 <!-- **************************************************************** -->
 <!-- # Supplementary information -->

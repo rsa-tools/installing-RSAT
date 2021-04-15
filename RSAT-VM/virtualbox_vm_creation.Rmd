@@ -118,13 +118,13 @@ At this stage, the VM has been created and needs to be configured before install
 
 Before configuring the virtual machine, we need to tell VirtualBox how it will enable your local virtual machines to interact with their host (the operating system of the machine on which the VM is running).
 
-1. Open **VirtualBox Preferences**
+1. In the File menu
 
-2. Open the tab *Network* > *Host-only Networks*
+2. Click on *Host-only Networks manager*
 
      - Click on the "+" icon.
      - This creates a network vboxnet0. 
-     - Select this network, click on the screw driver icon (*edit host-only network*), and set the following options:
+     - Select this network, click on the toothed wheel icon (*edit host-only network*), and set the following options:
 
       - *Adapter* tab
           - IPv4 Address: 192.168.56.1
@@ -202,7 +202,7 @@ If you are connected via Wi-Fi (wireless), you may need to set up advanced optio
 
 ## Starting the server for installation
 
-- Once the settings have been specified, you can click on the **Start** icon (big fluo green array in VurtualBox).
+- Once the settings have been specified, you can click on the **Start** icon (big fluo green array in VirtualBox).
 
 - A dialog box may appear *"Please select a virtual optic disk ..."*. Click on the small folder icon and locate the disk image of Ubuntu that was downloaded in a previous step. Then click the **Start** button. 
 
