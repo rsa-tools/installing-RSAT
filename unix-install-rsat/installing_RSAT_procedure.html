@@ -326,7 +326,11 @@ div.tocify {
 <h1 class="title toc-ignore">Installing RSAT on a Unix operating
 system</h1>
 <h4 class="author">Jacques van Helden</h4>
+<<<<<<< HEAD
 <h4 class="date">2022-02-25</h4>
+=======
+<h4 class="date">2022-02-16</h4>
+>>>>>>> 488694c38b4d953167efc1c71049c2c17a8b9f78
 
 </div>
 
@@ -938,6 +942,90 @@ below.</p>
 <em>gene-info</em> to <em>feature-map</em>.
 </p>
 </div>
+<div id="troubleshooting-403-forbidden-error" class="section level3" number="7.2.1">
+<h3 number="7.2.1"><span class="header-section-number">7.2.1</span> Troubleshooting: 403 Forbidden Error</h3>
+<p>If a 403 Forbidden Error appears when you test your local RSAT website such as with <code>http://localhost/rsat/</code>, follow the next steps:</p>
+<ol style="list-style-type: decimal">
+<li>First, check that the paths to your RSAT instance are right in the RSAT web server configuration files at your <code>/etc/apache2/sites-enabled</code> directory.</li>
+</ol>
+<div class="sourceCode" id="cb18"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> /etc/apache2/sites-enabled</span></code></pre></div>
+<p>As an example, in config file <code>RSAT_config.conf</code>, the directory paths to your RSAT in the next chunk should look similar to this (as signaled by arrows):</p>
+<pre><code>################################################################
+## Define the alias.
+##
+## The RSAT server should be visible when adding this alias after the
+## Web server URL.
+Alias /rsat /home/user/packages/rsat/public_html/                 ## &lt;-----
+
+################################################################
+## Make sure R libs are accessible to the apache user.
+SetEnv R_LIBS_USER /home/user/packages/rsat/R-scripts/Rpackages/  ## &lt;-----
+
+################################################################
+## Configuration for Apache 2.4
+
+## Enable CGI scripts in the public_html directory
+&lt;Directory &quot;/home/user/packages/rsat/public_html/&quot;&gt;                ## &lt;-----
+    AllowOverride all
+    Options +ExecCGI -MultiViews +SymLinksIfOwnerMatch +Indexes
+    Require all granted
+&lt;/Directory&gt;
+
+&lt;Directory &quot;/home/user/packages/rsat/public_html/data/&quot;&gt;           ## &lt;-----
+    AllowOverride all
+    Options +Indexes +SymLinksIfOwnerMatch
+    Require all granted
+&lt;/Directory&gt;
+
+&lt;Directory &quot;/home/user/packages/rsat/public_html/motif_databases/&quot;&gt;  ## &lt;-----
+    AllowOverride all
+    Options +Indexes +SymLinksIfOwnerMatch
+    Require all granted
+&lt;/Directory&gt;
+
+&lt;Directory &quot;/home/user/packages/rsat/public_html/tutorials/&quot;&gt;     ## &lt;-----
+    AllowOverride all
+    Options +Indexes +SymLinksIfOwnerMatch
+    Require all granted
+&lt;/Directory&gt;</code></pre>
+<p>If that’s not the case, change them.</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co">## check the RSAT path you defined before</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="va">$RSAT</span> <span class="co"># copy the dir</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="co">## You need sudo permissions</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> su</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="fu">nano</span> RSAT_config.conf</span></code></pre></div>
+<p>Replace the paths (such as <code>/home/user/packages/rsat/</code> in the example) for the <code>dir/to/rsat</code> you copied earlier, making sure to keep the RSAT inner directories in the paths (such as <code>public_html/tutorials/</code>) unchanged.</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># CTRL + O to save</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="co"># CTRL + X to exit</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="fu">nano</span> RSAT_config_default_apache2.2.conf</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="co">## change paths</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="co"># CTRL + O to save</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="co"># CTRL + X to exit</span></span></code></pre></div>
+<ol start="2" style="list-style-type: decimal">
+<li><p>Repeat process for RSAT config files at <code>/etc/apache2/sites-available</code>.</p></li>
+<li><p>To make sure <code>.cgi</code> scripts work:</p></li>
+</ol>
+<div class="sourceCode" id="cb22"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ../</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="ex">a2enmod</span> cgid</span></code></pre></div>
+<ol start="4" style="list-style-type: decimal">
+<li>Restart apache:</li>
+</ol>
+<div class="sourceCode" id="cb23"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="ex">service</span> apache2 restart</span></code></pre></div>
+<ol start="5" style="list-style-type: decimal">
+<li>Give permission in your RSAT instance</li>
+</ol>
+<div class="sourceCode" id="cb24"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="va">$INSTALL_ROOT</span>/..</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> 777 <span class="at">-R</span> <span class="va">$INSTALL_ROOT</span></span></code></pre></div>
+<ol start="6" style="list-style-type: decimal">
+<li>Your RSAT web server should work now.</li>
+</ol>
+<hr />
+<p><br />
+</p>
+</div>
 </div>
 <div id="testing-the-web-services" class="section level2" number="7.3">
 <h2><span class="header-section-number">7.3</span> Testing the Web
@@ -946,8 +1034,101 @@ services</h2>
 <h3><span class="header-section-number">7.3.1</span> SOAP/WSDL
 interface</h3>
 </div>
+<<<<<<< HEAD
 <div id="rest-interface" class="section level3" number="7.3.2">
 <h3><span class="header-section-number">7.3.2</span> REST interface</h3>
+=======
+<div id="rest-interface" class="section level3 tabset" number="7.3.2">
+<h3 class="tabset" number="7.3.2"><span class="header-section-number">7.3.2</span> REST interface</h3>
+<p><a href="http://rsat-tagc.univ-mrs.fr/rest/">Click here for a web version of REST</a>.</p>
+<p>As an example, we are running <code>matrix-scan</code>’s <a href="http://embnet.ccg.unam.mx/rsat/matrix-scan_form.cgi">DEMO 1</a>:</p>
+<blockquote>
+<p>In this demonstration, we will analyse the promoter of Drosophila melanogaster even-skipped gene (eve). We will scan the 5500 bp sequence upstream the transcription start site with matrices representing the binding specificity of 12 transcription factors known to regulate eve. These matrices were built from binding sites annotated in the ORegAnno database by Jean-Valery Turatsinze.</p>
+</blockquote>
+<div id="script" class="section level4" number="7.3.2.1">
+<h4 number="7.3.2.1"><span class="header-section-number">7.3.2.1</span> <strong>Script</strong></h4>
+<p>This is an example for using REST-API scripts which are available in your RSAT instance in dir <code>$RSAT/public_html/web_services/REST-API</code>. Demo data for these scripts is available at <code>$RSAT/public_html/web_services/REST-API/restclientexamples/demo-data_4rest-api.py</code>.</p>
+<p><br />
+</p>
+<ol style="list-style-type: decimal">
+<li><p>Open file <code>$RSAT/public_html/web_services/REST-API/matrix-scan.py</code> in your favorite text editor.</p></li>
+<li><p>Copy the script in a separate file and name it (for example: <code>~/test_matrix-scan.py</code>).</p></li>
+<li><p>Edit the <code>data{}</code> dictionary to change the arguments with which to run <code>matrix-scan</code>. We are changing the arguments to run the <a href="http://embnet.ccg.unam.mx/rsat/matrix-scan_form.cgi">DEMO 1</a> mentioned above.</p></li>
+</ol>
+<p>Edit the following arguments as follows, read the comments for information regarding them:</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># fasta sequences where we are going to look for sites (Drosophila melanogaster 5kbps upstream from eve gene)</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>        <span class="co">&quot;i_string&quot;</span> : <span class="st">&quot;http://rsat-tagc.univ-mrs.fr/rsat/demo_files/Dmelanogaster_eve_up5000.fasta&quot;</span>, <span class="co">##Input string specifying the query. The value can be the query content, the URL of a file available on some Web server, the internal path of the result file returned by another tool of this RSAT server (piping for workflows).</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>        <span class="co">&quot;i_string_type&quot;</span> : <span class="st">&quot;url&quot;</span>, <span class="co">##Type of information provided by the input string. Supported values: url: URL (Web address) to the input file; piping: result file from other tool; text: input content</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>        <span class="co">&quot;seq_format&quot;</span> : <span class="st">&quot;fasta&quot;</span>, <span class="co">##String. Sequence format.</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>        <span class="co"># transcription factor binding motifs matrixes or PSSMs (12 motifs for TFs known to regulate eve)</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>        <span class="co">&quot;m_string&quot;</span> : <span class="st">&quot;http://rsat-tagc.univ-mrs.fr/rsat/demo_files/Dmelanogaster_segmentation_12matrices.tf&quot;</span>, <span class="co">##Input string specifying the query. The value can be the query content, the URL of a file available on some Web server, the internal path of the result file returned by another tool of this RSAT server (piping for workflows).</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>        <span class="co">&quot;m_string_type&quot;</span> : <span class="st">&quot;url&quot;</span>, <span class="co">##Type of information provided by the input string. Supported values: url: URL (Web address) to the input file; piping: result file from other tool; text: input content</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>        <span class="co">&quot;matrix_format&quot;</span> : <span class="st">&quot;transfac&quot;</span>, <span class="co">##String. Matrix suffix. This argument is mandatory.</span></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>        <span class="co">&quot;n&quot;</span> : <span class="st">&quot;score&quot;</span>, <span class="co">##String. Treatment of N characters. These characters are often used in DNA sequences to represent undefined or masked nucleotides. Supported: skip, score.</span></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>        <span class="co">&quot;pseudo&quot;</span> : <span class="dv">1</span>, <span class="co">##Number. Pseudo-count for the matrix (default 1).</span></span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>        <span class="co">&quot;markov_order&quot;</span> : <span class="dv">1</span>, <span class="co">##Integer. Markov order for background model. Only when bgfile is not specified.</span></span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>        <span class="co">&quot;bginput&quot;</span> : <span class="va">True</span>, <span class="co">##Boolean. Calculate background model from the input sequence set.</span></span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>        <span class="co">&quot;bg_pseudo&quot;</span> : <span class="fl">0.01</span>, <span class="co">##Number. Pseudo frequency for the background model. Value must be a real between 0 and 1</span></span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>        <span class="co">&quot;markov&quot;</span> : <span class="dv">1</span>, <span class="co">##Integer. Order of the markov chain for the background model.</span></span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a>        <span class="co">&quot;origin&quot;</span> : <span class="st">&quot;end&quot;</span>, <span class="co">##String. Specify the origin for the calculation of positions. Supported: start, end, center, chrom</span></span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a>        <span class="co">&quot;offset&quot;</span> : <span class="dv">0</span>, <span class="co">##Integer. Add a given number to site positions (change the reference point).</span></span>
+<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a>        <span class="co">&quot;2str&quot;</span> : <span class="va">True</span>, <span class="co">##Boolean. Scan both strands for DNA sequences</span></span>
+<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a>        <span class="co">&quot;return&quot;</span> : <span class="st">&quot;sites,pval,limits&quot;</span>, <span class="co">##String. lists of fields to return. Supported fields - sites, p_score, pval, seq_scores, rank, normw, proba_BM, limits,weight_limits, distrib, occ_proba, bg_model,bg_residues, matrix, freq_matrix, weight_matrix,crer</span></span>
+<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a>        <span class="co"># weight score. Positive means that the scanned seq is more likely to be an instance of the motif</span></span>
+<span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a>        <span class="co">&quot;lth_score&quot;</span> : <span class="dv">1</span>, <span class="co">##Number. Lower threshold on some parameters.</span></span>
+<span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a>        <span class="co"># upper threshold p-value. Correction of weight scores</span></span>
+<span id="cb25-22"><a href="#cb25-22" aria-hidden="true" tabindex="-1"></a>        <span class="co">&quot;uth_pval&quot;</span> : <span class="fl">0.0001</span>, <span class="co">##Number. Upper threshold on some parameters.</span></span></code></pre></div>
+<p>**Make sure to keep the indentation the same!</p>
+<ol start="4" style="list-style-type: decimal">
+<li><p>Open the terminal (<code>CTRL + ALT + T</code> in ubuntu). And go to the directory where you stored the file (for example: <code>cd ~/</code>).</p></li>
+<li><p>Either run the file <code>python3 test_matrix-scan.py</code> or copy paste the script in the python CLI.</p></li>
+<li><p>You can add the following lines to store your results in a html document:</p></li>
+</ol>
+<div class="sourceCode" id="cb26"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>completeName <span class="op">=</span> <span class="st">&quot;edit-here-for-name-of-file&quot;</span> <span class="op">+</span> <span class="st">&quot;.html&quot;</span> <span class="co"># edit this line</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="co"># writes output file</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>f <span class="op">=</span> <span class="bu">open</span>(completeName, <span class="st">&quot;w+&quot;</span>)</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>f.write(r.text)</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>f.close()</span></code></pre></div>
+</div>
+<div id="web" class="section level4" number="7.3.2.2">
+<h4 number="7.3.2.2"><span class="header-section-number">7.3.2.2</span> <strong>Web</strong></h4>
+<p>Using the same example shown for the scripts version (matrix-scan DEMO 1), we will exemplify now how to use the web version of REST.</p>
+<ol style="list-style-type: decimal">
+<li><p>Go to <a href="http://rsat-tagc.univ-mrs.fr/rest/">REST</a>. Here will appear all the RSAT programs available through REST at the moment, along with a description of what each of them do. Search the program <code>matrix-scan</code> and click on it.</p></li>
+<li><p>Click on the <code>GET</code> button &gt; then <code>Try it out</code>. A list of all the program’s parameters with a short description will appear as well as a field to introduce their value.</p></li>
+</ol>
+<p><img src="images/REST_matrix-scan_empty-opts.png" /></p>
+<ol start="3" style="list-style-type: decimal">
+<li><p>Fill all mandatory and chosen optional parameters value. We will fill it in as we did in the scripts version.</p>
+<ul>
+<li><code>i_string</code> : <code>http://rsat-tagc.univ-mrs.fr/rsat/demo_files/Dmelanogaster_eve_up5000.fasta</code></li>
+<li><code>i_string_type</code> : <code>url</code></li>
+<li><code>seq_format</code> : <code>fasta</code></li>
+<li><code>m_string</code> : <code>http://rsat-tagc.univ-mrs.fr/rsat/demo_files/Dmelanogaster_segmentation_12matrices.tf</code></li>
+<li><code>m_string_type</code> : <code>url</code></li>
+<li><code>matrix_format</code> : <code>transfac</code></li>
+<li><code>n</code> : <code>score</code></li>
+<li><code>pseudo</code> : 1</li>
+<li><code>markov_order</code> : 1</li>
+<li><code>bginput</code> : True</li>
+<li><code>bg_pseudo</code> : 0.01</li>
+<li><code>markov</code> : 1</li>
+<li><code>origin</code> : <code>end</code></li>
+<li><code>offset</code> : 0</li>
+<li><code>2str</code> : True</li>
+<li><code>return</code> : <code>sites,pval,limits</code></li>
+<li><code>lth_score</code> : 1</li>
+<li><code>uth_pval</code> : 0.0001</li>
+</ul></li>
+</ol>
+<p><br />
+</p>
+<ol start="4" style="list-style-type: decimal">
+<li>Click on the <code>Execute</code> button. After a ~min a result like this should appear. You may see your results through the <strong>Request URL</strong> or in the <strong>Response body</strong>.</li>
+</ol>
+<p><img src="images/REST_matrix-scan_demo1-result.png" /></p>
+>>>>>>> 488694c38b4d953167efc1c71049c2c17a8b9f78
 <!-- **************************************************************** -->
 <!-- # Supplementary information -->
 <!-- ## Files -->
@@ -1013,6 +1194,7 @@ interface</h3>
 <!-- ## Install -->
 <!-- make -f makefiles/install_software.mk install_vmatch -->
 <!-- ``` -->
+</div>
 </div>
 </div>
 </div>

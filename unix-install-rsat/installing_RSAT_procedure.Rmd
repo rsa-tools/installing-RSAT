@@ -552,12 +552,220 @@ library(knitr)
 include_graphics("images/feature-map_web_result.png")
 ```
 
+### Troubleshooting: 403 Forbidden Error
+
+If a 403 Forbidden Error appears when you test your local RSAT website such as with `http://localhost/rsat/`, follow the next steps:
+
+1. First, check that the paths to your RSAT instance are right in the RSAT web server configuration files at your `/etc/apache2/sites-enabled` directory.
+
+```{bash eval=FALSE}
+cd /etc/apache2/sites-enabled
+```
+
+As an example, in config file `RSAT_config.conf`, the directory paths to your RSAT in the next chunk should look similar to this (as signaled by arrows):
+
+```
+################################################################
+## Define the alias.
+##
+## The RSAT server should be visible when adding this alias after the
+## Web server URL.
+Alias /rsat /home/user/packages/rsat/public_html/                 ## <-----
+
+################################################################
+## Make sure R libs are accessible to the apache user.
+SetEnv R_LIBS_USER /home/user/packages/rsat/R-scripts/Rpackages/  ## <-----
+
+################################################################
+## Configuration for Apache 2.4
+
+## Enable CGI scripts in the public_html directory
+<Directory "/home/user/packages/rsat/public_html/">                ## <-----
+    AllowOverride all
+    Options +ExecCGI -MultiViews +SymLinksIfOwnerMatch +Indexes
+    Require all granted
+</Directory>
+
+<Directory "/home/user/packages/rsat/public_html/data/">           ## <-----
+    AllowOverride all
+    Options +Indexes +SymLinksIfOwnerMatch
+    Require all granted
+</Directory>
+
+<Directory "/home/user/packages/rsat/public_html/motif_databases/">  ## <-----
+    AllowOverride all
+    Options +Indexes +SymLinksIfOwnerMatch
+    Require all granted
+</Directory>
+
+<Directory "/home/user/packages/rsat/public_html/tutorials/">     ## <-----
+    AllowOverride all
+    Options +Indexes +SymLinksIfOwnerMatch
+    Require all granted
+</Directory>
+```
+
+If that's not the case, change them.
+
+```{bash eval=FALSE}
+## check the RSAT path you defined before
+echo $RSAT # copy the dir
+
+## You need sudo permissions
+sudo su
+
+nano RSAT_config.conf
+```
+
+Replace the paths (such as `/home/user/packages/rsat/` in the example) for the `dir/to/rsat` you copied earlier, making sure to keep the RSAT inner directories in the paths (such as `public_html/tutorials/`) unchanged.
+
+```{bash eval=FALSE}
+# CTRL + O to save
+# CTRL + X to exit
+
+nano RSAT_config_default_apache2.2.conf
+## change paths
+# CTRL + O to save
+# CTRL + X to exit
+```
+
+2. Repeat process for RSAT config files at `/etc/apache2/sites-available`.
+
+3. To make sure `.cgi` scripts work:
+
+```{bash eval=FALSE}
+cd ../
+a2enmod cgid
+```
+
+
+4. Restart apache:
+
+```{bash eval=FALSE}
+service apache2 restart
+```
+
+5. Give permission in your RSAT instance
+
+```{bash eval=FALSE}
+cd $INSTALL_ROOT/..
+chmod 777 -R $INSTALL_ROOT
+```
+
+6. Your RSAT web server should work now.
+
+***
+
+\
 
 ## Testing the Web services
 
 ### SOAP/WSDL interface
 
-### REST interface
+### REST interface {.tabset}
+
+ [Click here for a web version of REST][REST].
+
+As an example, we are running `matrix-scan`'s [DEMO 1](http://embnet.ccg.unam.mx/rsat/matrix-scan_form.cgi):
+
+> In this demonstration, we will analyse the promoter of Drosophila melanogaster even-skipped gene (eve). We will scan the 5500 bp sequence upstream the transcription start site with matrices representing the binding specificity of 12 transcription factors known to regulate eve. These matrices were built from binding sites annotated in the ORegAnno database by Jean-Valery Turatsinze.
+
+#### **Script**
+
+
+This is an example for using REST-API scripts which are available in your RSAT instance in dir `$RSAT/public_html/web_services/REST-API`. Demo data for these scripts is available at `$RSAT/public_html/web_services/REST-API/restclientexamples/demo-data_4rest-api.py`.
+
+\
+
+1. Open file `$RSAT/public_html/web_services/REST-API/matrix-scan.py` in the text editor of your choosing. 
+
+2. Copy the script in a separate file and name it (for example: `~/test_matrix-scan.py`).
+
+3. Edit the `data{}` dictionary to change the arguments with which to run `matrix-scan`. We are changing the arguments to run the [DEMO 1](http://embnet.ccg.unam.mx/rsat/matrix-scan_form.cgi) mentioned above.
+
+Edit the following arguments as follows, read the comments for information regarding them:
+
+```{python eval=FALSE}
+# fasta sequences where we are going to look for sites (Drosophila melanogaster 5kbps upstream from eve gene)
+        "i_string" : "http://rsat-tagc.univ-mrs.fr/rsat/demo_files/Dmelanogaster_eve_up5000.fasta", ##Input string specifying the query. The value can be the query content, the URL of a file available on some Web server, the internal path of the result file returned by another tool of this RSAT server (piping for workflows).
+        "i_string_type" : "url", ##Type of information provided by the input string. Supported values: url: URL (Web address) to the input file; piping: result file from other tool; text: input content
+        "seq_format" : "fasta", ##String. Sequence format.
+        # transcription factor binding motifs matrixes or PSSMs (12 motifs for TFs known to regulate eve)
+        "m_string" : "http://rsat-tagc.univ-mrs.fr/rsat/demo_files/Dmelanogaster_segmentation_12matrices.tf", ##Input string specifying the query. The value can be the query content, the URL of a file available on some Web server, the internal path of the result file returned by another tool of this RSAT server (piping for workflows).
+        "m_string_type" : "url", ##Type of information provided by the input string. Supported values: url: URL (Web address) to the input file; piping: result file from other tool; text: input content
+        "matrix_format" : "transfac", ##String. Matrix suffix. This argument is mandatory.
+        "n" : "score", ##String. Treatment of N characters. These characters are often used in DNA sequences to represent undefined or masked nucleotides. Supported: skip, score.
+        "pseudo" : 1, ##Number. Pseudo-count for the matrix (default 1).
+        "markov_order" : 1, ##Integer. Markov order for background model. Only when bgfile is not specified.
+        "bginput" : True, ##Boolean. Calculate background model from the input sequence set.
+        "bg_pseudo" : 0.01, ##Number. Pseudo frequency for the background model. Value must be a real between 0 and 1
+        "markov" : 1, ##Integer. Order of the markov chain for the background model.
+        "origin" : "end", ##String. Specify the origin for the calculation of positions. Supported: start, end, center, chrom
+        "offset" : 0, ##Integer. Add a given number to site positions (change the reference point).
+        "2str" : True, ##Boolean. Scan both strands for DNA sequences
+        "return" : "sites,pval,limits", ##String. lists of fields to return. Supported fields - sites, p_score, pval, seq_scores, rank, normw, proba_BM, limits,weight_limits, distrib, occ_proba, bg_model,bg_residues, matrix, freq_matrix, weight_matrix,crer
+        # weight score. Positive means that the scanned seq is more likely to be an instance of the motif
+        "lth_score" : 1, ##Number. Lower threshold on some parameters.
+        # upper threshold p-value. Correction of weight scores
+        "uth_pval" : 0.0001, ##Number. Upper threshold on some parameters.
+```
+
+**Make sure to keep the indentation the same!
+
+4. Open the terminal (`CTRL + ALT + T` in ubuntu). And go to the directory where you stored the file (for example: `cd ~/`).
+
+5. Either run the file `python3 test_matrix-scan.py` or copy paste the script in the python CLI.
+
+6. You can add the following lines to store your results in a html document:
+
+```{python eval=FALSE}
+completeName = "edit-here-for-name-of-file" + ".html" # edit this line
+
+# writes output file
+f = open(completeName, "w+")
+f.write(r.text)
+f.close()
+```
+
+
+#### **Web**
+
+
+Using the same example shown for the scripts version (matrix-scan DEMO 1), we will exemplify now how to use the web version of REST.
+
+1. Go to [REST][REST]. Here will appear all the RSAT programs available through REST at the moment, along with a description of what each of them do. Search the program `matrix-scan` and click on it.
+
+2. Click on the `GET` button > then `Try it out`. A list of all the program's parameters with a short description will appear as well as a field to introduce their value. 
+
+![](images/REST_matrix-scan_empty-opts.png)
+
+3. Fill all mandatory and chosen optional parameters value. We will fill it in as we did in the scripts version.
+
+    * `i_string` : `http://rsat-tagc.univ-mrs.fr/rsat/demo_files/Dmelanogaster_eve_up5000.fasta`
+    * `i_string_type` : `url`
+    * `seq_format` : `fasta`
+    * `m_string` : `http://rsat-tagc.univ-mrs.fr/rsat/demo_files/Dmelanogaster_segmentation_12matrices.tf`
+    * `m_string_type` : `url`
+    * `matrix_format` : `transfac`
+    * `n` : `score`
+    * `pseudo` : 1
+    * `markov_order` : 1
+    * `bginput` : True
+    * `bg_pseudo` : 0.01
+    * `markov` : 1
+    * `origin` : `end`
+    * `offset` : 0
+    * `2str` : True
+    * `return` : `sites,pval,limits`
+    * `lth_score` : 1
+    * `uth_pval` : 0.0001
+    
+\
+
+4. Click on the `Execute` button. After a ~min a result like this should appear. You may see your results through the **Request URL** or in the **Response body**.
+
+![](images/REST_matrix-scan_demo1-result.png)
+
 
 <!-- **************************************************************** -->
 <!-- # Supplementary information -->
@@ -663,4 +871,5 @@ include_graphics("images/feature-map_web_result.png")
 <!-- ``` -->
 
 
+[REST]: http://rsat-tagc.univ-mrs.fr/rest/
 
