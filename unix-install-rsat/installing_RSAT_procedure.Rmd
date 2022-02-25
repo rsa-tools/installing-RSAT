@@ -68,7 +68,7 @@ This RSAT distribution contains: (i) the _RSAT command line tools_, (ii) the _we
 1. **Operating system**. This RSAT installation protocol is aimed at Mac OS X in Mojave (v10.14) and Catalina (v10.15). RSAT installation in previous Mac OS X versions is feasible but a manual installation of packages (e.g. `brew` packages) is needed and it is beyond the scope of this tutorial.
 2. **Xcode**. The complete version of the _Xcode_ application should already be installed in your Mac OS X. You can download and install _Xcode_ from [here](https://developer.apple.com/download/). Please be aware that downloading _Xcode_ versions for Mac OS X requires an Apple Developer account.
 3. **Package manager**. The `brew` package manager should be already installed in the command line and it is recommended to update to the latest version. You can install `brew` from [here](https://brew.sh/). At the moment `brew` in RSAT is only supported for Mac OS X in Mojave (v10.14) and Catalina (v10.15). 
-4. **Git and Git LFS**. If you are installing the GitHub repositories the `git` and `git-lfs` applications should be available in the command line. You can install `git` from [here](https://git-scm.com/downloads) and `git lfs` from [here](https://git-lfs.github.com/).
+4. **Git and Git LFS**. If you are installing the GitHub repositories the `git` and `git-lfs` applications should be available in the command line. You can install `git` from [here](https://git-scm.com/downloads) and `git-lfs` from [here](https://git-lfs.github.com/).
 
 <br>
 
@@ -110,6 +110,9 @@ cd rsat/public_html
 ln -s ../../demo_files
 ln -s ../../sample_outputs
 ln -s ../../motif_databases
+
+cd  ${INSTALL_ROOT}/rsat
+
 ```
 
 ****************************************************************
@@ -162,6 +165,20 @@ cd ${INSTALL_ROOT}/rsat
 # Configuring RSAT {.tabset .tabset-fade}
 
 
+We will first specify an environment variable named `RSAT` with the path to the `rsat` directory. 
+
+```{bash}
+## Set the main RSAT directory path 
+export RSAT=${INSTALL_ROOT}/rsat
+echo "RSAT ${RSAT}"
+
+## Go to the main rsat directory
+cd ${RSAT}
+
+```
+
+
+
 ## Linux  {.unlisted .unnumbered .tabset .tabset-fade}
 
 
@@ -212,13 +229,6 @@ echo "RSAT_SITE ${RSAT_SITE}"
 ##### 5.3 Configuration of RSAT parameters {.unlisted .unnumbered}
 
 ```{bash}
-## Set the main RSAT directory path 
-export RSAT=${INSTALL_ROOT}/rsat
-echo "RSAT ${RSAT}"
-
-## Go to the main rsat directory
-cd ${RSAT}
-
 ## Semi-auto configuration for VirtualBox VM
 ## (adapt IP address if required)
 perl perl-scripts/configure_rsat.pl -auto  \
@@ -247,14 +257,6 @@ To configure all options, you can run the script `configure_rsat.pl` as below. A
 
 
 ```{bash}
-## Set the main RSAT directory path 
-export RSAT=${INSTALL_ROOT}/rsat
-
-## Check that RSAT directory path has been specified
-echo "RSAT ${RSAT}"
-
-## Go to the main rsat directory
-cd ${RSAT}
 
 # Configure all the options
 perl perl-scripts/configure_rsat.pl
