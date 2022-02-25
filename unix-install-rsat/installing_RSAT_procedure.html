@@ -11,12 +11,12 @@
 
 <meta name="author" content="Jacques van Helden" />
 
-<meta name="date" content="2021-04-15" />
+<meta name="date" content="2022-02-25" />
 
 <title>Installing RSAT on a Unix operating system</title>
 
-<script src="installing_RSAT_procedure_files/header-attrs-2.7/header-attrs.js"></script>
-<script src="installing_RSAT_procedure_files/jquery-1.11.3/jquery.min.js"></script>
+<script src="installing_RSAT_procedure_files/header-attrs-2.11/header-attrs.js"></script>
+<script src="installing_RSAT_procedure_files/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="installing_RSAT_procedure_files/bootstrap-3.3.5/css/cerulean.min.css" rel="stylesheet" />
 <script src="installing_RSAT_procedure_files/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -309,12 +309,12 @@ div.tocify {
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row">
-<div class="col-sm-12 col-md-4 col-lg-3">
+<div class="col-xs-12 col-sm-4 col-md-3">
 <div id="TOC" class="tocify">
 </div>
 </div>
 
-<div class="toc-content col-sm-12 col-md-8 col-lg-9">
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -323,28 +323,45 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Installing RSAT on a Unix operating system</h1>
+<h1 class="title toc-ignore">Installing RSAT on a Unix operating
+system</h1>
 <h4 class="author">Jacques van Helden</h4>
-<h4 class="date">2021-04-15</h4>
+<h4 class="date">2022-02-25</h4>
 
 </div>
 
 
 <hr />
 <div id="introduction" class="section level1" number="1">
-<h1 number="1"><span class="header-section-number">1</span> Introduction</h1>
-<p>This tutorial explains how to install the complete <a href="http://rsat.eu/">Regulatory Sequence Analysis Tools (RSAT)</a> suite via GitHub or from a tarball archive in Linux or Mac OS X systems. This RSAT distribution contains: (i) the <em>RSAT command line tools</em>, (ii) the <em>web server</em> and (iii) the <em>web services</em>.</p>
+<h1><span class="header-section-number">1</span> Introduction</h1>
+<p>This tutorial explains how to install the complete <a
+href="http://rsat.eu/">Regulatory Sequence Analysis Tools (RSAT)</a>
+suite via GitHub or from a tarball archive in Linux or Mac OS X systems.
+This RSAT distribution contains: (i) the <em>RSAT command line
+tools</em>, (ii) the <em>web server</em> and (iii) the <em>web
+services</em>.</p>
 <hr />
 </div>
-<div id="requirements" class="section level1 tabset tabset-fade" number="2">
-<h1 class="tabset tabset-fade" number="2"><span class="header-section-number">2</span> Requirements</h1>
+<div id="requirements" class="section level1 tabset tabset-fade"
+number="2">
+<h1 class="tabset tabset-fade"><span
+class="header-section-number">2</span> Requirements</h1>
 <div id="linux" class="section level2 unlisted unnumbered">
 <h2 class="unlisted unnumbered">Linux</h2>
 <p><br></p>
 <ol style="list-style-type: decimal">
-<li><strong>Operating system</strong>. If your Linux operating system (OS) is not Ubuntu some adaptation of the scripts used in the installation step will be necessary (e.g. system libraries).</li>
-<li><strong>Package manager</strong>. The <code>apt-get</code> package manager should be already installed in the command line and it is recommended to update to the latest version.</li>
-<li><strong>Git and Git LFS</strong>. If you are installing the GitHub repositories the <code>git</code> and <code>git-lfs</code> applications should be available in the command line. You can install <code>git</code> from <a href="https://git-scm.com/downloads">here</a> and <code>git lfs</code> from <a href="https://git-lfs.github.com/">here</a>.</li>
+<li><strong>Operating system</strong>. If your Linux operating system
+(OS) is not Ubuntu some adaptation of the scripts used in the
+installation step will be necessary (e.g. system libraries).</li>
+<li><strong>Package manager</strong>. The <code>apt-get</code> package
+manager should be already installed in the command line and it is
+recommended to update to the latest version.</li>
+<li><strong>Git and Git LFS</strong>. If you are installing the GitHub
+repositories the <code>git</code> and <code>git-lfs</code> applications
+should be available in the command line. You can install
+<code>git</code> from <a href="https://git-scm.com/downloads">here</a>
+and <code>git lfs</code> from <a
+href="https://git-lfs.github.com/">here</a>.</li>
 </ol>
 <p><br></p>
 <hr />
@@ -353,33 +370,74 @@ div.tocify {
 <h2 class="unlisted unnumbered">Mac OS X</h2>
 <p><br></p>
 <ol style="list-style-type: decimal">
-<li><strong>Operating system</strong>. This RSAT installation protocol is aimed at Mac OS X in Mojave (v10.14) and Catalina (v10.15). RSAT installation in previous Mac OS X versions is feasible but a manual installation of packages (e.g. <code>brew</code> packages) is needed and it is beyond the scope of this tutorial.</li>
-<li><strong>Xcode</strong>. The complete version of the <em>Xcode</em> application should already be installed in your Mac OS X. You can download and install <em>Xcode</em> from <a href="https://developer.apple.com/download/">here</a>. Please be aware that downloading <em>Xcode</em> versions for Mac OS X requires an Apple Developer account.</li>
-<li><strong>Package manager</strong>. The <code>brew</code> package manager should be already installed in the command line and it is recommended to update to the latest version. You can install <code>brew</code> from <a href="https://brew.sh/">here</a>. At the moment <code>brew</code> in RSAT is only supported for Mac OS X in Mojave (v10.14) and Catalina (v10.15).</li>
-<li><strong>Git and Git LFS</strong>. If you are installing the GitHub repositories the <code>git</code> and <code>git-lfs</code> applications should be available in the command line. You can install <code>git</code> from <a href="https://git-scm.com/downloads">here</a> and <code>git lfs</code> from <a href="https://git-lfs.github.com/">here</a>.</li>
+<li><strong>Operating system</strong>. This RSAT installation protocol
+is aimed at Mac OS X in Mojave (v10.14) and Catalina (v10.15). RSAT
+installation in previous Mac OS X versions is feasible but a manual
+installation of packages (e.g. <code>brew</code> packages) is needed and
+it is beyond the scope of this tutorial.</li>
+<li><strong>Xcode</strong>. The complete version of the <em>Xcode</em>
+application should already be installed in your Mac OS X. You can
+download and install <em>Xcode</em> from <a
+href="https://developer.apple.com/download/">here</a>. Please be aware
+that downloading <em>Xcode</em> versions for Mac OS X requires an Apple
+Developer account.</li>
+<li><strong>Package manager</strong>. The <code>brew</code> package
+manager should be already installed in the command line and it is
+recommended to update to the latest version. You can install
+<code>brew</code> from <a href="https://brew.sh/">here</a>. At the
+moment <code>brew</code> in RSAT is only supported for Mac OS X in
+Mojave (v10.14) and Catalina (v10.15).</li>
+<li><strong>Git and Git LFS</strong>. If you are installing the GitHub
+repositories the <code>git</code> and <code>git-lfs</code> applications
+should be available in the command line. You can install
+<code>git</code> from <a href="https://git-scm.com/downloads">here</a>
+and <code>git-lfs</code> from <a
+href="https://git-lfs.github.com/">here</a>.</li>
 </ol>
 <p><br></p>
 <hr />
 </div>
 </div>
-<div id="overview-of-the-installation-steps" class="section level1" number="3">
-<h1 number="3"><span class="header-section-number">3</span> Overview of the installation steps</h1>
+<div id="overview-of-the-installation-steps" class="section level1"
+number="3">
+<h1><span class="header-section-number">3</span> Overview of the
+installation steps</h1>
 <ol style="list-style-type: decimal">
 <li>Download an RSAT distribution archive.</li>
 <li>Configure your RSAT installation.</li>
 <li>Install your RSAT instance.</li>
-<li>Test your RSAT installation: the (i) <em>RSAT command line tools</em>, (ii) the <em>web server</em> and (iii) the <em>web services</em> (SOAP/WSDL and REST).</li>
+<li>Test your RSAT installation: the (i) <em>RSAT command line
+tools</em>, (ii) the <em>web server</em> and (iii) the <em>web
+services</em> (SOAP/WSDL and REST).</li>
 </ol>
 <hr />
 </div>
-<div id="downloading-rsat" class="section level1 tabset tabset-fade" number="4">
-<h1 class="tabset tabset-fade" number="4"><span class="header-section-number">4</span> Downloading RSAT</h1>
-<p>You can clone the current RSAT development version from GitHub or download the latest RSAT stable release as a tarball from any of the RSAT servers.</p>
-<div id="github_logo-cloning-github-repositories" class="section level2 unlisted unnumbered">
-<h2 class="unlisted unnumbered"><img src="images/GitHub-Mark-32px.png" width="20" alt="github_logo" />   Cloning GitHub repositories</h2>
-<p><br> The RSAT development version in GitHub is composed of four different repositories: (i) <a href="https://github.com/rsa-tools/rsat-code">rsat-code</a>, (ii) <a href="https://github.com/rsa-tools/demo_files">demo_files</a>, (iii) <a href="https://github.com/rsa-tools/motif_databases">motif_databases</a> and (iv) <a href="https://github.com/rsa-tools/sample_outputs">sample_outputs</a>. All of these need to be cloned and installed for RSAT complete function. To clone these repositories, the <a href="https://git-scm.com/downloads">git</a> and <a href="https://git-lfs.github.com/">git lfs</a> applications should be available in the command line for both Linux and Mac OS X systems.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">## Choose a directory to install RSAT</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">INSTALL_ROOT=</span>~/packages</span>
+<div id="downloading-rsat" class="section level1 tabset tabset-fade"
+number="4">
+<h1 class="tabset tabset-fade"><span
+class="header-section-number">4</span> Downloading RSAT</h1>
+<p>You can clone the current RSAT development version from GitHub or
+download the latest RSAT stable release as a tarball from any of the
+RSAT servers.</p>
+<div id="github_logo-cloning-github-repositories"
+class="section level2 unlisted unnumbered">
+<h2 class="unlisted unnumbered"><img src="images/GitHub-Mark-32px.png"
+width="20" alt="github_logo" />   Cloning GitHub repositories</h2>
+<p><br> The RSAT development version in GitHub is composed of four
+different repositories: (i) <a
+href="https://github.com/rsa-tools/rsat-code">rsat-code</a>, (ii) <a
+href="https://github.com/rsa-tools/demo_files">demo_files</a>, (iii) <a
+href="https://github.com/rsa-tools/motif_databases">motif_databases</a>
+and (iv) <a
+href="https://github.com/rsa-tools/sample_outputs">sample_outputs</a>.
+All of these need to be cloned and installed for RSAT complete function.
+To clone these repositories, the <a
+href="https://git-scm.com/downloads">git</a> and <a
+href="https://git-lfs.github.com/">git lfs</a> applications should be
+available in the command line for both Linux and Mac OS X systems.</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">## Choose a directory to install RSAT</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">INSTALL_ROOT</span><span class="op">=</span>~/packages</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> <span class="va">${INSTALL_ROOT}</span>/</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
@@ -395,41 +453,53 @@ div.tocify {
 <span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> rsat/public_html</span>
 <span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="fu">ln</span> <span class="at">-s</span> ../../demo_files</span>
 <span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="fu">ln</span> <span class="at">-s</span> ../../sample_outputs</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="fu">ln</span> <span class="at">-s</span> ../../motif_databases</span></code></pre></div>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="fu">ln</span> <span class="at">-s</span> ../../motif_databases</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span>  <span class="va">${INSTALL_ROOT}</span>/rsat</span></code></pre></div>
 <hr />
 </div>
-<div id="tar_logo-dowloading-a-tarball-archive" class="section level2 unlisted unnumbered">
-<h2 class="unlisted unnumbered"><img src="images/box-seam.svg" width="20" alt="tar_logo" />   Dowloading a tarball archive</h2>
+<div id="tar_logo-dowloading-a-tarball-archive"
+class="section level2 unlisted unnumbered">
+<h2 class="unlisted unnumbered"><img src="images/box-seam.svg"
+width="20" alt="tar_logo" />   Dowloading a tarball archive</h2>
 <p><br></p>
 <ol style="list-style-type: decimal">
 <li><p>Go to the <a href="http://rsat.eu/">RSAT portal</a></p></li>
 <li><p>Select any server.</p></li>
-<li><p>In the left-sided menu and the <strong>Help&amp;Contact</strong> section, click on the <strong>Download</strong> link.</p></li>
-<li><p>Fill in your name and coordinates and access to the download site.</p>
+<li><p>In the left-sided menu and the <strong>Help&amp;Contact</strong>
+section, click on the <strong>Download</strong> link.</p></li>
+<li><p>Fill in your name and coordinates and access to the download
+site.</p>
 <p>You now have access to the download page containing the links to:</p>
 <ul>
-<li>the latest stable release named <code>rsat_20XX-XX-XX.tar.gz</code> (XX-XX-XX must be replaced by the release date).</li>
-<li>the previous release archives available in the folder <code>previous_versions</code>.</li>
+<li>the latest stable release named <code>rsat_20XX-XX-XX.tar.gz</code>
+(XX-XX-XX must be replaced by the release date).</li>
+<li>the previous release archives available in the folder
+<code>previous_versions</code>.</li>
 </ul></li>
-<li><p>Download the tar archive named <code>rsat_20XX-XX-XX.tar.gz</code> where <code>XX-XX-XX</code> is the latest release date and put it in your chosen directory.</p></li>
-<li><p>Uncompress the archive. This will create a directory named <code>rsat</code> where we will continue the install procedure.</p></li>
+<li><p>Download the tar archive named
+<code>rsat_20XX-XX-XX.tar.gz</code> where <code>XX-XX-XX</code> is the
+latest release date and put it in your chosen directory.</p></li>
+<li><p>Uncompress the archive. This will create a directory named
+<code>rsat</code> where we will continue the install procedure.</p></li>
 </ol>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">## Set the RSAT release version (same as from the tarball)</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">RELEASE=</span>20XX.XX.XX </span>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">## Set the RSAT release version (same as from the tarball)</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">RELEASE</span><span class="op">=</span>20XX.XX.XX </span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">## e.g. export RELEASE=2021.01.13</span></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">## By default we install the package a folder named packages. </span></span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co">## This should be adapted according to your local setup. </span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">INSTALL_ROOT=</span>~/packages</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">INSTALL_ROOT</span><span class="op">=</span>~/packages</span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> <span class="va">${INSTALL_ROOT}</span></span>
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co">## Download the archives from the RSAT distribution site</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">DOWNLOAD_BASE=</span>http://pedagogix-tagc.univ-mrs.fr/download_rsat</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">DOWNLOAD_BASE</span><span class="op">=</span>http://pedagogix-tagc.univ-mrs.fr/download_rsat</span>
 <span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> PKG <span class="kw">in</span> core web motifdb</span>
 <span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span></span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>  <span class="va">ARCHIVE=</span>rsat-<span class="va">${PKG}</span>_<span class="va">${RELEASE}</span>.tar.gz</span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>  <span class="va">DOWNLOAD_URL=${DOWNLOAD_BASE}</span>/<span class="va">${ARCHIVE}</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>  <span class="va">ARCHIVE</span><span class="op">=</span>rsat-<span class="va">${PKG}</span>_<span class="va">${RELEASE}</span>.tar.gz</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>  <span class="va">DOWNLOAD_URL</span><span class="op">=</span><span class="va">${DOWNLOAD_BASE}</span>/<span class="va">${ARCHIVE}</span></span>
 <span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;Downloading rsat-</span><span class="va">${PKG}</span><span class="st"> from URL   </span><span class="va">${DOWNLOAD_URL}</span><span class="st">&quot;</span></span>
 <span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">wget</span> <span class="at">--no-clobber</span> <span class="va">${DOWNLOAD_URL}</span></span>
 <span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tar</span> <span class="at">-C</span> <span class="va">${INSTALL_ROOT}</span>/ <span class="at">-xpvzf</span> <span class="va">${ARCHIVE}</span></span>
@@ -438,159 +508,228 @@ div.tocify {
 <hr />
 </div>
 </div>
-<div id="configuring-rsat" class="section level1 tabset tabset-fade" number="5">
-<h1 class="tabset tabset-fade" number="5"><span class="header-section-number">5</span> Configuring RSAT</h1>
-<div id="linux-1" class="section level2 unlisted unnumbered tabset tabset-fade">
+<div id="configuring-rsat" class="section level1 tabset tabset-fade"
+number="5">
+<h1 class="tabset tabset-fade"><span
+class="header-section-number">5</span> Configuring RSAT</h1>
+<p>We will first specify an environment variable named <code>RSAT</code>
+with the path to the <code>rsat</code> directory.</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">## Set the main RSAT directory path </span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">RSAT</span><span class="op">=</span><span class="va">${INSTALL_ROOT}</span>/rsat</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;RSAT </span><span class="va">${RSAT}</span><span class="st">&quot;</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">## Go to the main rsat directory</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="va">${RSAT}</span></span></code></pre></div>
+<div id="linux-1"
+class="section level2 unlisted unnumbered tabset tabset-fade">
 <h2 class="unlisted unnumbered tabset tabset-fade">Linux</h2>
-<div id="semi-automatic-configuration" class="section level3 unlisted unnumbered">
+<div id="semi-automatic-configuration"
+class="section level3 unlisted unnumbered">
 <h3 class="unlisted unnumbered">Semi-automatic configuration</h3>
-<p><br> A semi-automatic configuration of the RSAT installation can be done by providing some minimal parameters such as: (i) an IP address for the web server and services, (ii) a site name for the RSAT instance and (iii) the RSAT main directory. We will customize the first two parameters below, set the RSAT main directory and then run the configuration script.</p>
+<p><br> A semi-automatic configuration of the RSAT installation can be
+done by providing some minimal parameters such as: (i) an IP address for
+the web server and services, (ii) a site name for the RSAT instance and
+(iii) the RSAT main directory. We will customize the first two
+parameters below, set the RSAT main directory and then run the
+configuration script.</p>
 <p><br></p>
-<div id="setting-the-ip-address-for-your-web-server" class="section level5 unlisted unnumbered tabset tabset-fade">
-<h5 class="unlisted unnumbered tabset tabset-fade">5.1 Setting the IP address for your web server</h5>
-<div id="laptop_logo-personal-computer" class="section level6 unlisted unnumbered">
-<h6 class="unlisted unnumbered"><img src="images/laptop.svg" width="18" alt="laptop_logo" />   Personal computer</h6>
-<p>If you install RSAT on a personal computer (e.g. a laptop) and intend to use it only for this machine, you can configure it with the local network’s IP.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">## Configure RSAT to be used internally only</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">MY_IP=</span><span class="st">&quot;127.0.0.1&quot;</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">## Check that the IP site of your machine has been specified</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;MY_IP </span><span class="va">${MY_IP}</span><span class="st">&quot;</span></span></code></pre></div>
+<div id="setting-the-ip-address-for-your-web-server"
+class="section level5 unlisted unnumbered tabset tabset-fade">
+<h5 class="unlisted unnumbered tabset tabset-fade">5.1 Setting the IP
+address for your web server</h5>
+<div id="laptop_logo-personal-computer"
+class="section level6 unlisted unnumbered">
+<h6 class="unlisted unnumbered"><img src="images/laptop.svg" width="18"
+alt="laptop_logo" />   Personal computer</h6>
+<p>If you install RSAT on a personal computer (e.g. a laptop) and intend
+to use it only for this machine, you can configure it with the local
+network’s IP.</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">## Configure RSAT to be used internally only</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">MY_IP</span><span class="op">=</span><span class="st">&quot;127.0.0.1&quot;</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">## Check that the IP site of your machine has been specified</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;MY_IP </span><span class="va">${MY_IP}</span><span class="st">&quot;</span></span></code></pre></div>
 </div>
 <div id="server_logo-server" class="section level6 unlisted unnumbered">
-<h6 class="unlisted unnumbered"><img src="images/server.svg" width="18" alt="server_logo" />   Server</h6>
-<p>If you install RSAT on a server or if you intend to provide service to external users, please replace <code>XXX.XXX.XXX.XXX</code> below by the actual IP address of your server (e.g. for Virtualbox Virtual Machines, we set the IP to 192.168.56.101). The <code>ip</code> util should be already available in the command line.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">## Get your IP address</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">ip</span> <span class="at">-c</span> a <span class="kw">|</span> <span class="fu">grep</span> <span class="st">&#39;inet &#39;</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">## Configure RSAT to be used for external service</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">MY_IP=</span><span class="st">&quot;XXX.XXX.XXX.XXX&quot;</span> ## <span class="va">e</span>.g. <span class="va">export</span> <span class="va">MY_IP=</span><span class="st">&quot;192.168.56.101&quot;</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co">## Check that the IP site of your machine has been specified</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;MY_IP </span><span class="va">${MY_IP}</span><span class="st">&quot;</span></span></code></pre></div>
+<h6 class="unlisted unnumbered"><img src="images/server.svg" width="18"
+alt="server_logo" />   Server</h6>
+<p>If you install RSAT on a server or if you intend to provide service
+to external users, please replace <code>XXX.XXX.XXX.XXX</code> below by
+the actual IP address of your server (e.g. for Virtualbox Virtual
+Machines, we set the IP to 192.168.56.101). The <code>ip</code> util
+should be already available in the command line.</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">## Get your IP address</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="ex">ip</span> <span class="at">-c</span> a <span class="kw">|</span> <span class="fu">grep</span> <span class="st">&#39;inet &#39;</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">## Configure RSAT to be used for external service</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">MY_IP</span><span class="op">=</span><span class="st">&quot;XXX.XXX.XXX.XXX&quot;</span> <span class="co">## e.g. export MY_IP=&quot;192.168.56.101&quot;</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co">## Check that the IP site of your machine has been specified</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;MY_IP </span><span class="va">${MY_IP}</span><span class="st">&quot;</span></span></code></pre></div>
 </div>
 </div>
-<div id="choose-a-site-name-for-your-rsat-instance" class="section level5 unlisted unnumbered">
-<h5 class="unlisted unnumbered">5.2 Choose a site name for your RSAT instance</h5>
-<p>You can choose an arbitrary name for your RSAT instance. For this tutorial, we will call it <code>my_rsat</code>, but you are welcome to use another site name.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Choose your RSAT site name</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">RSAT_SITE=</span>my_rsat</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">## Check that you have specified a site name</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;RSAT_SITE </span><span class="va">${RSAT_SITE}</span><span class="st">&quot;</span></span></code></pre></div>
+<div id="choose-a-site-name-for-your-rsat-instance"
+class="section level5 unlisted unnumbered">
+<h5 class="unlisted unnumbered">5.2 Choose a site name for your RSAT
+instance</h5>
+<p>You can choose an arbitrary name for your RSAT instance. For this
+tutorial, we will call it <code>my_rsat</code>, but you are welcome to
+use another site name.</p>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Choose your RSAT site name</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">RSAT_SITE</span><span class="op">=</span>my_rsat</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">## Check that you have specified a site name</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;RSAT_SITE </span><span class="va">${RSAT_SITE}</span><span class="st">&quot;</span></span></code></pre></div>
 </div>
-<div id="configuration-of-rsat-parameters" class="section level5 unlisted unnumbered">
-<h5 class="unlisted unnumbered">5.3 Configuration of RSAT parameters</h5>
-<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">## Set the main RSAT directory path </span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">RSAT=${INSTALL_ROOT}</span>/rsat</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;RSAT </span><span class="va">${RSAT}</span><span class="st">&quot;</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co">## Go to the main rsat directory</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="va">${RSAT}</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co">## Semi-auto configuration for VirtualBox VM</span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co">## (adapt IP address if required)</span></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="fu">perl</span> perl-scripts/configure_rsat.pl <span class="at">-auto</span>  <span class="dt">\</span></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  rsat=<span class="va">${RSAT}</span> <span class="dt">\</span></span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  rsat_site=<span class="va">${RSAT_SITE}</span> <span class="dt">\</span></span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  rsat_www=http://<span class="va">${MY_IP}</span>/rsat/ <span class="dt">\</span></span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>  rsat_ws=http://<span class="va">${MY_IP}</span>/rsat/ <span class="dt">\</span></span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>  package_manager=<span class="st">&quot;apt-get&quot;</span> <span class="dt">\</span></span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>  ucsc_tools=1 <span class="dt">\</span></span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>  ensembl_tools=1</span></code></pre></div>
-<p>You can add some additional options to the previous command, e.g. enter your mail address as server admin, activate some specific tools that are disabled by default.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="va">rsat_server_admin=</span>your.mail@your.mail.server</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="va">variation_tools=</span>1</span></code></pre></div>
+<div id="configuration-of-rsat-parameters"
+class="section level5 unlisted unnumbered">
+<h5 class="unlisted unnumbered">5.3 Configuration of RSAT
+parameters</h5>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">## Semi-auto configuration for VirtualBox VM</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co">## (adapt IP address if required)</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">perl</span> perl-scripts/configure_rsat.pl <span class="at">-auto</span>  <span class="dt">\</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  rsat=<span class="va">${RSAT}</span> <span class="dt">\</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  rsat_site=<span class="va">${RSAT_SITE}</span> <span class="dt">\</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  rsat_www=http://<span class="va">${MY_IP}</span>/rsat/ <span class="dt">\</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  rsat_ws=http://<span class="va">${MY_IP}</span>/rsat/ <span class="dt">\</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  package_manager=<span class="st">&quot;apt-get&quot;</span> <span class="dt">\</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  ucsc_tools=1 <span class="dt">\</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  ensembl_tools=1</span></code></pre></div>
+<p>You can add some additional options to the previous command,
+e.g. enter your mail address as server admin, activate some specific
+tools that are disabled by default.</p>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="va">rsat_server_admin</span><span class="op">=</span>your.mail@your.mail.server</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="va">variation_tools</span><span class="op">=</span>1</span></code></pre></div>
 <hr />
 </div>
 </div>
-<div id="advanced-configuration" class="section level3 unlisted unnumbered">
+<div id="advanced-configuration"
+class="section level3 unlisted unnumbered">
 <h3 class="unlisted unnumbered">Advanced configuration</h3>
-<p><br> To configure all options, you can run the script <code>configure_rsat.pl</code> as below. An interactive prompt will open and you will be able to refine all the configuration options by choosing custom parameter for your RSAT instance (e.g. the email of the local admin, the organism group, etc. ).</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">## Set the main RSAT directory path </span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">RSAT=${INSTALL_ROOT}</span>/rsat</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co">## Check that RSAT directory path has been specified</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;RSAT </span><span class="va">${RSAT}</span><span class="st">&quot;</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">## Go to the main rsat directory</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="va">${RSAT}</span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Configure all the options</span></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="fu">perl</span> perl-scripts/configure_rsat.pl</span></code></pre></div>
+<p><br> To configure all options, you can run the script
+<code>configure_rsat.pl</code> as below. An interactive prompt will open
+and you will be able to refine all the configuration options by choosing
+custom parameter for your RSAT instance (e.g. the email of the local
+admin, the organism group, etc. ).</p>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Configure all the options</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">perl</span> perl-scripts/configure_rsat.pl</span></code></pre></div>
 <hr />
 </div>
 </div>
-<div id="mac-os-x-1" class="section level2 unlisted unnumbered tabset tabset-fade">
+<div id="mac-os-x-1"
+class="section level2 unlisted unnumbered tabset tabset-fade">
 <h2 class="unlisted unnumbered tabset tabset-fade">Mac OS X</h2>
-<div id="semi-automatic-configuration-1" class="section level3 unlisted unnumbered">
+<div id="semi-automatic-configuration-1"
+class="section level3 unlisted unnumbered">
 <h3 class="unlisted unnumbered">Semi-automatic configuration</h3>
-<p><br> A semi-automatic configuration of the RSAT installation can be done by providing some minimal parameters such as: (i) an IP address for the web server and services, (ii) a site name for the RSAT instance and (iii) the RSAT main directory. We will customize the first two parameters below, set the RSAT main directory and then run the configuration script.</p>
+<p><br> A semi-automatic configuration of the RSAT installation can be
+done by providing some minimal parameters such as: (i) an IP address for
+the web server and services, (ii) a site name for the RSAT instance and
+(iii) the RSAT main directory. We will customize the first two
+parameters below, set the RSAT main directory and then run the
+configuration script.</p>
 <p><br></p>
-<div id="setting-the-ip-address-for-your-web-server-1" class="section level5 unlisted unnumbered tabset tabset-fade">
-<h5 class="unlisted unnumbered tabset tabset-fade">5.1 Setting the IP address for your web server</h5>
+<div id="setting-the-ip-address-for-your-web-server-1"
+class="section level5 unlisted unnumbered tabset tabset-fade">
+<h5 class="unlisted unnumbered tabset tabset-fade">5.1 Setting the IP
+address for your web server</h5>
 <div id="personal-computer" class="section level6 unlisted unnumbered">
 <h6 class="unlisted unnumbered">Personal computer</h6>
-<p>If you install RSAT on a personal computer (e.g. a laptop) and intend to use it only for this machine, you can configure it with the local network’s IP.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">## Configure RSAT to be used internally only</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">MY_IP=</span><span class="st">&quot;127.0.0.1&quot;</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co">## Check that the IP site of your machine has been specified</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;MY_IP </span><span class="va">${MY_IP}</span><span class="st">&quot;</span></span></code></pre></div>
+<p>If you install RSAT on a personal computer (e.g. a laptop) and intend
+to use it only for this machine, you can configure it with the local
+network’s IP.</p>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">## Configure RSAT to be used internally only</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">MY_IP</span><span class="op">=</span><span class="st">&quot;127.0.0.1&quot;</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co">## Check that the IP site of your machine has been specified</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;MY_IP </span><span class="va">${MY_IP}</span><span class="st">&quot;</span></span></code></pre></div>
 </div>
-<div id="server_logo-server-1" class="section level6 unlisted unnumbered">
-<h6 class="unlisted unnumbered"><img src="images/server.svg" width="18" alt="server_logo" />   Server</h6>
-<p>If you install RSAT on a server or if you intend to provide service to external users, please replace <code>XXX.XXX.XXX.XXX</code> below by the actual IP address of your server (e.g. for Virtualbox Virtual Machines, we set the IP to 192.168.56.101). The <code>ifconfig</code> util should be already available in the command line.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">## Get your IP address</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="ex">ifconfig</span> <span class="kw">|</span> <span class="fu">grep</span> <span class="st">&quot;inet &quot;</span> <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-Fv</span> 127.0.0.1 <span class="kw">|</span> <span class="fu">awk</span> <span class="st">&#39;{print $2}&#39;</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co">## Configure RSAT to be used for external service</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">MY_IP=</span><span class="st">&quot;XXX.XXX.XXX.XXX&quot;</span> ## <span class="va">e</span>.g. <span class="va">export</span> <span class="va">MY_IP=</span><span class="st">&quot;192.168.56.101&quot;</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co">## Check that the IP site of your machine has been specified</span></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;MY_IP </span><span class="va">${MY_IP}</span><span class="st">&quot;</span></span></code></pre></div>
+<div id="server_logo-server-1"
+class="section level6 unlisted unnumbered">
+<h6 class="unlisted unnumbered"><img src="images/server.svg" width="18"
+alt="server_logo" />   Server</h6>
+<p>If you install RSAT on a server or if you intend to provide service
+to external users, please replace <code>XXX.XXX.XXX.XXX</code> below by
+the actual IP address of your server (e.g. for Virtualbox Virtual
+Machines, we set the IP to 192.168.56.101). The <code>ifconfig</code>
+util should be already available in the command line.</p>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">## Get your IP address</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="ex">ifconfig</span> <span class="kw">|</span> <span class="fu">grep</span> <span class="st">&quot;inet &quot;</span> <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-Fv</span> 127.0.0.1 <span class="kw">|</span> <span class="fu">awk</span> <span class="st">&#39;{print $2}&#39;</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co">## Configure RSAT to be used for external service</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">MY_IP</span><span class="op">=</span><span class="st">&quot;XXX.XXX.XXX.XXX&quot;</span> <span class="co">## e.g. export MY_IP=&quot;192.168.56.101&quot;</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co">## Check that the IP site of your machine has been specified</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;MY_IP </span><span class="va">${MY_IP}</span><span class="st">&quot;</span></span></code></pre></div>
 </div>
 </div>
-<div id="choose-a-site-name-for-your-rsat-instance-1" class="section level5 unlisted unnumbered">
-<h5 class="unlisted unnumbered">5.2 Choose a site name for your RSAT instance</h5>
-<p>You can choose an arbitrary name for your RSAT instance. For this tutorial, we will call it <code>my_rsat</code>, but you are welcome to use another site name.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Choose your RSAT site name</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">RSAT_SITE=</span>my_rsat</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co">## Check that you have specified a site name</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;RSAT_SITE </span><span class="va">${RSAT_SITE}</span><span class="st">&quot;</span></span></code></pre></div>
+<div id="choose-a-site-name-for-your-rsat-instance-1"
+class="section level5 unlisted unnumbered">
+<h5 class="unlisted unnumbered">5.2 Choose a site name for your RSAT
+instance</h5>
+<p>You can choose an arbitrary name for your RSAT instance. For this
+tutorial, we will call it <code>my_rsat</code>, but you are welcome to
+use another site name.</p>
+<div class="sourceCode" id="cb12"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Choose your RSAT site name</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">RSAT_SITE</span><span class="op">=</span>my_rsat</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co">## Check that you have specified a site name</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;RSAT_SITE </span><span class="va">${RSAT_SITE}</span><span class="st">&quot;</span></span></code></pre></div>
 </div>
-<div id="configuration-of-rsat-parameters-1" class="section level5 unlisted unnumbered">
-<h5 class="unlisted unnumbered">5.3 Configuration of RSAT parameters</h5>
-<div class="sourceCode" id="cb12"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">## Set the main RSAT directory path </span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">RSAT=${INSTALL_ROOT}</span>/rsat</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;RSAT </span><span class="va">${RSAT}</span><span class="st">&quot;</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co">## Go to the main rsat directory</span></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="va">${RSAT}</span></span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="co">## Semi-auto configuration for VirtualBox VM</span></span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="co">## (adapt IP address if required)</span></span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="fu">perl</span> perl-scripts/configure_rsat.pl <span class="at">-auto</span>  <span class="dt">\</span></span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>  rsat=<span class="va">${RSAT}</span> <span class="dt">\</span></span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>  rsat_site=<span class="va">${RSAT_SITE}</span> <span class="dt">\</span></span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>  rsat_www=http://<span class="va">${MY_IP}</span>/rsat/ <span class="dt">\</span></span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>  rsat_ws=http://<span class="va">${MY_IP}</span>/rsat/ <span class="dt">\</span></span>
-<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>  package_manager=<span class="st">&quot;brew&quot;</span> <span class="dt">\</span></span>
-<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>  ucsc_tools=1 <span class="dt">\</span></span>
-<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>  ensembl_tools=1</span></code></pre></div>
-<p>You can add some additional options to the previous command, e.g. enter your mail address as server admin, activate some specific tools that are disabled by default.</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="va">rsat_server_admin=</span>your.mail@your.mail.server</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="va">variation_tools=</span>1</span></code></pre></div>
+<div id="configuration-of-rsat-parameters-1"
+class="section level5 unlisted unnumbered">
+<h5 class="unlisted unnumbered">5.3 Configuration of RSAT
+parameters</h5>
+<div class="sourceCode" id="cb13"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">## Set the main RSAT directory path </span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">RSAT</span><span class="op">=</span><span class="va">${INSTALL_ROOT}</span>/rsat</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;RSAT </span><span class="va">${RSAT}</span><span class="st">&quot;</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="co">## Go to the main rsat directory</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="va">${RSAT}</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="co">## Semi-auto configuration for VirtualBox VM</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="co">## (adapt IP address if required)</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="fu">perl</span> perl-scripts/configure_rsat.pl <span class="at">-auto</span>  <span class="dt">\</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>  rsat=<span class="va">${RSAT}</span> <span class="dt">\</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>  rsat_site=<span class="va">${RSAT_SITE}</span> <span class="dt">\</span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>  rsat_www=http://<span class="va">${MY_IP}</span>/rsat/ <span class="dt">\</span></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>  rsat_ws=http://<span class="va">${MY_IP}</span>/rsat/ <span class="dt">\</span></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>  package_manager=<span class="st">&quot;brew&quot;</span> <span class="dt">\</span></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>  ucsc_tools=1 <span class="dt">\</span></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>  ensembl_tools=1</span></code></pre></div>
+<p>You can add some additional options to the previous command,
+e.g. enter your mail address as server admin, activate some specific
+tools that are disabled by default.</p>
+<div class="sourceCode" id="cb14"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="va">rsat_server_admin</span><span class="op">=</span>your.mail@your.mail.server</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="va">variation_tools</span><span class="op">=</span>1</span></code></pre></div>
 <hr />
 </div>
 </div>
-<div id="advanced-configuration-1" class="section level3 unlisted unnumbered">
+<div id="advanced-configuration-1"
+class="section level3 unlisted unnumbered">
 <h3 class="unlisted unnumbered">Advanced configuration</h3>
-<p><br> To configure all options, you can run the script <code>configure_rsat.pl</code> as below. An interactive prompt will open and you will be able to refine all the configuration options by choosing custom parameter for your RSAT instance (e.g. the email of the local admin, the organism group, etc. ).</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">## Set the main RSAT directory path </span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">RSAT=${INSTALL_ROOT}</span>/rsat</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co">## Check that RSAT directory path has been specified</span></span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;RSAT </span><span class="va">${RSAT}</span><span class="st">&quot;</span></span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="co">## Go to the main rsat directory</span></span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="va">${RSAT}</span></span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Configure all the options</span></span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="fu">perl</span> perl-scripts/configure_rsat.pl</span></code></pre></div>
+<p><br> To configure all options, you can run the script
+<code>configure_rsat.pl</code> as below. An interactive prompt will open
+and you will be able to refine all the configuration options by choosing
+custom parameter for your RSAT instance (e.g. the email of the local
+admin, the organism group, etc. ).</p>
+<div class="sourceCode" id="cb15"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co">## Set the main RSAT directory path </span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">RSAT</span><span class="op">=</span><span class="va">${INSTALL_ROOT}</span>/rsat</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co">## Check that RSAT directory path has been specified</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;RSAT </span><span class="va">${RSAT}</span><span class="st">&quot;</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="co">## Go to the main rsat directory</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="va">${RSAT}</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Configure all the options</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="fu">perl</span> perl-scripts/configure_rsat.pl</span></code></pre></div>
 <!--
 
 ## For the IFB cloud
@@ -621,155 +760,194 @@ chmod 755 /root # required for apache user to access the packages
 </div>
 </div>
 </div>
-<div id="installing-rsat" class="section level1 tabset tabset-fade" number="6">
-<h1 class="tabset tabset-fade" number="6"><span class="header-section-number">6</span> Installing RSAT</h1>
+<div id="installing-rsat" class="section level1 tabset tabset-fade"
+number="6">
+<h1 class="tabset tabset-fade"><span
+class="header-section-number">6</span> Installing RSAT</h1>
 <div id="linux-2" class="section level2 unlisted unnumbered">
 <h2 class="unlisted unnumbered">Linux</h2>
-<p>Before running the installation, it might be worth updating the Linux distribution (<code>apt-get update</code>) in order to get the latest versions of the basic packages. If your Linux OS is not Ubuntu some adaptation of the scripts used in this step will be necessary (e.g. system libraries).</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co">## </span><span class="al">NOTE</span><span class="co">: you must now move to the $INSTALL_ROOT directory before becoming admin</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="va">${INSTALL_ROOT}</span></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co">## This requires admin privileges</span></span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> bash</span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="co">## Go to the RSAT directory</span></span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">INSTALL_ROOT=</span><span class="kw">`</span><span class="bu">pwd</span><span class="kw">`</span></span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="va">${INSTALL_ROOT}</span>/rsat</span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="co">## Check who you are  (should be root)</span></span>
-<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a><span class="fu">whoami</span></span>
-<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a><span class="co">## Define your operating system</span></span>
-<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">MY_OS=</span>ubuntu</span>
-<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a><span class="co">## Read config and run bash installation scripts</span></span>
-<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> RSAT_config.bashrc <span class="kw">&amp;&amp;</span> <span class="dt">\</span></span>
-<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a><span class="ex">bash</span> installer/01_<span class="va">${MY_OS}</span>_packages.bash <span class="kw">&amp;&amp;</span> <span class="dt">\</span></span>
-<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a><span class="ex">bash</span> installer/02_python_packages.bash  <span class="kw">&amp;&amp;</span> <span class="dt">\</span></span>
-<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a><span class="ex">bash</span> installer/03_install_rsat.bash <span class="kw">&amp;&amp;</span> <span class="dt">\</span></span>
-<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a><span class="ex">bash</span> installer/04_perl_packages.bash  <span class="kw">&amp;&amp;</span> <span class="dt">\</span></span>
-<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a><span class="ex">bash</span> installer/06_install_organisms.bash <span class="kw">&amp;&amp;</span> <span class="dt">\</span></span>
-<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a><span class="ex">bash</span> installer/07_R-and-packages.bash  <span class="kw">&amp;&amp;</span> <span class="dt">\</span></span>
-<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a><span class="ex">bash</span> installer/08_apache_config.bash <span class="kw">&amp;&amp;</span> <span class="dt">\</span></span>
-<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a><span class="ex">bash</span> installer/09_rsat_ws.bash <span class="kw">&amp;&amp;</span> <span class="dt">\</span></span>
-<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a><span class="ex">bash</span> installer/10_clean_unnecessary_files.bash</span>
-<span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-29"><a href="#cb15-29" aria-hidden="true" tabindex="-1"></a><span class="co">## </span><span class="al">NOTE</span><span class="co">: the following command should be adapted to your case.</span></span>
-<span id="cb15-30"><a href="#cb15-30" aria-hidden="true" tabindex="-1"></a><span class="co">## Restore the *login* and *group* of the user owing the $RSAT folder.</span></span>
-<span id="cb15-31"><a href="#cb15-31" aria-hidden="true" tabindex="-1"></a><span class="fu">chown</span> <span class="at">-R</span> MyLogin:MyGroup <span class="va">$RSAT</span></span>
-<span id="cb15-32"><a href="#cb15-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-33"><a href="#cb15-33" aria-hidden="true" tabindex="-1"></a><span class="co">## Exit sudo session</span></span>
-<span id="cb15-34"><a href="#cb15-34" aria-hidden="true" tabindex="-1"></a><span class="bu">exit</span></span>
-<span id="cb15-35"><a href="#cb15-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-36"><a href="#cb15-36" aria-hidden="true" tabindex="-1"></a><span class="co">## Check who you are (should be back to normal user identity)</span></span>
-<span id="cb15-37"><a href="#cb15-37" aria-hidden="true" tabindex="-1"></a><span class="fu">whoami</span> <span class="co">## This should give *YourUserName*</span></span></code></pre></div>
+<p>Before running the installation, it might be worth updating the Linux
+distribution (<code>apt-get update</code>) in order to get the latest
+versions of the basic packages. If your Linux OS is not Ubuntu some
+adaptation of the scripts used in this step will be necessary
+(e.g. system libraries).</p>
+<div class="sourceCode" id="cb16"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co">## </span><span class="al">NOTE</span><span class="co">: you must now move to the $INSTALL_ROOT directory before becoming admin</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="va">${INSTALL_ROOT}</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="co">## This requires admin privileges</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> bash</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="co">## Go to the RSAT directory</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">INSTALL_ROOT</span><span class="op">=</span><span class="kw">`</span><span class="bu">pwd</span><span class="kw">`</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="va">${INSTALL_ROOT}</span>/rsat</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="co">## Check who you are  (should be root)</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a><span class="fu">whoami</span></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a><span class="co">## Define your operating system</span></span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">MY_OS</span><span class="op">=</span>ubuntu</span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a><span class="co">## Read config and run bash installation scripts</span></span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> RSAT_config.bashrc <span class="kw">&amp;&amp;</span> <span class="dt">\</span></span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> installer/01_<span class="va">${MY_OS}</span>_packages.bash <span class="kw">&amp;&amp;</span> <span class="dt">\</span></span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> installer/02_python_packages.bash  <span class="kw">&amp;&amp;</span> <span class="dt">\</span></span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> installer/03_install_rsat.bash <span class="kw">&amp;&amp;</span> <span class="dt">\</span></span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> installer/04_perl_packages.bash  <span class="kw">&amp;&amp;</span> <span class="dt">\</span></span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> installer/06_install_organisms.bash <span class="kw">&amp;&amp;</span> <span class="dt">\</span></span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> installer/07_R-and-packages.bash  <span class="kw">&amp;&amp;</span> <span class="dt">\</span></span>
+<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> installer/08_apache_config.bash <span class="kw">&amp;&amp;</span> <span class="dt">\</span></span>
+<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> installer/09_rsat_ws.bash <span class="kw">&amp;&amp;</span> <span class="dt">\</span></span>
+<span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> installer/10_clean_unnecessary_files.bash</span>
+<span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a><span class="co">## </span><span class="al">NOTE</span><span class="co">: the following command should be adapted to your case.</span></span>
+<span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a><span class="co">## Restore the *login* and *group* of the user owing the $RSAT folder.</span></span>
+<span id="cb16-31"><a href="#cb16-31" aria-hidden="true" tabindex="-1"></a><span class="fu">chown</span> <span class="at">-R</span> MyLogin:MyGroup <span class="va">$RSAT</span></span>
+<span id="cb16-32"><a href="#cb16-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-33"><a href="#cb16-33" aria-hidden="true" tabindex="-1"></a><span class="co">## Exit sudo session</span></span>
+<span id="cb16-34"><a href="#cb16-34" aria-hidden="true" tabindex="-1"></a><span class="bu">exit</span></span>
+<span id="cb16-35"><a href="#cb16-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-36"><a href="#cb16-36" aria-hidden="true" tabindex="-1"></a><span class="co">## Check who you are (should be back to normal user identity)</span></span>
+<span id="cb16-37"><a href="#cb16-37" aria-hidden="true" tabindex="-1"></a><span class="fu">whoami</span> <span class="co">## This should give *YourUserName*</span></span></code></pre></div>
 <hr />
 </div>
 <div id="mac-os-x-2" class="section level2 unlisted unnumbered">
 <h2 class="unlisted unnumbered">Mac OS X</h2>
-<div class="sourceCode" id="cb16"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co">## Go to the main rsat directory</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="va">${RSAT}</span></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="co">## Read config file and run bash installation scripts for &#39;brew&#39; packages</span></span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> RSAT_config.bashrc <span class="kw">&amp;&amp;</span> <span class="dt">\</span></span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="ex">bash</span> installer/01_macosx_packages.bash </span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="co">## </span><span class="al">NOTE</span><span class="co">: you must now move to the $INSTALL_ROOT directory before becoming admin</span></span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="va">${INSTALL_ROOT}</span></span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="co">## This requires admin privileges</span></span>
-<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> bash</span>
-<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a><span class="co">## Go to the RSAT directory</span></span>
-<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">INSTALL_ROOT=</span><span class="kw">`</span><span class="bu">pwd</span><span class="kw">`</span></span>
-<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">RSAT=${INSTALL_ROOT}</span>/rsat</span>
-<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="va">${RSAT}</span></span>
-<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a><span class="co">## Check who you are  (should be &#39;root&#39;)</span></span>
-<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a><span class="fu">whoami</span></span>
-<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a><span class="co">## Read config file and run the remaining bash installation scripts</span></span>
-<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> RSAT_config.bashrc <span class="kw">&amp;&amp;</span></span>
-<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> installer/02_python_packages.bash  <span class="kw">&amp;&amp;</span> <span class="dt">\</span></span>
-<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a><span class="ex">bash</span> installer/03_install_rsat.bash <span class="kw">&amp;&amp;</span> <span class="dt">\</span></span>
-<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a><span class="ex">bash</span> installer/04_perl_packages.bash  <span class="kw">&amp;&amp;</span> <span class="dt">\</span></span>
-<span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a><span class="ex">bash</span> installer/06_install_organisms.bash <span class="kw">&amp;&amp;</span> <span class="dt">\</span></span>
-<span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a><span class="ex">bash</span> installer/07_R-and-packages.bash  <span class="kw">&amp;&amp;</span> <span class="dt">\</span></span>
-<span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a><span class="ex">bash</span> installer/08_apache_config.bash <span class="kw">&amp;&amp;</span> <span class="dt">\</span></span>
-<span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a><span class="ex">bash</span> installer/09_rsat_ws.bash <span class="kw">&amp;&amp;</span> <span class="dt">\</span></span>
-<span id="cb16-31"><a href="#cb16-31" aria-hidden="true" tabindex="-1"></a><span class="ex">bash</span> installer/10_clean_unnecessary_files.bash</span>
-<span id="cb16-32"><a href="#cb16-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-33"><a href="#cb16-33" aria-hidden="true" tabindex="-1"></a><span class="co">## </span><span class="al">NOTE</span><span class="co">: the following command should be adapted to your case.</span></span>
-<span id="cb16-34"><a href="#cb16-34" aria-hidden="true" tabindex="-1"></a><span class="co">## Restore the *login* and *group* of the user owing the $RSAT folder.</span></span>
-<span id="cb16-35"><a href="#cb16-35" aria-hidden="true" tabindex="-1"></a><span class="fu">chown</span> <span class="at">-R</span> MyLogin:MyGroup <span class="va">$RSAT</span></span>
-<span id="cb16-36"><a href="#cb16-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-37"><a href="#cb16-37" aria-hidden="true" tabindex="-1"></a><span class="co">## Exit sudo session</span></span>
-<span id="cb16-38"><a href="#cb16-38" aria-hidden="true" tabindex="-1"></a><span class="bu">exit</span></span>
-<span id="cb16-39"><a href="#cb16-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-40"><a href="#cb16-40" aria-hidden="true" tabindex="-1"></a><span class="co">## Check who you are (should be back to normal user identity)</span></span>
-<span id="cb16-41"><a href="#cb16-41" aria-hidden="true" tabindex="-1"></a><span class="fu">whoami</span> <span class="co">## This should give *YourUserName*</span></span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co">## Go to the main rsat directory</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="va">${RSAT}</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="co">## Read config file and run bash installation scripts for &#39;brew&#39; packages</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> RSAT_config.bashrc <span class="kw">&amp;&amp;</span> <span class="dt">\</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> installer/01_macosx_packages.bash </span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="co">## </span><span class="al">NOTE</span><span class="co">: you must now move to the $INSTALL_ROOT directory before becoming admin</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="va">${INSTALL_ROOT}</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a><span class="co">## This requires admin privileges</span></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> bash</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a><span class="co">## Go to the RSAT directory</span></span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">INSTALL_ROOT</span><span class="op">=</span><span class="kw">`</span><span class="bu">pwd</span><span class="kw">`</span></span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">RSAT</span><span class="op">=</span><span class="va">${INSTALL_ROOT}</span>/rsat</span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="va">${RSAT}</span></span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a><span class="co">## Check who you are  (should be &#39;root&#39;)</span></span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a><span class="fu">whoami</span></span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a><span class="co">## Read config file and run the remaining bash installation scripts</span></span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> RSAT_config.bashrc <span class="kw">&amp;&amp;</span></span>
+<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> installer/02_python_packages.bash  <span class="kw">&amp;&amp;</span> <span class="dt">\</span></span>
+<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> installer/03_install_rsat.bash <span class="kw">&amp;&amp;</span> <span class="dt">\</span></span>
+<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> installer/04_perl_packages.bash  <span class="kw">&amp;&amp;</span> <span class="dt">\</span></span>
+<span id="cb17-27"><a href="#cb17-27" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> installer/06_install_organisms.bash <span class="kw">&amp;&amp;</span> <span class="dt">\</span></span>
+<span id="cb17-28"><a href="#cb17-28" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> installer/07_R-and-packages.bash  <span class="kw">&amp;&amp;</span> <span class="dt">\</span></span>
+<span id="cb17-29"><a href="#cb17-29" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> installer/08_apache_config.bash <span class="kw">&amp;&amp;</span> <span class="dt">\</span></span>
+<span id="cb17-30"><a href="#cb17-30" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> installer/09_rsat_ws.bash <span class="kw">&amp;&amp;</span> <span class="dt">\</span></span>
+<span id="cb17-31"><a href="#cb17-31" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> installer/10_clean_unnecessary_files.bash</span>
+<span id="cb17-32"><a href="#cb17-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-33"><a href="#cb17-33" aria-hidden="true" tabindex="-1"></a><span class="co">## </span><span class="al">NOTE</span><span class="co">: the following command should be adapted to your case.</span></span>
+<span id="cb17-34"><a href="#cb17-34" aria-hidden="true" tabindex="-1"></a><span class="co">## Restore the *login* and *group* of the user owing the $RSAT folder.</span></span>
+<span id="cb17-35"><a href="#cb17-35" aria-hidden="true" tabindex="-1"></a><span class="fu">chown</span> <span class="at">-R</span> MyLogin:MyGroup <span class="va">$RSAT</span></span>
+<span id="cb17-36"><a href="#cb17-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-37"><a href="#cb17-37" aria-hidden="true" tabindex="-1"></a><span class="co">## Exit sudo session</span></span>
+<span id="cb17-38"><a href="#cb17-38" aria-hidden="true" tabindex="-1"></a><span class="bu">exit</span></span>
+<span id="cb17-39"><a href="#cb17-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-40"><a href="#cb17-40" aria-hidden="true" tabindex="-1"></a><span class="co">## Check who you are (should be back to normal user identity)</span></span>
+<span id="cb17-41"><a href="#cb17-41" aria-hidden="true" tabindex="-1"></a><span class="fu">whoami</span> <span class="co">## This should give *YourUserName*</span></span></code></pre></div>
 <hr />
 </div>
 </div>
 <div id="testing-your-rsat-instance" class="section level1" number="7">
-<h1 number="7"><span class="header-section-number">7</span> Testing your RSAT instance</h1>
+<h1><span class="header-section-number">7</span> Testing your RSAT
+instance</h1>
 <div id="testing-the-command-lines" class="section level2" number="7.1">
-<h2 number="7.1"><span class="header-section-number">7.1</span> Testing the command lines</h2>
-<p>The script <code>makefile/install_tests.mk</code> runs a series of tests for different components of the <em>RSAT</em> suite. Each test result is stored in a separate file in the test directory (<code>./install_tests</code> by default). Output file names are printed out after each test.</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co">## Load the RSAT configuration</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="va">${INSTALL_ROOT}</span>/rsat</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> RSAT_config.bashrc</span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="va">$RSAT</span></span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> <span class="at">-f</span> makefiles/install_tests.mk all</span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="co">## Check the results</span></span>
-<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-ltr</span> install_tests</span></code></pre></div>
+<h2><span class="header-section-number">7.1</span> Testing the command
+lines</h2>
+<p>The script <code>makefile/install_tests.mk</code> runs a series of
+tests for different components of the <em>RSAT</em> suite. Each test
+result is stored in a separate file in the test directory
+(<code>./install_tests</code> by default). Output file names are printed
+out after each test.</p>
+<div class="sourceCode" id="cb18"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co">## Load the RSAT configuration</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="va">${INSTALL_ROOT}</span>/rsat</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> RSAT_config.bashrc</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="va">$RSAT</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> <span class="at">-f</span> makefiles/install_tests.mk all</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="co">## Check the results</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-ltr</span> install_tests</span></code></pre></div>
 <hr />
 </div>
 <div id="testing-the-web-server" class="section level2" number="7.2">
-<h2 number="7.2"><span class="header-section-number">7.2</span> Testing the Web server</h2>
-<p>The RSAT Web site can be found at your host IP address followed by rsat: <a href="http://%5Bmy.computer.ip.address%5D/rsat/" class="uri">http://[my.computer.ip.address]/rsat/</a></p>
-<p>e.g. for VirtualBox VM: <a href="http://192.168.56.101/rsat/" class="uri">http://192.168.56.101/rsat/</a></p>
-<p>The web site can be tested by selecting any supported tool, clicking on the demo button and checking the result.</p>
-<p>We usually use the following tools as diagnostic of the proper functioning of a server.</p>
+<h2><span class="header-section-number">7.2</span> Testing the Web
+server</h2>
+<p>The RSAT Web site can be found at your host IP address followed by
+rsat: <a href="http://%5Bmy.computer.ip.address%5D/rsat/"
+class="uri">http://[my.computer.ip.address]/rsat/</a></p>
+<p>e.g. for VirtualBox VM: <a href="http://192.168.56.101/rsat/"
+class="uri">http://192.168.56.101/rsat/</a></p>
+<p>The web site can be tested by selecting any supported tool, clicking
+on the demo button and checking the result.</p>
+<p>We usually use the following tools as diagnostic of the proper
+functioning of a server.</p>
 <ol style="list-style-type: decimal">
-<li><p><strong>Supported organisms</strong> to check if the default organisms have been installed.</p></li>
+<li><p><strong>Supported organisms</strong> to check if the default
+organisms have been installed.</p></li>
 <li><p><strong>Fetch sequences from UCSC</strong>:</p>
 <ul>
-<li>is the list of organisms is correctly displayed (obtained dynamically from UCSC) ?</li>
+<li>is the list of organisms is correctly displayed (obtained
+dynamically from UCSC) ?</li>
 <li>run the demo: do you obtain fasta sequences ?</li>
 </ul></li>
 <li><p><strong>retrieven Ensembl seq</strong>:</p>
 <ul>
-<li>is the list of organisms is correctly displayed (obtained dynamically from Ensembl) ?</li>
-<li>run the demo 1 (single organism): do you obtain fasta sequences ?</li>
+<li>is the list of organisms is correctly displayed (obtained
+dynamically from Ensembl) ?</li>
+<li>run the demo 1 (single organism): do you obtain fasta sequences
+?</li>
 </ul></li>
-<li><p><strong>convert-matrix</strong>: check that logos are properly generated</p></li>
-<li><p><strong>gene-info</strong> to <strong>feature-map</strong>: check that the genes are well returned with gene-info, then successively send the results throught the following tools:</p>
+<li><p><strong>convert-matrix</strong>: check that logos are properly
+generated</p></li>
+<li><p><strong>gene-info</strong> to <strong>feature-map</strong>: check
+that the genes are well returned with gene-info, then successively send
+the results throught the following tools:</p>
 <ul>
-<li><p><strong>gene-info</strong> demo -&gt; gene list. Check if you obtain a table with genes. If so, under <em>Next steps</em>, click the button <em>retrieve sequences</em>.</p></li>
-<li><p><strong>retrieve sequences</strong>. Click “Run Analysis” then “GO”. In the result, check the fasta file. Next step: <em>oligo-analysis</em>.</p></li>
-<li><p><strong>oligo-analysis</strong>. In the result, check the k-mers (oligos) then the matrices and the logos. In the Next step box, end the result to <em>string-based pattern matching</em>.</p></li>
+<li><p><strong>gene-info</strong> demo -&gt; gene list. Check if you
+obtain a table with genes. If so, under <em>Next steps</em>, click the
+button <em>retrieve sequences</em>.</p></li>
+<li><p><strong>retrieve sequences</strong>. Click “Run Analysis” then
+“GO”. In the result, check the fasta file. Next step:
+<em>oligo-analysis</em>.</p></li>
+<li><p><strong>oligo-analysis</strong>. In the result, check the k-mers
+(oligos) then the matrices and the logos. In the Next step box, end the
+result to <em>string-based pattern matching</em>.</p></li>
 <li><p><strong>dna-pattern</strong></p></li>
-<li><p><strong>feature-map</strong> check that the png figure is properly generated and displayed.</p></li>
+<li><p><strong>feature-map</strong> check that the png figure is
+properly generated and displayed.</p></li>
 </ul></li>
 </ol>
-<p>At the end of this process the results should look like the figure below.</p>
+<p>At the end of this process the results should look like the figure
+below.</p>
 <div class="figure" style="text-align: center">
 <img src="images/feature-map_web_result.png" alt="**Feature-map result** at the end of the pipeline from *gene-info* to *feature-map*." width="60%" />
 <p class="caption">
-<strong>Feature-map result</strong> at the end of the pipeline from <em>gene-info</em> to <em>feature-map</em>.
+<strong>Feature-map result</strong> at the end of the pipeline from
+<em>gene-info</em> to <em>feature-map</em>.
 </p>
 </div>
 </div>
 <div id="testing-the-web-services" class="section level2" number="7.3">
-<h2 number="7.3"><span class="header-section-number">7.3</span> Testing the Web services</h2>
+<h2><span class="header-section-number">7.3</span> Testing the Web
+services</h2>
 <div id="soapwsdl-interface" class="section level3" number="7.3.1">
-<h3 number="7.3.1"><span class="header-section-number">7.3.1</span> SOAP/WSDL interface</h3>
+<h3><span class="header-section-number">7.3.1</span> SOAP/WSDL
+interface</h3>
 </div>
 <div id="rest-interface" class="section level3" number="7.3.2">
-<h3 number="7.3.2"><span class="header-section-number">7.3.2</span> REST interface</h3>
+<h3><span class="header-section-number">7.3.2</span> REST interface</h3>
 <!-- **************************************************************** -->
 <!-- # Supplementary information -->
 <!-- ## Files -->
@@ -877,6 +1055,9 @@ $(document).ready(function () {
 
 <script>
 $(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
 
     // move toc-ignore selectors from section div to header
     $('div.section.toc-ignore')
