@@ -262,6 +262,23 @@ To configure all options, you can run the script `configure_rsat.pl` as below. A
 perl perl-scripts/configure_rsat.pl
 ```
 
+If you want to secure your RSAT Web server by providing HTTPS connections, 
+the following steps should work on Ubuntu or Debian systems:
+
+```{bash}
+sudo apt install snapd
+sudo snap install core
+sudo snap refresh core
+sudo snap install --classic certbot
+sudo ln -s /snap/bin/certbot /usr/bin/certbot
+
+# installation of certificate for Apache 
+sudo certbot --apache -d instance.name
+
+# certificate renewal 
+sudo certbot renew
+```
+
 
 ****************************************************************
 
