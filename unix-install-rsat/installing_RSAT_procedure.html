@@ -9,9 +9,9 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
-<meta name="author" content="Jacques van Helden" />
+<meta name="author" content="Jacques van Helden, Bruno Contreras Moreira" />
 
-<meta name="date" content="2022-12-19" />
+<meta name="date" content="2022-12-20" />
 
 <title>Installing RSAT on a Unix operating system</title>
 
@@ -329,8 +329,8 @@ div.tocify {
 
 <h1 class="title toc-ignore">Installing RSAT on a Unix operating
 system</h1>
-<h4 class="author">Jacques van Helden</h4>
-<h4 class="date">2022-12-19</h4>
+<h4 class="author">Jacques van Helden, Bruno Contreras Moreira</h4>
+<h4 class="date">2022-12-20</h4>
 
 </div>
 
@@ -877,31 +877,89 @@ class="sourceCode bash"><code class="sourceCode bash"><span id="cb18-1"><a href=
 <hr />
 </div>
 </div>
-<div id="testing-your-rsat-instance" class="section level1" number="7">
-<h1><span class="header-section-number">7</span> Testing your RSAT
+<div id="managing-a-rsat-web-server" class="section level1" number="7">
+<h1><span class="header-section-number">7</span> Managing a RSAT Web
+server</h1>
+<!-- adapted from https://github.com/rsa-tools/rsat-code/blob/master/doc/manuals/rsat_web_server.tex -->
+<div id="access-logs" class="section level2" number="7.1">
+<h2><span class="header-section-number">7.1</span> Access logs</h2>
+<p>Each time a script is executed via the RSAT server, some basic
+information is stored in a log file. This information is minimal: it is
+restricted to the time, name of the script executed, and the IP address
+of the client machine. We do not want to store any additional
+information (e.g. selected organism, lists of genes), for obvious
+confidentiality reasons.</p>
+<p>The log files are saved in the directory <em>${RSAT}/logs</em>. There
+is one file per month.</p>
+</div>
+<div id="cleaning-the-temporary-directory" class="section level2"
+number="7.2">
+<h2><span class="header-section-number">7.2</span> Cleaning the
+temporary directory</h2>
+<p>The Web server stores result files in a temporary directory
+<em>${RSAT}/public_html/tmp</em>. These files should remain 3 days on
+the server, in order to allow users to consult their results.</p>
+<div id="manual-cleaning" class="section level3" number="7.2.1">
+<h3><span class="header-section-number">7.2.1</span> Manual
+cleaning</h3>
+<p>The RSAT package includes a make script to clean old files in the
+temporary directory.</p>
+<div class="sourceCode" id="cb19"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="va">$RSAT</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> <span class="at">-f</span> makefiles/server.mk clean_tmp</span></code></pre></div>
+<p>This command cleans all the files older than 3 days. You can clean
+more recent files by modifying the variable CLEAN_DATE.</p>
+<div class="sourceCode" id="cb20"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> <span class="at">-f</span> makefiles/server.mk clean_tmp  CLEAN_DATE=1</span></code></pre></div>
+<p>This will clean all files older than 1 day.</p>
+</div>
+<div id="automatic-cleaning" class="section level3" number="7.2.2">
+<h3><span class="header-section-number">7.2.2</span> Automatic
+cleaning</h3>
+<p>The automatic management of the temporary directory can be greatly
+facilitated the <em>crontab</em> command. For this, you need to add a
+command to a <em>crontab</em> configuration file, preferably from a
+superuser.</p>
+<ul>
+<li><p>Start editing the crontab; this will open your <em>crontab</em>
+file with a text editor available in your system.</p>
+<div class="sourceCode" id="cb21"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">crontab</span> <span class="at">-e</span></span></code></pre></div></li>
+<li><p>Add the following line to execute the clean script daily at
+midnight:</p>
+<pre><code>0 0 * * * make -f ${RSAT}/makefiles/server.mk clean_tmp</code></pre></li>
+<li><p>Save the modified crontab file and close your text
+editor.</p></li>
+</ul>
+<hr />
+</div>
+</div>
+</div>
+<div id="testing-your-rsat-instance" class="section level1" number="8">
+<h1><span class="header-section-number">8</span> Testing your RSAT
 instance</h1>
-<div id="testing-the-command-lines" class="section level2" number="7.1">
-<h2><span class="header-section-number">7.1</span> Testing the command
+<div id="testing-the-command-lines" class="section level2" number="8.1">
+<h2><span class="header-section-number">8.1</span> Testing the command
 lines</h2>
 <p>The script <code>makefile/install_tests.mk</code> runs a series of
 tests for different components of the <em>RSAT</em> suite. Each test
 result is stored in a separate file in the test directory
 (<code>./install_tests</code> by default). Output file names are printed
 out after each test.</p>
-<div class="sourceCode" id="cb19"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co">## Load the RSAT configuration</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="va">${INSTALL_ROOT}</span>/rsat</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> RSAT_config.bashrc</span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="va">$RSAT</span></span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> <span class="at">-f</span> makefiles/install_tests.mk all</span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="co">## Check the results</span></span>
-<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-ltr</span> install_tests</span></code></pre></div>
+<div class="sourceCode" id="cb23"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co">## Load the RSAT configuration</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="va">${INSTALL_ROOT}</span>/rsat</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> RSAT_config.bashrc</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="va">$RSAT</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> <span class="at">-f</span> makefiles/install_tests.mk all</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a><span class="co">## Check the results</span></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-ltr</span> install_tests</span></code></pre></div>
 <hr />
 </div>
-<div id="testing-the-web-server" class="section level2" number="7.2">
-<h2><span class="header-section-number">7.2</span> Testing the Web
+<div id="testing-the-web-server" class="section level2" number="8.2">
+<h2><span class="header-section-number">8.2</span> Testing the Web
 server</h2>
 <p>The RSAT Web site can be found at your host IP address followed by
 rsat: <a href="http://%5Bmy.computer.ip.address%5D/rsat/"
@@ -958,8 +1016,8 @@ below.</p>
 </p>
 </div>
 <div id="troubleshooting-403-forbidden-error" class="section level3"
-number="7.2.1">
-<h3><span class="header-section-number">7.2.1</span> Troubleshooting:
+number="8.2.1">
+<h3><span class="header-section-number">8.2.1</span> Troubleshooting:
 403 Forbidden Error</h3>
 <p>If a 403 Forbidden Error appears when you test your local RSAT
 website such as with <code>http://localhost/rsat/</code>, follow the
@@ -969,8 +1027,8 @@ next steps:</p>
 RSAT web server configuration files at your
 <code>/etc/apache2/sites-enabled</code> directory.</li>
 </ol>
-<div class="sourceCode" id="cb20"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> /etc/apache2/sites-enabled</span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> /etc/apache2/sites-enabled</span></code></pre></div>
 <p>As an example, in config file <code>RSAT_config.conf</code>, the
 directory paths to your RSAT in the next chunk should look similar to
 this (as signaled by arrows):</p>
@@ -1013,45 +1071,45 @@ SetEnv R_LIBS_USER /home/user/packages/rsat/R-scripts/Rpackages/  ## &lt;-----
     Require all granted
 &lt;/Directory&gt;</code></pre>
 <p>If that’s not the case, change them.</p>
-<div class="sourceCode" id="cb22"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co">## check the RSAT path you defined before</span></span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="va">$RSAT</span> <span class="co"># copy the dir</span></span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="co">## You need sudo permissions</span></span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> su</span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="fu">nano</span> RSAT_config.conf</span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co">## check the RSAT path you defined before</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="va">$RSAT</span> <span class="co"># copy the dir</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="co">## You need sudo permissions</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> su</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="fu">nano</span> RSAT_config.conf</span></code></pre></div>
 <p>Replace the paths (such as <code>/home/user/packages/rsat/</code> in
 the example) for the <code>dir/to/rsat</code> you copied earlier, making
 sure to keep the RSAT inner directories in the paths (such as
 <code>public_html/tutorials/</code>) unchanged.</p>
-<div class="sourceCode" id="cb23"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># CTRL + O to save</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="co"># CTRL + X to exit</span></span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="fu">nano</span> RSAT_config_default_apache2.2.conf</span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="co">## change paths</span></span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="co"># CTRL + O to save</span></span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="co"># CTRL + X to exit</span></span></code></pre></div>
+<div class="sourceCode" id="cb27"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># CTRL + O to save</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="co"># CTRL + X to exit</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="fu">nano</span> RSAT_config_default_apache2.2.conf</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="co">## change paths</span></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="co"># CTRL + O to save</span></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a><span class="co"># CTRL + X to exit</span></span></code></pre></div>
 <ol start="2" style="list-style-type: decimal">
 <li><p>Repeat process for RSAT config files at
 <code>/etc/apache2/sites-available</code>.</p></li>
 <li><p>To make sure <code>.cgi</code> scripts work:</p></li>
 </ol>
-<div class="sourceCode" id="cb24"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ../</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="ex">a2enmod</span> cgid</span></code></pre></div>
+<div class="sourceCode" id="cb28"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ../</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="ex">a2enmod</span> cgid</span></code></pre></div>
 <ol start="4" style="list-style-type: decimal">
 <li>Restart apache:</li>
 </ol>
-<div class="sourceCode" id="cb25"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="ex">service</span> apache2 restart</span></code></pre></div>
+<div class="sourceCode" id="cb29"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="ex">service</span> apache2 restart</span></code></pre></div>
 <ol start="5" style="list-style-type: decimal">
 <li>Give permission in your RSAT instance</li>
 </ol>
-<div class="sourceCode" id="cb26"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="va">$INSTALL_ROOT</span>/..</span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> 777 <span class="at">-R</span> <span class="va">$INSTALL_ROOT</span></span></code></pre></div>
+<div class="sourceCode" id="cb30"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="va">$INSTALL_ROOT</span>/..</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> 777 <span class="at">-R</span> <span class="va">$INSTALL_ROOT</span></span></code></pre></div>
 <ol start="6" style="list-style-type: decimal">
 <li>Your RSAT web server should work now.</li>
 </ol>
@@ -1060,15 +1118,15 @@ class="sourceCode bash"><code class="sourceCode bash"><span id="cb26-1"><a href=
 </p>
 </div>
 </div>
-<div id="testing-the-web-services" class="section level2" number="7.3">
-<h2><span class="header-section-number">7.3</span> Testing the Web
+<div id="testing-the-web-services" class="section level2" number="8.3">
+<h2><span class="header-section-number">8.3</span> Testing the Web
 services</h2>
-<div id="soapwsdl-interface" class="section level3" number="7.3.1">
-<h3><span class="header-section-number">7.3.1</span> SOAP/WSDL
+<div id="soapwsdl-interface" class="section level3" number="8.3.1">
+<h3><span class="header-section-number">8.3.1</span> SOAP/WSDL
 interface</h3>
 </div>
-<div id="rest-interface" class="section level3 tabset" number="7.3.2">
-<h3 class="tabset"><span class="header-section-number">7.3.2</span> REST
+<div id="rest-interface" class="section level3 tabset" number="8.3.2">
+<h3 class="tabset"><span class="header-section-number">8.3.2</span> REST
 interface</h3>
 <p><a href="http://rsat-tagc.univ-mrs.fr/rest/">Click here for a web
 version of REST</a>.</p>
@@ -1083,8 +1141,8 @@ binding specificity of 12 transcription factors known to regulate eve.
 These matrices were built from binding sites annotated in the ORegAnno
 database by Jean-Valery Turatsinze.</p>
 </blockquote>
-<div id="script" class="section level4" number="7.3.2.1">
-<h4><span class="header-section-number">7.3.2.1</span>
+<div id="script" class="section level4" number="8.3.2.1">
+<h4><span class="header-section-number">8.3.2.1</span>
 <strong>Script</strong></h4>
 <p>This is an example for using REST-API scripts which are available in
 your RSAT instance in dir
@@ -1107,29 +1165,29 @@ mentioned above.</p></li>
 </ol>
 <p>Edit the following arguments as follows, read the comments for
 information regarding them:</p>
-<div class="sourceCode" id="cb27"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># fasta sequences where we are going to look for sites (Drosophila melanogaster 5kbps upstream from eve gene)</span></span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>        <span class="co">&quot;i_string&quot;</span> : <span class="st">&quot;http://rsat-tagc.univ-mrs.fr/rsat/demo_files/Dmelanogaster_eve_up5000.fasta&quot;</span>, <span class="co">##Input string specifying the query. The value can be the query content, the URL of a file available on some Web server, the internal path of the result file returned by another tool of this RSAT server (piping for workflows).</span></span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>        <span class="co">&quot;i_string_type&quot;</span> : <span class="st">&quot;url&quot;</span>, <span class="co">##Type of information provided by the input string. Supported values: url: URL (Web address) to the input file; piping: result file from other tool; text: input content</span></span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>        <span class="co">&quot;seq_format&quot;</span> : <span class="st">&quot;fasta&quot;</span>, <span class="co">##String. Sequence format.</span></span>
-<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>        <span class="co"># transcription factor binding motifs matrixes or PSSMs (12 motifs for TFs known to regulate eve)</span></span>
-<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>        <span class="co">&quot;m_string&quot;</span> : <span class="st">&quot;http://rsat-tagc.univ-mrs.fr/rsat/demo_files/Dmelanogaster_segmentation_12matrices.tf&quot;</span>, <span class="co">##Input string specifying the query. The value can be the query content, the URL of a file available on some Web server, the internal path of the result file returned by another tool of this RSAT server (piping for workflows).</span></span>
-<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>        <span class="co">&quot;m_string_type&quot;</span> : <span class="st">&quot;url&quot;</span>, <span class="co">##Type of information provided by the input string. Supported values: url: URL (Web address) to the input file; piping: result file from other tool; text: input content</span></span>
-<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>        <span class="co">&quot;matrix_format&quot;</span> : <span class="st">&quot;transfac&quot;</span>, <span class="co">##String. Matrix suffix. This argument is mandatory.</span></span>
-<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>        <span class="co">&quot;n&quot;</span> : <span class="st">&quot;score&quot;</span>, <span class="co">##String. Treatment of N characters. These characters are often used in DNA sequences to represent undefined or masked nucleotides. Supported: skip, score.</span></span>
-<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>        <span class="co">&quot;pseudo&quot;</span> : <span class="dv">1</span>, <span class="co">##Number. Pseudo-count for the matrix (default 1).</span></span>
-<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>        <span class="co">&quot;markov_order&quot;</span> : <span class="dv">1</span>, <span class="co">##Integer. Markov order for background model. Only when bgfile is not specified.</span></span>
-<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>        <span class="co">&quot;bginput&quot;</span> : <span class="va">True</span>, <span class="co">##Boolean. Calculate background model from the input sequence set.</span></span>
-<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>        <span class="co">&quot;bg_pseudo&quot;</span> : <span class="fl">0.01</span>, <span class="co">##Number. Pseudo frequency for the background model. Value must be a real between 0 and 1</span></span>
-<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>        <span class="co">&quot;markov&quot;</span> : <span class="dv">1</span>, <span class="co">##Integer. Order of the markov chain for the background model.</span></span>
-<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a>        <span class="co">&quot;origin&quot;</span> : <span class="st">&quot;end&quot;</span>, <span class="co">##String. Specify the origin for the calculation of positions. Supported: start, end, center, chrom</span></span>
-<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a>        <span class="co">&quot;offset&quot;</span> : <span class="dv">0</span>, <span class="co">##Integer. Add a given number to site positions (change the reference point).</span></span>
-<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a>        <span class="co">&quot;2str&quot;</span> : <span class="va">True</span>, <span class="co">##Boolean. Scan both strands for DNA sequences</span></span>
-<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a>        <span class="co">&quot;return&quot;</span> : <span class="st">&quot;sites,pval,limits&quot;</span>, <span class="co">##String. lists of fields to return. Supported fields - sites, p_score, pval, seq_scores, rank, normw, proba_BM, limits,weight_limits, distrib, occ_proba, bg_model,bg_residues, matrix, freq_matrix, weight_matrix,crer</span></span>
-<span id="cb27-19"><a href="#cb27-19" aria-hidden="true" tabindex="-1"></a>        <span class="co"># weight score. Positive means that the scanned seq is more likely to be an instance of the motif</span></span>
-<span id="cb27-20"><a href="#cb27-20" aria-hidden="true" tabindex="-1"></a>        <span class="co">&quot;lth_score&quot;</span> : <span class="dv">1</span>, <span class="co">##Number. Lower threshold on some parameters.</span></span>
-<span id="cb27-21"><a href="#cb27-21" aria-hidden="true" tabindex="-1"></a>        <span class="co"># upper threshold p-value. Correction of weight scores</span></span>
-<span id="cb27-22"><a href="#cb27-22" aria-hidden="true" tabindex="-1"></a>        <span class="co">&quot;uth_pval&quot;</span> : <span class="fl">0.0001</span>, <span class="co">##Number. Upper threshold on some parameters.</span></span></code></pre></div>
+<div class="sourceCode" id="cb31"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># fasta sequences where we are going to look for sites (Drosophila melanogaster 5kbps upstream from eve gene)</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>        <span class="co">&quot;i_string&quot;</span> : <span class="st">&quot;http://rsat-tagc.univ-mrs.fr/rsat/demo_files/Dmelanogaster_eve_up5000.fasta&quot;</span>, <span class="co">##Input string specifying the query. The value can be the query content, the URL of a file available on some Web server, the internal path of the result file returned by another tool of this RSAT server (piping for workflows).</span></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>        <span class="co">&quot;i_string_type&quot;</span> : <span class="st">&quot;url&quot;</span>, <span class="co">##Type of information provided by the input string. Supported values: url: URL (Web address) to the input file; piping: result file from other tool; text: input content</span></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>        <span class="co">&quot;seq_format&quot;</span> : <span class="st">&quot;fasta&quot;</span>, <span class="co">##String. Sequence format.</span></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>        <span class="co"># transcription factor binding motifs matrixes or PSSMs (12 motifs for TFs known to regulate eve)</span></span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>        <span class="co">&quot;m_string&quot;</span> : <span class="st">&quot;http://rsat-tagc.univ-mrs.fr/rsat/demo_files/Dmelanogaster_segmentation_12matrices.tf&quot;</span>, <span class="co">##Input string specifying the query. The value can be the query content, the URL of a file available on some Web server, the internal path of the result file returned by another tool of this RSAT server (piping for workflows).</span></span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>        <span class="co">&quot;m_string_type&quot;</span> : <span class="st">&quot;url&quot;</span>, <span class="co">##Type of information provided by the input string. Supported values: url: URL (Web address) to the input file; piping: result file from other tool; text: input content</span></span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>        <span class="co">&quot;matrix_format&quot;</span> : <span class="st">&quot;transfac&quot;</span>, <span class="co">##String. Matrix suffix. This argument is mandatory.</span></span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>        <span class="co">&quot;n&quot;</span> : <span class="st">&quot;score&quot;</span>, <span class="co">##String. Treatment of N characters. These characters are often used in DNA sequences to represent undefined or masked nucleotides. Supported: skip, score.</span></span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>        <span class="co">&quot;pseudo&quot;</span> : <span class="dv">1</span>, <span class="co">##Number. Pseudo-count for the matrix (default 1).</span></span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>        <span class="co">&quot;markov_order&quot;</span> : <span class="dv">1</span>, <span class="co">##Integer. Markov order for background model. Only when bgfile is not specified.</span></span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>        <span class="co">&quot;bginput&quot;</span> : <span class="va">True</span>, <span class="co">##Boolean. Calculate background model from the input sequence set.</span></span>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>        <span class="co">&quot;bg_pseudo&quot;</span> : <span class="fl">0.01</span>, <span class="co">##Number. Pseudo frequency for the background model. Value must be a real between 0 and 1</span></span>
+<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a>        <span class="co">&quot;markov&quot;</span> : <span class="dv">1</span>, <span class="co">##Integer. Order of the markov chain for the background model.</span></span>
+<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a>        <span class="co">&quot;origin&quot;</span> : <span class="st">&quot;end&quot;</span>, <span class="co">##String. Specify the origin for the calculation of positions. Supported: start, end, center, chrom</span></span>
+<span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a>        <span class="co">&quot;offset&quot;</span> : <span class="dv">0</span>, <span class="co">##Integer. Add a given number to site positions (change the reference point).</span></span>
+<span id="cb31-17"><a href="#cb31-17" aria-hidden="true" tabindex="-1"></a>        <span class="co">&quot;2str&quot;</span> : <span class="va">True</span>, <span class="co">##Boolean. Scan both strands for DNA sequences</span></span>
+<span id="cb31-18"><a href="#cb31-18" aria-hidden="true" tabindex="-1"></a>        <span class="co">&quot;return&quot;</span> : <span class="st">&quot;sites,pval,limits&quot;</span>, <span class="co">##String. lists of fields to return. Supported fields - sites, p_score, pval, seq_scores, rank, normw, proba_BM, limits,weight_limits, distrib, occ_proba, bg_model,bg_residues, matrix, freq_matrix, weight_matrix,crer</span></span>
+<span id="cb31-19"><a href="#cb31-19" aria-hidden="true" tabindex="-1"></a>        <span class="co"># weight score. Positive means that the scanned seq is more likely to be an instance of the motif</span></span>
+<span id="cb31-20"><a href="#cb31-20" aria-hidden="true" tabindex="-1"></a>        <span class="co">&quot;lth_score&quot;</span> : <span class="dv">1</span>, <span class="co">##Number. Lower threshold on some parameters.</span></span>
+<span id="cb31-21"><a href="#cb31-21" aria-hidden="true" tabindex="-1"></a>        <span class="co"># upper threshold p-value. Correction of weight scores</span></span>
+<span id="cb31-22"><a href="#cb31-22" aria-hidden="true" tabindex="-1"></a>        <span class="co">&quot;uth_pval&quot;</span> : <span class="fl">0.0001</span>, <span class="co">##Number. Upper threshold on some parameters.</span></span></code></pre></div>
 <p>**Make sure to keep the indentation the same!</p>
 <ol start="4" style="list-style-type: decimal">
 <li><p>Open the terminal (<code>CTRL + ALT + T</code> in ubuntu). And go
@@ -1140,16 +1198,16 @@ copy paste the script in the python CLI.</p></li>
 <li><p>You can add the following lines to store your results in a html
 document:</p></li>
 </ol>
-<div class="sourceCode" id="cb28"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>completeName <span class="op">=</span> <span class="st">&quot;edit-here-for-name-of-file&quot;</span> <span class="op">+</span> <span class="st">&quot;.html&quot;</span> <span class="co"># edit this line</span></span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="co"># writes output file</span></span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>f <span class="op">=</span> <span class="bu">open</span>(completeName, <span class="st">&quot;w+&quot;</span>)</span>
-<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>f.write(r.text)</span>
-<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>f.close()</span></code></pre></div>
+<div class="sourceCode" id="cb32"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>completeName <span class="op">=</span> <span class="st">&quot;edit-here-for-name-of-file&quot;</span> <span class="op">+</span> <span class="st">&quot;.html&quot;</span> <span class="co"># edit this line</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="co"># writes output file</span></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>f <span class="op">=</span> <span class="bu">open</span>(completeName, <span class="st">&quot;w+&quot;</span>)</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>f.write(r.text)</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>f.close()</span></code></pre></div>
 </div>
-<div id="web" class="section level4" number="7.3.2.2">
-<h4><span class="header-section-number">7.3.2.2</span>
+<div id="web" class="section level4" number="8.3.2.2">
+<h4><span class="header-section-number">8.3.2.2</span>
 <strong>Web</strong></h4>
 <p>Using the same example shown for the scripts version (matrix-scan
 DEMO 1), we will exemplify now how to use the web version of REST.</p>

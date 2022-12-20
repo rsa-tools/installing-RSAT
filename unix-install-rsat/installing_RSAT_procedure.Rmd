@@ -1,6 +1,6 @@
 ---
 title: "Installing RSAT on a Unix operating system"
-author: "Jacques van Helden"
+author: "Jacques van Helden, Bruno Contreras Moreira"
 date: '`r Sys.Date()`'
 output:
   html_document:
@@ -503,6 +503,70 @@ exit
 ## Check who you are (should be back to normal user identity)
 whoami ## This should give *YourUserName*
 ```
+
+****************************************************************
+# Managing a RSAT Web server
+
+<!-- adapted from https://github.com/rsa-tools/rsat-code/blob/master/doc/manuals/rsat_web_server.tex -->
+
+## Access logs
+
+Each time a script is executed via the RSAT server, some basic
+information is stored in a log file. This information is minimal: it
+is restricted to the time, name of the script executed, and the IP
+address of the client machine. We do not want to store any additional
+information (e.g. selected organism, lists of genes), for obvious
+confidentiality reasons.
+
+The log files are saved in the directory *${RSAT}/logs*. There
+is one file per month.
+
+
+## Cleaning the temporary directory
+
+The Web server stores result files in a temporary directory
+*${RSAT}/public_html/tmp*. These files should remain 3 days on
+the server, in order to allow users to consult their results.
+
+### Manual cleaning
+
+The RSAT package includes a make script to clean old files in the
+temporary directory.
+
+```{bash}
+cd $RSAT
+make -f makefiles/server.mk clean_tmp
+```
+
+This command cleans all the files older than 3 days. You can clean
+more recent files by modifying the variable CLEAN\_DATE.
+
+```{bash}
+make -f makefiles/server.mk clean_tmp  CLEAN_DATE=1
+```
+
+This will clean all files older than 1 day.
+
+### Automatic cleaning
+
+The automatic management of the temporary directory can be greatly
+facilitated the *crontab* command. For this, you need to add a
+command to a *crontab* configuration file, preferably from a superuser.
+
+ + Start editing the crontab; this will open your *crontab* file with a text editor available in your system. 
+
+   ```{bash}
+   crontab -e
+   ```
+
+ + Add the following line to execute the clean script daily at midnight:
+
+       0 0 * * * make -f ${RSAT}/makefiles/server.mk clean_tmp
+
+
+ + Save the modified crontab file and close your text editor.
+
+
 
 ****************************************************************
 # Testing your RSAT instance
