@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
@@ -15,46 +14,41 @@
 
 <title>Regulatory Sequence Analysis Tools - Using RSAT-VM (Virtual Machine)</title>
 
-<script src="RSAT-VM_tuto_files/jquery-1.11.3/jquery.min.js"></script>
+<script src="RSAT-VM_tuto_files/header-attrs-2.20/header-attrs.js"></script>
+<script src="RSAT-VM_tuto_files/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="RSAT-VM_tuto_files/bootstrap-3.3.5/css/cerulean.min.css" rel="stylesheet" />
 <script src="RSAT-VM_tuto_files/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="RSAT-VM_tuto_files/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="RSAT-VM_tuto_files/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
 <script src="RSAT-VM_tuto_files/jqueryui-1.11.4/jquery-ui.min.js"></script>
 <link href="RSAT-VM_tuto_files/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="RSAT-VM_tuto_files/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="RSAT-VM_tuto_files/navigation-1.1/tabsets.js"></script>
 
-
-
-
 <style type="text/css">
-h1 {
-  font-size: 34px;
-}
-h1.title {
-  font-size: 38px;
-}
-h2 {
-  font-size: 30px;
-}
-h3 {
-  font-size: 24px;
-}
-h4 {
-  font-size: 18px;
-}
-h5 {
-  font-size: 16px;
-}
-h6 {
-  font-size: 12px;
-}
-.table th:not([align]) {
-  text-align: left;
-}
-</style>
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+
+
+
 
 
 
@@ -64,10 +58,6 @@ h6 {
   max-width: 940px;
   margin-left: auto;
   margin-right: auto;
-}
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
 }
 img {
   max-width:100%;
@@ -84,6 +74,12 @@ button.code-folding-btn:focus {
 summary {
   display: list-item;
 }
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
 </style>
 
 
@@ -96,13 +92,12 @@ summary {
   max-height: 500px;
   min-height: 44px;
   overflow-y: auto;
-  background: white;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -110,16 +105,9 @@ summary {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "&#xe258;";
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
+  content: "\e258";
   font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
+  border: none;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -132,6 +120,7 @@ summary {
   border: none;
   display: inline-block;
   border-radius: 4px;
+  background-color: transparent;
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li {
@@ -160,6 +149,12 @@ summary {
 }
 }
 
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
 
 .toc-content {
   padding-left: 30px;
@@ -215,7 +210,7 @@ div.tocify {
 
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row-fluid">
+<div class="row">
 <div class="col-xs-12 col-sm-4 col-md-3">
 <div id="TOC" class="tocify">
 </div>
@@ -226,68 +221,109 @@ div.tocify {
 
 
 
-<div class="fluid-row" id="header">
+<div id="header">
 
 
 
-<h1 class="title toc-ignore">Regulatory Sequence Analysis Tools - Using RSAT-VM (Virtual Machine)</h1>
+<h1 class="title toc-ignore">Regulatory Sequence Analysis Tools - Using
+RSAT-VM (Virtual Machine)</h1>
 <h4 class="author">Jacques van Helden</h4>
-<h4 class="date">Last update: 2020-02-02</h4>
+<h4 class="date">Last update: 2023-02-06</h4>
 
 </div>
 
 
-<div id="introduction" class="section level1">
+<div id="introduction" class="section level1" number="1">
 <h1><span class="header-section-number">1</span> Introduction</h1>
-<p>This tutorial explains how to install, configure and use a Regulatory Sequence analysis Tool (RSAT) server installed on a Virtual Machine (VM).</p>
+<p>This tutorial explains how to install, configure and use a Regulatory
+Sequence analysis Tool (RSAT) server installed on a Virtual Machine
+(VM).</p>
 </div>
-<div id="prerequisite" class="section level1">
+<div id="prerequisite" class="section level1" number="2">
 <h1><span class="header-section-number">2</span> Prerequisite</h1>
-<p>To run this tutorial, you first need to install the VirtualBox software (<a href="https://www.virtualbox.org/wiki/Downloads" class="uri">https://www.virtualbox.org/wiki/Downloads</a>).</p>
+<p>To run this tutorial, you first need to install the VirtualBox
+software (<a href="https://www.virtualbox.org/wiki/Downloads"
+class="uri">https://www.virtualbox.org/wiki/Downloads</a>).</p>
 </div>
-<div id="importing-the-virtual-machine-archive-ova-file" class="section level1">
-<h1><span class="header-section-number">3</span> Importing the Virtual Machine archive (ova file)</h1>
-<div id="download" class="section level2">
+<div id="importing-the-virtual-machine-archive-ova-file"
+class="section level1" number="3">
+<h1><span class="header-section-number">3</span> Importing the Virtual
+Machine archive (ova file)</h1>
+<div id="download" class="section level2" number="3.1">
 <h2><span class="header-section-number">3.1</span> Download</h2>
-<p>RSAT virtualboxes can be downloaded from the RSAT distribution site.</p>
+<p>RSAT virtualboxes can be downloaded from the RSAT distribution
+site.</p>
 <ul>
-<li>Open a connection to any RSAT server (<a href="http://rsat.eu/" class="uri">http://rsat.eu/</a>).</li>
-<li>In the left-side menu, click on the <strong>Download</strong> link.</li>
-<li>Enter your coordinates and click <em>GO</em>. You will be redirected towards the download server.</li>
+<li>Open a connection to any RSAT server (<a href="http://rsat.eu/"
+class="uri">http://rsat.eu/</a>).</li>
+<li>In the left-side menu, click on the <strong>Download</strong>
+link.</li>
+<li>Enter your coordinates and click <em>GO</em>. You will be redirected
+towards the download server.</li>
 <li>In the download Web site, the link <em>virtual_machines</em>.</li>
-<li>Download the version of your choice (current version: <code>rsat-vm-2018-05.ova</code>).</li>
+<li>Download the version of your choice (current version:
+<code>rsat-vm-2018-05.ova</code>).</li>
 </ul>
 </div>
-<div id="importing-an-appliance-into-virtualbox" class="section level2">
-<h2><span class="header-section-number">3.2</span> Importing an appliance into VirtualBox</h2>
+<div id="importing-an-appliance-into-virtualbox" class="section level2"
+number="3.2">
+<h2><span class="header-section-number">3.2</span> Importing an
+appliance into VirtualBox</h2>
 <ul>
-<li>In the VirtualBox menu, select the command <strong>File &gt; Import Appliance …</strong>.</li>
-<li>In the import dialog box, click on the folder icon, and locate the appliance file (<code>rsat-vm-2018-05.ova</code>) that you downloaded from the RSAT Web site, and click on <strong>Continue</strong>.</li>
-<li>In the <strong>Appliance settings</strong> dialog box (<a href="images/import_appliance_settings.png">snapshot</a>), check the option <strong><em>Reinitialize MAC address of all network cards</em></strong>.</li>
+<li>In the VirtualBox menu, select the command <strong>File &gt; Import
+Appliance …</strong>.</li>
+<li>In the import dialog box, click on the folder icon, and locate the
+appliance file (<code>rsat-vm-2018-05.ova</code>) that you downloaded
+from the RSAT Web site, and click on <strong>Continue</strong>.</li>
+<li>In the <strong>Appliance settings</strong> dialog box (<a
+href="images/import_appliance_settings.png">snapshot</a>), check the
+option <strong><em>Reinitialize MAC address of all network
+cards</em></strong>.</li>
 <li>Click the <strong>Import</strong> button.</li>
 </ul>
-<p><a href="images/import_appliance_settings.png"><img src="images/import_appliance_settings.png" width="600" /></a></p>
-<p>It should take a few minutes for VirtualBox to create a new instance of the virtual machine from the appliance.</p>
+<p><a href="images/import_appliance_settings.png"><img
+src="images/import_appliance_settings.png" width="600" /></a></p>
+<p>It should take a few minutes for VirtualBox to create a new instance
+of the virtual machine from the appliance.</p>
 <hr />
 </div>
 </div>
-<div id="network-configuration" class="section level1">
-<h1><span class="header-section-number">4</span> Network configuration</h1>
-<p>The RSAT-VM is provided in a ready-to-use mode. However, you may need to adapt the configuration of your VirtualBox environment in order to obtain a correct behaviour of the VM.</p>
+<div id="network-configuration" class="section level1" number="4">
+<h1><span class="header-section-number">4</span> Network
+configuration</h1>
+<p>The RSAT-VM is provided in a ready-to-use mode. However, you may need
+to adapt the configuration of your VirtualBox environment in order to
+obtain a correct behaviour of the VM.</p>
 <p>Network configuration involves two aspects:</p>
 <ol style="list-style-type: decimal">
-<li><p>Configure VirtualBox to define the way(s) it will allow exchanges between virtual machines, the host machine (your computer) and the external world.</p></li>
-<li><p>Configure each virtual machine, in order to define which types of access it will request from VirtualBox.</p></li>
+<li><p>Configure VirtualBox to define the way(s) it will allow exchanges
+between virtual machines, the host machine (your computer) and the
+external world.</p></li>
+<li><p>Configure each virtual machine, in order to define which types of
+access it will request from VirtualBox.</p></li>
 </ol>
-<div id="host-configuration-virtualbox-host-only-adapter" class="section level2">
-<h2><span class="header-section-number">4.1</span> Host configuration: VirtualBox host-only adapter</h2>
-<p>The host-only adapter enables your computer (the “host”) to establish connections to the “guest” virtual machine. This is necessary if you want to use the VM as a Web server, or use command lines on a terminal (via ssh connection from the host machine).</p>
+<div id="host-configuration-virtualbox-host-only-adapter"
+class="section level2" number="4.1">
+<h2><span class="header-section-number">4.1</span> Host configuration:
+VirtualBox host-only adapter</h2>
+<p>The host-only adapter enables your computer (the “host”) to establish
+connections to the “guest” virtual machine. This is necessary if you
+want to use the VM as a Web server, or use command lines on a terminal
+(via ssh connection from the host machine).</p>
 <ol style="list-style-type: decimal">
 <li><p>Open the <strong>VirtualBox</strong> program.</p></li>
-<li><p>Open <em>VirtualBox Preferences</em>. Click on the <em>Network</em> option. Click on the tab <em>Host-only Networks</em>. Check if a host-only adapter is already installed. If not, create a new one by clicking the <strong><em>+</em></strong> icon on the right side (<a href="images/vb_prefs_host-only_network.png">snapshot</a>).</p>
-<p><a href="images/vb_prefs_host-only_network.png"><img src="images/vb_prefs_host-only_network.png" alt="Configuration of the host-only adapter" width="400" /></a></p></li>
-<li><p>You should now see a host-only network named vboxnet0. Double-click on it to change its parameters.</p></li>
-<li><p>In the <em>Adapter</em> tab, set the parameters as follows (<a href="images/vb_prefs_host-only_adaptor.png">snapshot</a>).</p>
+<li><p>Open <em>VirtualBox Preferences</em>. Click on the
+<em>Network</em> option. Click on the tab <em>Host-only Networks</em>.
+Check if a host-only adapter is already installed. If not, create a new
+one by clicking the <strong><em>+</em></strong> icon on the right side
+(<a href="images/vb_prefs_host-only_network.png">snapshot</a>).</p>
+<p><a href="images/vb_prefs_host-only_network.png"><img
+src="images/vb_prefs_host-only_network.png" width="400"
+alt="Configuration of the host-only adapter" /></a></p></li>
+<li><p>You should now see a host-only network named vboxnet0.
+Double-click on it to change its parameters.</p></li>
+<li><p>In the <em>Adapter</em> tab, set the parameters as follows (<a
+href="images/vb_prefs_host-only_adaptor.png">snapshot</a>).</p>
 <table>
 <thead>
 <tr class="header">
@@ -314,8 +350,10 @@ div.tocify {
 </tr>
 </tbody>
 </table>
-<p><a href="images/vb_prefs_host-only_network.png"><img src="images/vb_prefs_host-only_adaptor.png" width="400" /></a></p></li>
-<li><p>In the tab <em>DHCP Server</em>, set the parameters as follows (<a href="images/vb_prefs_host-only_dhcp.png">snapshot</a>).</p>
+<p><a href="images/vb_prefs_host-only_network.png"><img
+src="images/vb_prefs_host-only_adaptor.png" width="400" /></a></p></li>
+<li><p>In the tab <em>DHCP Server</em>, set the parameters as follows
+(<a href="images/vb_prefs_host-only_dhcp.png">snapshot</a>).</p>
 <ul>
 <li>Check the option <em>Enable Server</em></li>
 <li>Server Address: 192.168.56.100</li>
@@ -323,60 +361,122 @@ div.tocify {
 <li>Lower Address Bound: 192.168.56.101</li>
 <li>Upper Address Bound: 192.168.56.154</li>
 </ul>
-<p><a href="images/vb_prefs_host-only_network.png"><img src="images/vb_prefs_host-only_dhcp.png" width="400" /></a></p></li>
+<p><a href="images/vb_prefs_host-only_network.png"><img
+src="images/vb_prefs_host-only_dhcp.png" width="400" /></a></p></li>
 </ol>
 </div>
-<div id="network-settings-for-the-guest-machine" class="section level2">
-<h2><span class="header-section-number">4.2</span> Network settings for the guest machine</h2>
-<p>VirtualBox supports various ways to connect the guest (virtual machine) to the network. The two first adapters are required for proper functioning of the RSAT VM. The third one is optional and should be enabled with caution.</p>
+<div id="network-settings-for-the-guest-machine" class="section level2"
+number="4.2">
+<h2><span class="header-section-number">4.2</span> Network settings for
+the guest machine</h2>
+<p>VirtualBox supports various ways to connect the guest (virtual
+machine) to the network. The two first adapters are required for proper
+functioning of the RSAT VM. The third one is optional and should be
+enabled with caution.</p>
 <ol style="list-style-type: decimal">
-<li><p><em>Host-only network</em> will enable the host machine (your computer) to access the virtual machine by HTTP (Web browser) or SSH (secure shell).</p></li>
-<li><p><em>NAT</em> will enable the communication from the virtual machine to the external world.</p></li>
-<li><p>Optionally, a <strong>Bridged network</strong> might be configured in order to make your virtual machine visible from external computers.</p></li>
+<li><p><em>Host-only network</em> will enable the host machine (your
+computer) to access the virtual machine by HTTP (Web browser) or SSH
+(secure shell).</p></li>
+<li><p><em>NAT</em> will enable the communication from the virtual
+machine to the external world.</p></li>
+<li><p>Optionally, a <strong>Bridged network</strong> might be
+configured in order to make your virtual machine visible from external
+computers.</p></li>
 </ol>
-<div id="host-only-network" class="section level3">
-<h3><span class="header-section-number">4.2.1</span> Host-only network</h3>
-<p>This solution offers a good tradeoff between security and confort: your virtual machine (the guest) will be accessible only from your computer (the host).</p>
-<p>In the panel showing the available virtual machines, right-click on the RSAT-VM (rsat-vm-2018-05), open the <em>Settings …</em> dialog box. In the tab <em>Network</em>, select <em>Adapter 1</em>, check <em>Enable Network Adapter</em>, select <em>Attached to: Host-only Adapter</em> (<a href="images/vm_settings_network_host-only.png">snapshot</a>).</p>
-<p>In the pop-up menu besides the option <em>Name</em>, select <em>vboxnet0</em>.</p>
-<p><img src="images/vm_settings_network_host-only.png" alt="Configuration of the host-only network adapter" width="400" />]</p>
+<div id="host-only-network" class="section level3" number="4.2.1">
+<h3><span class="header-section-number">4.2.1</span> Host-only
+network</h3>
+<p>This solution offers a good tradeoff between security and confort:
+your virtual machine (the guest) will be accessible only from your
+computer (the host).</p>
+<p>In the panel showing the available virtual machines, right-click on
+the RSAT-VM (rsat-vm-2018-05), open the <em>Settings …</em> dialog box.
+In the tab <em>Network</em>, select <em>Adapter 1</em>, check <em>Enable
+Network Adapter</em>, select <em>Attached to: Host-only Adapter</em> (<a
+href="images/vm_settings_network_host-only.png">snapshot</a>).</p>
+<p>In the pop-up menu besides the option <em>Name</em>, select
+<em>vboxnet0</em>.</p>
+<p><img src="images/vm_settings_network_host-only.png" width="400"
+alt="Configuration of the host-only network adapter" />]</p>
 </div>
-<div id="nat" class="section level3">
+<div id="nat" class="section level3" number="4.2.2">
 <h3><span class="header-section-number">4.2.2</span> NAT</h3>
-<p><strong>Note:</strong> the host-only adapter will enable you to establish a connection (Web browsing, ssh connection) from the hosting operating system (the usual environment of your computer) to the guest system (the virtual machine). however, this adapter does not allow to connect the external world from the guest. It is this useful to combine the host-only network (to see your server from your host) and the NAT network (to see the external world from your RSAT VM).</p>
-<p>In parallel to the host-only adapter, we thus recommend to enable the second adapter and select <em>NAT</em> (<a href="images/vm_settings_network_nat.png">snapshot</a>)..</p>
-<p><a href="images/vm_settings_network_nat.png"><img src="images/vm_settings_network_nat.png" width="400" /></a></p>
+<p><strong>Note:</strong> the host-only adapter will enable you to
+establish a connection (Web browsing, ssh connection) from the hosting
+operating system (the usual environment of your computer) to the guest
+system (the virtual machine). however, this adapter does not allow to
+connect the external world from the guest. It is this useful to combine
+the host-only network (to see your server from your host) and the NAT
+network (to see the external world from your RSAT VM).</p>
+<p>In parallel to the host-only adapter, we thus recommend to enable the
+second adapter and select <em>NAT</em> (<a
+href="images/vm_settings_network_nat.png">snapshot</a>)..</p>
+<p><a href="images/vm_settings_network_nat.png"><img
+src="images/vm_settings_network_nat.png" width="400" /></a></p>
 </div>
-<div id="bridged-network" class="section level3">
-<h3><span class="header-section-number">4.2.3</span> Bridged network</h3>
-<p>Alternatively , for the sake of flexibility, you might consider to use a bridged network. The bridged adapter is the most convenient, because it establishes a bidirectional connection between your VM (the guest) and the network. Your guest RSAT Web server can thus be used from any other computer in your network. This configuration can typically be usd to make an RSAT server available for all people from the same lab or institute.</p>
-<p><strong>Attention!</strong> The bridged network makes your virtual machine visible for all the other computers of the local network the host machine (your PC). Check with your system administrator that this fits the local security requirements.</p>
+<div id="bridged-network" class="section level3" number="4.2.3">
+<h3><span class="header-section-number">4.2.3</span> Bridged
+network</h3>
+<p>Alternatively , for the sake of flexibility, you might consider to
+use a bridged network. The bridged adapter is the most convenient,
+because it establishes a bidirectional connection between your VM (the
+guest) and the network. Your guest RSAT Web server can thus be used from
+any other computer in your network. This configuration can typically be
+usd to make an RSAT server available for all people from the same lab or
+institute.</p>
+<p><strong>Attention!</strong> The bridged network makes your virtual
+machine visible for all the other computers of the local network the
+host machine (your PC). Check with your system administrator that this
+fits the local security requirements.</p>
 <ul>
-<li><p>In the panel showing the available virtual machines, right-click on the RSAT-VM (rsat-vm-2018-05), open the <em>Settings …</em> dialog box.</p></li>
-<li><p>In the tab <em>Network</em>, select <em>Adapter 1</em>, check <em>Enable Network Adapter</em>, select <em>Attached to: Bridge adapter</em>.</p></li>
-<li><p>In the pop-up menu besides the option <em>Name</em>, select an adapter depending on your local network configuration, e.g. <em>Wi-fi (Airport)</em> (<a href="images/vm_settings_network_bridged.png">snapshot</a>).</p></li>
-<li><p>If you are connected to Internet via an Ethernet cable, you can leave the other parameters unchanged.</p></li>
+<li><p>In the panel showing the available virtual machines, right-click
+on the RSAT-VM (rsat-vm-2018-05), open the <em>Settings …</em> dialog
+box.</p></li>
+<li><p>In the tab <em>Network</em>, select <em>Adapter 1</em>, check
+<em>Enable Network Adapter</em>, select <em>Attached to: Bridge
+adapter</em>.</p></li>
+<li><p>In the pop-up menu besides the option <em>Name</em>, select an
+adapter depending on your local network configuration, e.g. <em>Wi-fi
+(Airport)</em> (<a
+href="images/vm_settings_network_bridged.png">snapshot</a>).</p></li>
+<li><p>If you are connected to Internet via an Ethernet cable, you can
+leave the other parameters unchanged.</p></li>
 </ul>
-<p><a href="images/vm_settings_network_bridged.png"><img src="images/vm_settings_network_bridged.png" alt="Configuration for a bridged network via an Ethernet (cable) connection" width="400" /></a></p>
-<p>If you are connected via Wi-Fi (wireless), you may need to set up advanced option <strong>for Wi-Fi connection</strong>.</p>
+<p><a href="images/vm_settings_network_bridged.png"><img
+src="images/vm_settings_network_bridged.png" width="400"
+alt="Configuration for a bridged network via an Ethernet (cable) connection" /></a></p>
+<p>If you are connected via Wi-Fi (wireless), you may need to set up
+advanced option <strong>for Wi-Fi connection</strong>.</p>
 <ul>
-<li>In the parameter panel of the bridged network adapter, click <strong>Advanced</strong>.</li>
-<li>Select <em>Allow all</em> for the <strong>Promiscuous mode</strong>.</li>
-<li>Uncheck the option <strong>cable connected</strong> (not sure this is required, but seems reasonable to disactivate cable for a wireless connection).</li>
+<li>In the parameter panel of the bridged network adapter, click
+<strong>Advanced</strong>.</li>
+<li>Select <em>Allow all</em> for the <strong>Promiscuous
+mode</strong>.</li>
+<li>Uncheck the option <strong>cable connected</strong> (not sure this
+is required, but seems reasonable to disactivate cable for a wireless
+connection).</li>
 </ul>
-<p><a href="images/vm_settings_network_bridged_for_wireless.png"><img src="images/vm_settings_network_bridged_for_wireless.png" alt="Configuration for a bridged network via a Wi-Fi (wireless) connection" width="400" /></a></p>
+<p><a href="images/vm_settings_network_bridged_for_wireless.png"><img
+src="images/vm_settings_network_bridged_for_wireless.png" width="400"
+alt="Configuration for a bridged network via a Wi-Fi (wireless) connection" /></a></p>
 <hr />
 </div>
 </div>
 </div>
-<div id="running-rsat-vm" class="section level1">
+<div id="running-rsat-vm" class="section level1" number="5">
 <h1><span class="header-section-number">5</span> Running RSAT-VM</h1>
-<div id="starting-the-rsat-virtual-machine" class="section level2">
-<h2><span class="header-section-number">5.1</span> Starting the RSAT virtual machine</h2>
-<p>In the left panel of <strong>VirtualBox</strong>, select the virual machine (rsat-vm-2018-05), and click on the <em>Start</em> icon.</p>
-<p>This will open a new window (<a href="images/rsat-vm_login_window.png">snapshot</a>).</p>
-<p><a href="images/rsat-vm_login_window.png"><img src="images/rsat-vm_login_window.png" width="600" /></a></p>
-<p>From now on, your RSAT Virtual Machine is up and running. You can access it in various ways:</p>
+<div id="starting-the-rsat-virtual-machine" class="section level2"
+number="5.1">
+<h2><span class="header-section-number">5.1</span> Starting the RSAT
+virtual machine</h2>
+<p>In the left panel of <strong>VirtualBox</strong>, select the virual
+machine (rsat-vm-2018-05), and click on the <em>Start</em> icon.</p>
+<p>This will open a new window (<a
+href="images/rsat-vm_login_window.png">snapshot</a>).</p>
+<p><a href="images/rsat-vm_login_window.png"><img
+src="images/rsat-vm_login_window.png" width="600" /></a></p>
+<p>From now on, your RSAT Virtual Machine is up and running. You can
+access it in various ways:</p>
 <ol style="list-style-type: decimal">
 <li>As a Web server</li>
 <li>As a fully functional Linux Desktop server</li>
@@ -384,24 +484,44 @@ div.tocify {
 <li>As SOAP/WSDL Web services (advanced use).</li>
 </ol>
 </div>
-<div id="using-rsat-vm-as-web-server" class="section level2">
-<h2><span class="header-section-number">5.2</span> Using RSAT-VM as Web server</h2>
-<p>Open a connection to <strong><a href="http://192.168.56.101/" class="uri">http://192.168.56.101/</a></strong> in your web browser.</p>
-<p>Note: this IP address is assigned dynamically by VirtualBox. If you already have one or more virtual machines, the last number may take a higher value (e.g. <a href="http://192.168.56.102" class="uri">http://192.168.56.102</a>, <a href="http://192.168.56.103/" class="uri">http://192.168.56.103/</a>).</p>
-<p><a href="images/rsat-vm_web_site.png"><img src="images/rsat-vm_web_site.png" width="600" /></a></p>
+<div id="using-rsat-vm-as-web-server" class="section level2"
+number="5.2">
+<h2><span class="header-section-number">5.2</span> Using RSAT-VM as Web
+server</h2>
+<p>Open a connection to <strong><a href="http://192.168.56.101/"
+class="uri">http://192.168.56.101/</a></strong> in your web browser.</p>
+<p>Note: this IP address is assigned dynamically by VirtualBox. If you
+already have one or more virtual machines, the last number may take a
+higher value (e.g. <a href="http://192.168.56.102"
+class="uri">http://192.168.56.102</a>, <a href="http://192.168.56.103/"
+class="uri">http://192.168.56.103/</a>).</p>
+<p><a href="images/rsat-vm_web_site.png"><img
+src="images/rsat-vm_web_site.png" width="600" /></a></p>
 </div>
-<div id="rsat-users" class="section level2">
+<div id="rsat-users" class="section level2" number="5.3">
 <h2><span class="header-section-number">5.3</span> RSAT users</h2>
-<p>RSAT-VM is delivered with two default users, which enable to use the VM as an internal user, either in a terminal (via an ssh connection) or on a fully functional Linux Desktop (graphical environment).</p>
+<p>RSAT-VM is delivered with two default users, which enable to use the
+VM as an internal user, either in a terminal (via an ssh connection) or
+on a fully functional Linux Desktop (graphical environment).</p>
 <ul>
-<li><strong>vmuser</strong> enables to use the tools as a normal account on the VM</li>
-<li><strong>rsat</strong> is the administrator of the RSAT package, it has the rights to install genomes and modify the code.</li>
+<li><strong>vmuser</strong> enables to use the tools as a normal account
+on the VM</li>
+<li><strong>rsat</strong> is the administrator of the RSAT package, it
+has the rights to install genomes and modify the code.</li>
 </ul>
-<p><strong>Note:</strong> the <strong>initial password</strong> has been set to <code>tochng</code> for bot users. At your first login you will be forced to change this password. After having reset your password, you will be brought back to the terminal of your computer, and you need to re-type the ssh command in order to actually log in.</p>
+<p><strong>Note:</strong> the <strong>initial password</strong> has been
+set to <code>tochng</code> for bot users. At your first login you will
+be forced to change this password. After having reset your password, you
+will be brought back to the terminal of your computer, and you need to
+re-type the ssh command in order to actually log in.</p>
 </div>
-<div id="accessing-your-rsat-vm-via-ssh-unix-terminal" class="section level2">
-<h2><span class="header-section-number">5.4</span> Accessing your RSAT VM via ssh (Unix terminal)</h2>
-<p>If you are familiar with the Unix command-line environment, you can access your virtual machine from a terminal of the host machine, with the following commands.</p>
+<div id="accessing-your-rsat-vm-via-ssh-unix-terminal"
+class="section level2" number="5.4">
+<h2><span class="header-section-number">5.4</span> Accessing your RSAT
+VM via ssh (Unix terminal)</h2>
+<p>If you are familiar with the Unix command-line environment, you can
+access your virtual machine from a terminal of the host machine, with
+the following commands.</p>
 <ul>
 <li>To log in as normal user:</li>
 </ul>
@@ -411,32 +531,58 @@ div.tocify {
 </ul>
 <pre><code>ssh rsat@192.168.56.101</code></pre>
 </div>
-<div id="using-your-rsat-vm-as-a-linux-desktop-server-graphical-environment" class="section level2">
-<h2><span class="header-section-number">5.5</span> Using your RSAT VM as a Linux Desktop server (graphical environment)</h2>
-<p>You can also use the VirtualBox virtual machine through the Linux Desktop server interface. For this you need to login as either <code>vmuser</code> (normal user of the RSAT suite) or <code>rsat</code> user (administration of the tools, genome installations, …).</p>
-<div id="rsat-vm-log-in" class="section level3">
+<div
+id="using-your-rsat-vm-as-a-linux-desktop-server-graphical-environment"
+class="section level2" number="5.5">
+<h2><span class="header-section-number">5.5</span> Using your RSAT VM as
+a Linux Desktop server (graphical environment)</h2>
+<p>You can also use the VirtualBox virtual machine through the Linux
+Desktop server interface. For this you need to login as either
+<code>vmuser</code> (normal user of the RSAT suite) or <code>rsat</code>
+user (administration of the tools, genome installations, …).</p>
+<div id="rsat-vm-log-in" class="section level3" number="5.5.1">
 <h3><span class="header-section-number">5.5.1</span> RSAT-VM log-in</h3>
 <p>The RSAT VM has two predefined users:</p>
 <ul>
-<li><p><strong>RSAT admin</strong>, the owner of the RSAT folder (/packages/rsat). Log in with this account when you need to manage the RSAT installation (modify the code, install additional genomes, …).</p>
+<li><p><strong>RSAT admin</strong>, the owner of the RSAT folder
+(/packages/rsat). Log in with this account when you need to manage the
+RSAT installation (modify the code, install additional genomes, …).</p>
 <ul>
 <li>Username: rsat</li>
 <li>Iniitial password: tochng</li>
 </ul></li>
-<li><p><strong>RSAT VM user</strong>, not owner of the RSAT folder. Log in with this account for normal use of the virtual machine (including RSAT suite).</p>
+<li><p><strong>RSAT VM user</strong>, not owner of the RSAT folder. Log
+in with this account for normal use of the virtual machine (including
+RSAT suite).</p>
 <ul>
 <li>Username: vmuser</li>
 <li>Initial password: tochng</li>
 </ul></li>
 </ul>
-<p>We intently chose an overly simple temporary password to ensure compatibility with AZERTY as well as QUERTY keyboards, but you will be forced to <strong>change your password at first login</strong>. It is important to choose a suitable non-trivial password, to prevent hackers from accessing your virtual machine.</p>
-<p>Both rsat and vmuser are sudoers. After login, you thus become the master of your Virtual Machine, which allows you to create new users, install packages, etc.</p>
+<p>We intently chose an overly simple temporary password to ensure
+compatibility with AZERTY as well as QUERTY keyboards, but you will be
+forced to <strong>change your password at first login</strong>. It is
+important to choose a suitable non-trivial password, to prevent hackers
+from accessing your virtual machine.</p>
+<p>Both rsat and vmuser are sudoers. After login, you thus become the
+master of your Virtual Machine, which allows you to create new users,
+install packages, etc.</p>
 </div>
-<div id="chosing-the-adequate-keyboard-for-your-computer" class="section level3">
-<h3><span class="header-section-number">5.5.2</span> Chosing the adequate keyboard for your computer</h3>
-<p>A small difficulty when distributing a VM is the large variety of keybords expected to be found on the users’ computers. By default, we selected the standard British QWERTY keyboard.</p>
-<p>On the desktop version, click on the <em>Settings</em> icon <a href="images/icon_settings.png"><img src="images/icon_settings.png" width="40" /></a>, then on the <a href="images/text-entry_options.png"><img src="images/icon_text-entry.png" width="50" />, and check the keyboard.</a>.</p>
-<p>On Ubuntu server version, keybord configuration can be modified with following command.</p>
+<div id="chosing-the-adequate-keyboard-for-your-computer"
+class="section level3" number="5.5.2">
+<h3><span class="header-section-number">5.5.2</span> Chosing the
+adequate keyboard for your computer</h3>
+<p>A small difficulty when distributing a VM is the large variety of
+keybords expected to be found on the users’ computers. By default, we
+selected the standard British QWERTY keyboard.</p>
+<p>On the desktop version, click on the <em>Settings</em> icon <a
+href="images/icon_settings.png"><img src="images/icon_settings.png"
+width="40" /></a>, then on the <a
+href="images/text-entry_options.png"><img
+src="images/icon_text-entry.png" width="50" />, and check the
+keyboard.</a>.</p>
+<p>On Ubuntu server version, keybord configuration can be modified with
+following command.</p>
 <pre><code>sudo dpkg-reconfigure console-data</code></pre>
 <hr />
 </div>
@@ -454,7 +600,7 @@ div.tocify {
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();
@@ -472,7 +618,7 @@ $(document).ready(function () {
 
 $(document).ready(function () {
   $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
+    $(this).parent().toggleClass('nav-tabs-open');
   });
 });
 </script>
@@ -481,6 +627,9 @@ $(document).ready(function () {
 
 <script>
 $(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
 
     // move toc-ignore selectors from section div to header
     $('div.section.toc-ignore')
@@ -493,7 +642,7 @@ $(document).ready(function ()  {
       theme: "bootstrap3",
       context: '.toc-content',
       hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
       },
       ignoreSelector: ".toc-ignore",
       scrollTo: 0
