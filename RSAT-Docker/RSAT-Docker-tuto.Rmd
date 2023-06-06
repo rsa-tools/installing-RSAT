@@ -68,6 +68,7 @@ which is available for Linux, Mac OS X and Windows systems.
 **Note:** on Ubuntu systems you might prefer to install the [Docker engine](https://docs.docker.com/engine/install/ubuntu) instead.
 
 ****************************************************************
+
 # Installation instructions
 
 If you want to fetch a ready-to-run Docker container with RSAT please select a tagged version from https://hub.docker.com/r/biocontainers/rsat/tags . 
@@ -116,9 +117,15 @@ The steps below are for version **rsat:20230602_cv1**, you might change it as ne
 
         # to start the Docker Web server launch the container and do (check password in Dockerfile):
         sudo service apache2 restart
-        hostname -I
+        hostname -I # should return IP address
 
- Finally open the following URL in your browser, using the obtained the IP address: http://172.17.0.2/rsat
+        # finally open the following URL in your browser, using the IP address, ie http://172.17.0.2/rsat
+ 
+ 
+
+# A complete tutorial
+
+Check a complete protocol on using a Docker container to carry out motif analysis in co-expression networks at https://eead-csic-compbio.github.io/coexpression_motif_discovery/peach/Tutorial.html .
 
 
 # Dockerfiles

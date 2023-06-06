@@ -332,14 +332,22 @@ The Apache error log may have more information
 
 # to start the Docker Web server launch the container and do (check password in Dockerfile):
 sudo service apache2 restart
-hostname -I</code></pre></li>
+hostname -I # should return IP address
+
+# finally open the following URL in your browser, using the IP address, ie http://172.17.0.2/rsat</code></pre></li>
 </ol>
-<p>Finally open the following URL in your browser, using the obtained
-the IP address: <a href="http://172.17.0.2/rsat"
-class="uri">http://172.17.0.2/rsat</a></p>
 </div>
-<div id="dockerfiles" class="section level1" number="4">
-<h1><span class="header-section-number">4</span> Dockerfiles</h1>
+<div id="a-complete-tutorial" class="section level1" number="4">
+<h1><span class="header-section-number">4</span> A complete
+tutorial</h1>
+<p>Check a complete protocol on using a Docker container to carry out
+motif analysis in co-expression networks at <a
+href="https://eead-csic-compbio.github.io/coexpression_motif_discovery/peach/Tutorial.html"
+class="uri">https://eead-csic-compbio.github.io/coexpression_motif_discovery/peach/Tutorial.html</a>
+.</p>
+</div>
+<div id="dockerfiles" class="section level1" number="5">
+<h1><span class="header-section-number">5</span> Dockerfiles</h1>
 <p>Dockerfiles for the containers at <a
 href="https://hub.docker.com/r/biocontainers/rsat">biocontainers/rsat</a>
 can be found at <a
