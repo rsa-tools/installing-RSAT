@@ -42,7 +42,7 @@ Before starting the installation process, we recommend to download the following
 
 Virtualbox:  <https://www.virtualbox.org/wiki/Downloads>
 
-Ubuntu Desktop: current RSAT-VM releases are based on Ubuntu 16.04, but the installation procedure works on earlier versions (maybe some slight modifications), as well as on Ubuntu 16.04. 
+Ubuntu Desktop: current Ubuntu release is 22.04, but the installation procedure works on earlier versions (maybe some slight modifications) 
 
 ### Recommended Ubuntu release
 
@@ -382,6 +382,14 @@ Install the GRUB boot loader
 	Yes
 
 -->
+
+****************************************************************
+## Bug fix - Change locale to enable terminal on Ubuntu 22.04
+
+Due to some bug with VM on Ubuntu 22.04, the terminal fails to start just after installation. This can be fixed by changing the locale to another value than its default (English - United states), and then restarting the VM. 
+
+For example, setting it to English United Kingdom will fix the bug. 
+
 ****************************************************************
 ## Convenient settings (not necessary)
 
@@ -410,6 +418,14 @@ To add support for `ssh` access, we need to install the appropriate package.
 sudo apt-get install --quiet --assume-yes net-tools
 sudo apt-get install --quiet --assume-yes ssh
 sudo apt-get install --quiet --assume-yes openssh-server
+
+## Test if the ssh is active
+sudo systemctl status ssh
+
+## If NOT active, you can activate it as follows
+sudo systemctl enable ssh --now
+sudo systemctl status ssh # check that is is active
+
 ```
 
 - From the ***host*** machine, open a terminal and type the following command. 

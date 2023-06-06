@@ -68,7 +68,13 @@ This RSAT distribution contains: (i) the _RSAT command line tools_, (ii) the _we
 1. **Operating system**. This RSAT installation protocol is aimed at Mac OS X in Mojave (v10.14) and Catalina (v10.15). RSAT installation in previous Mac OS X versions is feasible but a manual installation of packages (e.g. `brew` packages) is needed and it is beyond the scope of this tutorial.
 2. **Xcode**. The complete version of the _Xcode_ application should already be installed in your Mac OS X. You can download and install _Xcode_ from [here](https://developer.apple.com/download/). Please be aware that downloading _Xcode_ versions for Mac OS X requires an Apple Developer account.
 3. **Package manager**. The `brew` package manager should be already installed in the command line and it is recommended to update to the latest version. You can install `brew` from [here](https://brew.sh/). At the moment `brew` in RSAT is only supported for Mac OS X in Mojave (v10.14) and Catalina (v10.15). 
-4. **Git and Git LFS**. If you are installing the GitHub repositories the `git` and `git-lfs` applications should be available in the command line. You can install `git` from [here](https://git-scm.com/downloads) and `git-lfs` from [here](https://git-lfs.github.com/).
+4. **Git and Git LFS**. If you are installing the GitHub repositories the `git` and `git-lfs` applications should be available in the command line.
+
+    - For Mac OSX, git-lfs can be installed with Howebrew: 
+    
+        ```brew install git-lfs```
+
+    - alternatively, You can install `git` from [here](https://git-scm.com/downloads) and `git-lfs` from [here](https://git-lfs.github.com/).
 
 <br>
 
@@ -96,6 +102,9 @@ The RSAT development version in GitHub is composed of four different repositorie
 export INSTALL_ROOT=~/packages
 mkdir -p ${INSTALL_ROOT}/
 
+## Check that git-lfs is installed
+which git-lfs
+## Install it if it is not avalable
 
 ## Make a clone of the different RSAT packages
 cd  ${INSTALL_ROOT}/
@@ -172,6 +181,7 @@ We will first specify an environment variable named `RSAT` with the path to the 
 ## Set the main RSAT directory path 
 export RSAT=${INSTALL_ROOT}/rsat
 echo "RSAT ${RSAT}"
+
 
 ## Go to the main rsat directory
 cd ${RSAT}
@@ -450,6 +460,8 @@ bash installer/10_clean_unnecessary_files.bash
 ## NOTE: the following command should be adapted to your case.
 ## Restore the *login* and *group* of the user owing the $RSAT folder.
 chown -R MyLogin:MyGroup $RSAT
+## Example: 
+##    chown -R rsat:rsat $RSAT
 
 ## Exit sudo session
 exit
