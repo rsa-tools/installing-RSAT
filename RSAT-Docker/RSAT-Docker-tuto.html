@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Najla Ksouri, Bruno Contreras Moreira" />
+
+<meta name="date" content="2023-06-06" />
+
+<title>Installing the RSAT Docker container</title>
+
+<script src="RSAT-Docker-tuto_files/header-attrs-2.21/header-attrs.js"></script>
+<script src="RSAT-Docker-tuto_files/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="RSAT-Docker-tuto_files/bootstrap-3.3.5/css/cerulean.min.css" rel="stylesheet" />
+<script src="RSAT-Docker-tuto_files/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="RSAT-Docker-tuto_files/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="RSAT-Docker-tuto_files/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="RSAT-Docker-tuto_files/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="RSAT-Docker-tuto_files/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="RSAT-Docker-tuto_files/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="RSAT-Docker-tuto_files/navigation-1.1/tabsets.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Installing the RSAT Docker container</h1>
+<h4 class="author">Najla Ksouri, Bruno Contreras Moreira</h4>
+<h4 class="date">2023-06-06</h4>
+
+</div>
+
+
+<hr />
+<div id="introduction" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> Introduction</h1>
+<p>This page explains how to install a Docker container of the
+Regulatory Sequence Analysis Tools.</p>
+</div>
+<div id="requirements" class="section level1" number="2">
+<h1><span class="header-section-number">2</span> Requirements</h1>
+<div id="availability" class="section level2" number="2.1">
+<h2><span class="header-section-number">2.1</span> Availability</h2>
+<p>RSAT Docker containers are available at <a
+href="https://hub.docker.com/r/biocontainers/rsat/tags"
+class="uri">https://hub.docker.com/r/biocontainers/rsat/tags</a> .</p>
+</div>
+<div id="operating-systems" class="section level2" number="2.2">
+<h2><span class="header-section-number">2.2</span> Operating
+systems</h2>
+<ul>
+<li>Docker containers work in Linux, Mac OS X and Windows systems.</li>
+</ul>
+</div>
+<div id="docker" class="section level2" number="2.3">
+<h2><span class="header-section-number">2.3</span> Docker</h2>
+<p>To run containers you must have Docker installed in your system. The
+easiest way to do this is to download and install <a
+href="https://www.docker.com/products/docker-desktop">Docker
+Desktop</a>, which is available for Linux, Mac OS X and Windows
+systems.</p>
+<p><strong>Note:</strong> see <a
+href="https://stackoverflow.com/questions/61530874/docker-how-do-i-add-myself-to-the-docker-users-group-on-windows">instructions</a>
+to add your Windows user to the ‘docker-users’ group, you will need
+admin privileges.</p>
+<p><strong>Note:</strong> on Ubuntu systems you might prefer to install
+the <a href="https://docs.docker.com/engine/install/ubuntu">Docker
+engine</a> instead.</p>
+<hr />
+</div>
+</div>
+<div id="installation-instructions" class="section level1" number="3">
+<h1><span class="header-section-number">3</span> Installation
+instructions</h1>
+<p>If you want to fetch a ready-to-run Docker container with RSAT please
+select a tagged version from <a
+href="https://hub.docker.com/r/biocontainers/rsat/tags"
+class="uri">https://hub.docker.com/r/biocontainers/rsat/tags</a> .</p>
+<p>The steps below are for version <strong>rsat:20230602_cv1</strong>,
+you might change it as needed for other versions:</p>
+<ol style="list-style-type: decimal">
+<li><p>Download a container (this will take 10GB of your
+filesystem):</p>
+<pre><code># from the terminal
+docker pull biocontainers/rsat:20230602_cv1</code></pre>
+<p>This can also be done from the Docker Desktop app, as shown in the
+figure:</p>
+<p><img src="DockerDesktopWindows.png" /></p></li>
+<li><p>Create local folders for input data and results, outside the
+container. In the example two folders are created, named
+<em>rsat_data/</em> and <em>rsat_results/</em>, which are placed in the
+/home partition. In addition, a subfolder (<em>rsat_data/genomes</em>)
+is also created and permissions are changed so that anyone can write
+there. Note those command lines will work on Linux/Mac OS systems,
+similar operations would need to ne carried out on Windows.
+<strong>Note:</strong> you can place these folders anywhere in your
+system, but please check their paths and modify them in <strong>step
+3</strong> accordingly:</p>
+<pre><code>cd 
+mkdir -p /home/rsat_data/genomes /home/rsat_results
+chmod -R a+w /home/rsat_data/genomes /home/rsat_results</code></pre></li>
+<li><p>Launch Docker RSAT container. Note that the local folders from
+<strong>step 2</strong> are mounted as volumes in the container. If you
+changed their locations please adjust their paths to the right of the
+‘:’:</p>
+<pre><code>docker run --rm -v ~/rsat_data:/packages/rsat/public_html/data/ -v ~/rsat_results:/home/rsat_user/rsat_results -it biocontainers/rsat:20230602_cv1</code></pre></li>
+<li><p><strong>[From this step on, the commands should be typed and
+executed at the container’s terminal].</strong> Download organism from
+public RSAT server, such as the Plants server. Other available servers
+are <a href="http://fungi.rsat.eu" class="uri">http://fungi.rsat.eu</a>,
+<a href="http://metazoa.rsat.eu" class="uri">http://metazoa.rsat.eu</a>,
+<a href="http://protists.rsat.eu"
+class="uri">http://protists.rsat.eu</a> and <a
+href="http://teaching.rsat.eu"
+class="uri">http://teaching.rsat.eu</a></p>
+<pre><code>download-organism -v 2 -org Prunus_persica.Prunus_persica_NCBIv2.38 -server https://rsat.eead.csic.es/plants</code></pre></li>
+<li><p>Test container:</p>
+<pre><code>cd rsat_results 
+make -f ../test_data/peak-motifs.mk RNDSAMPLES=2 all</code></pre></li>
+<li><p>Install any organism, please follow the instructions at <a
+href="https://rsa-tools.github.io/managing-RSAT/genome_installation/install_organisms_FASTA_GTF.html">managing-RSAT</a>.</p></li>
+<li><p>To connect to RSAT Web server running from Docker. If you run
+Docker as a normal user Apache will not start properly and you will see
+these messages:</p>
+<pre><code>* Starting Apache httpd web server apache2
+(13)Permission denied: AH00091: apache2: could not open error log file /var/log/apache2/error.log.
+AH00015: Unable to open logs
+Action &#39;start&#39; failed.
+The Apache error log may have more information
+
+# to start the Docker Web server launch the container and do (check password in Dockerfile):
+sudo service apache2 restart
+hostname -I</code></pre></li>
+</ol>
+<p>Finally open the following URL in your browser, using the obtained
+the IP address: <a href="http://172.17.0.2/rsat"
+class="uri">http://172.17.0.2/rsat</a></p>
+</div>
+<div id="dockerfiles" class="section level1" number="4">
+<h1><span class="header-section-number">4</span> Dockerfiles</h1>
+<p>Dockerfiles for the containers at <a
+href="https://hub.docker.com/r/biocontainers/rsat">biocontainers/rsat</a>
+can be found at <a
+href="https://github.com/BioContainers/containers/tree/master/rsat"
+class="uri">https://github.com/BioContainers/containers/tree/master/rsat</a></p>
+<p>Those are based on a standalone Dockerfile, available at <a
+href="https://github.com/rsa-tools/rsat-code/tree/master/docker"
+class="uri">https://github.com/rsa-tools/rsat-code/tree/master/docker</a>,
+which we use for testing.</p>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3,h4",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
