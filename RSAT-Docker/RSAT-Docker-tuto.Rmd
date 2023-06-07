@@ -45,7 +45,7 @@ knitr::opts_chunk$set(
 ****************************************************************
 # Introduction
 
-This page explains how to install a Docker container of the Regulatory Sequence Analysis Tools. 
+This page explains how to install an interactive Docker container of the Regulatory Sequence Analysis Tools. 
 
 # Requirements
 
@@ -55,17 +55,26 @@ RSAT Docker containers are available at https://hub.docker.com/r/biocontainers/r
 
 ## Operating systems
 
-- Docker containers work in Linux, Mac OS X and Windows systems. 
+Docker containers have so far been tested on Linux and Windows systems. <!--and Mac OS systems. -->
+
+Please let us know or send us a PR at https://github.com/rsa-tools/installing-RSAT if you succeed in running it on other settings.
 
 ## Docker 
 
 To run containers you must have Docker installed in your system. 
-The easiest way to do this is to download and install [Docker Desktop](https://www.docker.com/products/docker-desktop), 
-which is available for Linux, Mac OS X and Windows systems. 
 
-**Note:** see [instructions](https://stackoverflow.com/questions/61530874/docker-how-do-i-add-myself-to-the-docker-users-group-on-windows) to add your Windows user to the 'docker-users' group, you will need admin privileges.
+You can find instructions for installing the Docker (Server) engine on **Linux** at https://docs.docker.com/engine/install/#server .
 
-**Note:** on Ubuntu systems you might prefer to install the [Docker engine](https://docs.docker.com/engine/install/ubuntu) instead.
+On **Windows**, our recommended procedure is to i) install the Windows Subsystem for Linux (WSL) and then ii) the Docker engine:
+
+ * The installation of WSL is simple, as it you can fetch it from the Microsoft Store for free (read more [here](https://ubuntu.com/tutorials/install-ubuntu-on-wsl2-on-windows-11-with-gui-support#1-overview) and  [here](https://devblogs.microsoft.com/commandline/the-windows-subsystem-for-linux-in-the-microsoft-store-is-now-generally-available-on-windows-10-and-11/)).
+ * The installation of Docker engine within WSL is explained at https://dev.to/felipecrs/simply-run-docker-on-wsl2-3o8 and https://docs.docker.com/engine/install/ubuntu .
+
+<!-- 
+We have also tested the [Docker Desktop](https://www.docker.com/products/docker-desktop), 
+which is available for Linux, Mac OS X and Windows systems, but c
+
+**Note:** see [instructions](https://stackoverflow.com/questions/61530874/docker-how-do-i-add-myself-to-the-docker-users-group-on-windows) to add your Windows user to the 'docker-users' group, you will need admin privileges. -->
 
 ****************************************************************
 
@@ -77,26 +86,33 @@ The steps below are for version **rsat:20230602_cv1**, you might change it as ne
 
  1. Download a container (this will take 10GB of your filesystem):
 
-        # from the terminal
+        # from the Linux/WSL terminal
         docker pull biocontainers/rsat:20230602_cv1
         
-    This can also be done from the Docker Desktop app, as shown in the figure:
-    
-    ![](./DockerDesktopWindows.png)
+    <!--This can also be done from the Docker Desktop app, as shown in the figure:
+    ![](./DockerDesktopWindows.png) -->
         
 
- 2. Create local folders for input data and results, outside the container. In the example two folders are created, named *rsat_data/* and *rsat_results/*, which are placed in the /home partition. In addition, a subfolder (*rsat_data/genomes*) is also created and permissions are changed so that anyone can write there. Note those command lines will work on Linux/Mac OS systems, similar operations would need to ne carried out on Windows. **Note:** you can place these folders anywhere in your system, but please check their paths and modify them in **step 3** accordingly:
+ 2. Create local folders for input data and results, outside the container. In the example two folders are created, named *rsat_data/* and *rsat_results/*, which are placed in the current location ($HOME). In addition, a subfolder (*rsat_data/genomes*) is also created and permissions are changed so that anyone can write there. Note those command lines will work equally on Linux/Windows systems. **Note:** you can place these folders anywhere in your system, but please check their paths and modify them in **step 3** accordingly:
  
-        cd 
-        mkdir -p /home/rsat_data/genomes /home/rsat_results
-        chmod -R a+w /home/rsat_data/genomes /home/rsat_results
+        # assuming you are at $HOME 
+        mkdir -p rsat_data/genomes rsat_results
+        chmod -R a+w rsat_data/genomes rsat_results
 
- 3. Launch Docker RSAT container. Note that the local folders from **step 2** are mounted as volumes in the container. If you changed their locations please adjust their paths to the right of the ':':
+ 3. Launch Docker RSAT container. Note that the local folders from **step 2** are mounted as volumes in the container. If you changed their locations please adjust their paths to the right of the colons. **Note:** after this instruction, all other commands should be typed and executed at the container's terminal. :
 
-        docker run --rm -v ~/rsat_data:/packages/rsat/public_html/data/ -v ~/rsat_results:/home/rsat_user/rsat_results -it biocontainers/rsat:20230602_cv1
+        docker run --rm -v $HOME/rsat_data:/packages/rsat/public_html/data/ -v $HOME/rsat_results:/home/rsat_user/rsat_results -it biocontainers/rsat:20230602_cv1
+        
+        # you should see a warning that can be safely ignored: 
+        #
+        # * Starting Apache httpd web server apache2
+        # (13)Permission denied: AH00091: apache2: could not open error log file /var/log/apache2/error.log.
+        # AH00015: Unable to open logs
+        # Action 'start' failed.
+        # The Apache error log may have more information
 
 
- 4. **[From this step on, the commands should be typed and executed at the container's terminal].** Download organism from public RSAT server, such as the Plants server. Other available servers are http://fungi.rsat.eu, http://metazoa.rsat.eu, http://protists.rsat.eu and http://teaching.rsat.eu
+ 4. Download organism from public RSAT server, such as the Plants server. Other available servers are http://fungi.rsat.eu, http://metazoa.rsat.eu, http://protists.rsat.eu and http://teaching.rsat.eu
 
         download-organism -v 2 -org Prunus_persica.Prunus_persica_NCBIv2.38 -server https://rsat.eead.csic.es/plants
 
@@ -105,15 +121,9 @@ The steps below are for version **rsat:20230602_cv1**, you might change it as ne
         cd rsat_results 
         make -f ../test_data/peak-motifs.mk RNDSAMPLES=2 all
 
- 6. Install any organism, please follow the instructions at [managing-RSAT](https://rsa-tools.github.io/managing-RSAT/genome_installation/install_organisms_FASTA_GTF.html).
+ 6. To install any organism, please follow the instructions at [managing-RSAT](https://rsa-tools.github.io/managing-RSAT/genome_installation/install_organisms_FASTA_GTF.html).
 
- 7. To connect to RSAT Web server running from Docker. If you run Docker as a normal user Apache will not start properly and you will see these messages:
-
-        * Starting Apache httpd web server apache2
-        (13)Permission denied: AH00091: apache2: could not open error log file /var/log/apache2/error.log.
-        AH00015: Unable to open logs
-        Action 'start' failed.
-        The Apache error log may have more information
+ 7. To connect to RSAT Web server running from Docker container (Linux only): 
 
         # to start the Docker Web server launch the container and do (check password in Dockerfile):
         sudo service apache2 restart

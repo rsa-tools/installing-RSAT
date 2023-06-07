@@ -11,7 +11,7 @@
 
 <meta name="author" content="Najla Ksouri, Bruno Contreras Moreira" />
 
-<meta name="date" content="2023-06-06" />
+<meta name="date" content="2023-06-07" />
 
 <title>Installing the RSAT Docker container</title>
 
@@ -228,7 +228,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Installing the RSAT Docker container</h1>
 <h4 class="author">Najla Ksouri, Bruno Contreras Moreira</h4>
-<h4 class="date">2023-06-06</h4>
+<h4 class="date">2023-06-07</h4>
 
 </div>
 
@@ -236,8 +236,8 @@ div.tocify {
 <hr />
 <div id="introduction" class="section level1" number="1">
 <h1><span class="header-section-number">1</span> Introduction</h1>
-<p>This page explains how to install a Docker container of the
-Regulatory Sequence Analysis Tools.</p>
+<p>This page explains how to install an interactive Docker container of
+the Regulatory Sequence Analysis Tools.</p>
 </div>
 <div id="requirements" class="section level1" number="2">
 <h1><span class="header-section-number">2</span> Requirements</h1>
@@ -250,24 +250,40 @@ class="uri">https://hub.docker.com/r/biocontainers/rsat/tags</a> .</p>
 <div id="operating-systems" class="section level2" number="2.2">
 <h2><span class="header-section-number">2.2</span> Operating
 systems</h2>
-<ul>
-<li>Docker containers work in Linux, Mac OS X and Windows systems.</li>
-</ul>
+<p>Docker containers have so far been tested on Linux and Windows
+systems. <!--and Mac OS systems. --></p>
+<p>Please let us know or send us a PR at <a
+href="https://github.com/rsa-tools/installing-RSAT"
+class="uri">https://github.com/rsa-tools/installing-RSAT</a> if you
+succeed in running it on other settings.</p>
 </div>
 <div id="docker" class="section level2" number="2.3">
 <h2><span class="header-section-number">2.3</span> Docker</h2>
-<p>To run containers you must have Docker installed in your system. The
-easiest way to do this is to download and install <a
-href="https://www.docker.com/products/docker-desktop">Docker
-Desktop</a>, which is available for Linux, Mac OS X and Windows
-systems.</p>
-<p><strong>Note:</strong> see <a
-href="https://stackoverflow.com/questions/61530874/docker-how-do-i-add-myself-to-the-docker-users-group-on-windows">instructions</a>
-to add your Windows user to the ‘docker-users’ group, you will need
-admin privileges.</p>
-<p><strong>Note:</strong> on Ubuntu systems you might prefer to install
-the <a href="https://docs.docker.com/engine/install/ubuntu">Docker
-engine</a> instead.</p>
+<p>To run containers you must have Docker installed in your system.</p>
+<p>You can find instructions for installing the Docker (Server) engine
+on <strong>Linux</strong> at <a
+href="https://docs.docker.com/engine/install/#server"
+class="uri">https://docs.docker.com/engine/install/#server</a> .</p>
+<p>On <strong>Windows</strong>, our recommended procedure is to i)
+install the Windows Subsystem for Linux (WSL) and then ii) the Docker
+engine:</p>
+<ul>
+<li>The installation of WSL is simple, as it you can fetch it from the
+Microsoft Store for free (read more <a
+href="https://ubuntu.com/tutorials/install-ubuntu-on-wsl2-on-windows-11-with-gui-support#1-overview">here</a>
+and <a
+href="https://devblogs.microsoft.com/commandline/the-windows-subsystem-for-linux-in-the-microsoft-store-is-now-generally-available-on-windows-10-and-11/">here</a>).</li>
+<li>The installation of Docker engine within WSL is explained at <a
+href="https://dev.to/felipecrs/simply-run-docker-on-wsl2-3o8"
+class="uri">https://dev.to/felipecrs/simply-run-docker-on-wsl2-3o8</a>
+and <a href="https://docs.docker.com/engine/install/ubuntu"
+class="uri">https://docs.docker.com/engine/install/ubuntu</a> .</li>
+</ul>
+<!-- 
+We have also tested the [Docker Desktop](https://www.docker.com/products/docker-desktop), 
+which is available for Linux, Mac OS X and Windows systems, but c
+
+**Note:** see [instructions](https://stackoverflow.com/questions/61530874/docker-how-do-i-add-myself-to-the-docker-users-group-on-windows) to add your Windows user to the 'docker-users' group, you will need admin privileges. -->
 <hr />
 </div>
 </div>
@@ -283,54 +299,52 @@ you might change it as needed for other versions:</p>
 <ol style="list-style-type: decimal">
 <li><p>Download a container (this will take 10GB of your
 filesystem):</p>
-<pre><code># from the terminal
+<pre><code># from the Linux/WSL terminal
 docker pull biocontainers/rsat:20230602_cv1</code></pre>
-<p>This can also be done from the Docker Desktop app, as shown in the
-figure:</p>
-<p><img src="DockerDesktopWindows.png" /></p></li>
+<!--This can also be done from the Docker Desktop app, as shown in the figure:
+![](./DockerDesktopWindows.png) --></li>
 <li><p>Create local folders for input data and results, outside the
 container. In the example two folders are created, named
 <em>rsat_data/</em> and <em>rsat_results/</em>, which are placed in the
-/home partition. In addition, a subfolder (<em>rsat_data/genomes</em>)
-is also created and permissions are changed so that anyone can write
-there. Note those command lines will work on Linux/Mac OS systems,
-similar operations would need to ne carried out on Windows.
-<strong>Note:</strong> you can place these folders anywhere in your
-system, but please check their paths and modify them in <strong>step
-3</strong> accordingly:</p>
-<pre><code>cd 
-mkdir -p /home/rsat_data/genomes /home/rsat_results
-chmod -R a+w /home/rsat_data/genomes /home/rsat_results</code></pre></li>
+current location ($HOME). In addition, a subfolder
+(<em>rsat_data/genomes</em>) is also created and permissions are changed
+so that anyone can write there. Note those command lines will work
+equally on Linux/Windows systems. <strong>Note:</strong> you can place
+these folders anywhere in your system, but please check their paths and
+modify them in <strong>step 3</strong> accordingly:</p>
+<pre><code># assuming you are at $HOME 
+mkdir -p rsat_data/genomes rsat_results
+chmod -R a+w rsat_data/genomes rsat_results</code></pre></li>
 <li><p>Launch Docker RSAT container. Note that the local folders from
 <strong>step 2</strong> are mounted as volumes in the container. If you
 changed their locations please adjust their paths to the right of the
-‘:’:</p>
-<pre><code>docker run --rm -v ~/rsat_data:/packages/rsat/public_html/data/ -v ~/rsat_results:/home/rsat_user/rsat_results -it biocontainers/rsat:20230602_cv1</code></pre></li>
-<li><p><strong>[From this step on, the commands should be typed and
-executed at the container’s terminal].</strong> Download organism from
-public RSAT server, such as the Plants server. Other available servers
-are <a href="http://fungi.rsat.eu" class="uri">http://fungi.rsat.eu</a>,
-<a href="http://metazoa.rsat.eu" class="uri">http://metazoa.rsat.eu</a>,
-<a href="http://protists.rsat.eu"
-class="uri">http://protists.rsat.eu</a> and <a
-href="http://teaching.rsat.eu"
+colons. <strong>Note:</strong> after this instruction, all other
+commands should be typed and executed at the container’s terminal. :</p>
+<pre><code>docker run --rm -v $HOME/rsat_data:/packages/rsat/public_html/data/ -v $HOME/rsat_results:/home/rsat_user/rsat_results -it biocontainers/rsat:20230602_cv1
+
+# you should see a warning that can be safely ignored: 
+#
+# * Starting Apache httpd web server apache2
+# (13)Permission denied: AH00091: apache2: could not open error log file /var/log/apache2/error.log.
+# AH00015: Unable to open logs
+# Action &#39;start&#39; failed.
+# The Apache error log may have more information</code></pre></li>
+<li><p>Download organism from public RSAT server, such as the Plants
+server. Other available servers are <a href="http://fungi.rsat.eu"
+class="uri">http://fungi.rsat.eu</a>, <a href="http://metazoa.rsat.eu"
+class="uri">http://metazoa.rsat.eu</a>, <a
+href="http://protists.rsat.eu" class="uri">http://protists.rsat.eu</a>
+and <a href="http://teaching.rsat.eu"
 class="uri">http://teaching.rsat.eu</a></p>
 <pre><code>download-organism -v 2 -org Prunus_persica.Prunus_persica_NCBIv2.38 -server https://rsat.eead.csic.es/plants</code></pre></li>
 <li><p>Test container:</p>
 <pre><code>cd rsat_results 
 make -f ../test_data/peak-motifs.mk RNDSAMPLES=2 all</code></pre></li>
-<li><p>Install any organism, please follow the instructions at <a
+<li><p>To install any organism, please follow the instructions at <a
 href="https://rsa-tools.github.io/managing-RSAT/genome_installation/install_organisms_FASTA_GTF.html">managing-RSAT</a>.</p></li>
-<li><p>To connect to RSAT Web server running from Docker. If you run
-Docker as a normal user Apache will not start properly and you will see
-these messages:</p>
-<pre><code>* Starting Apache httpd web server apache2
-(13)Permission denied: AH00091: apache2: could not open error log file /var/log/apache2/error.log.
-AH00015: Unable to open logs
-Action &#39;start&#39; failed.
-The Apache error log may have more information
-
-# to start the Docker Web server launch the container and do (check password in Dockerfile):
+<li><p>To connect to RSAT Web server running from Docker container
+(Linux only):</p>
+<pre><code># to start the Docker Web server launch the container and do (check password in Dockerfile):
 sudo service apache2 restart
 hostname -I # should return IP address
 
