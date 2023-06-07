@@ -67,7 +67,8 @@ You can find instructions for installing the Docker (Server) engine on **Linux**
 
 On **Windows**, our recommended procedure is to i) install the Windows Subsystem for Linux (WSL) and then ii) the Docker engine:
 
- * The installation of WSL is simple, as it you can fetch it from the Microsoft Store for free (read more [here](https://ubuntu.com/tutorials/install-ubuntu-on-wsl2-on-windows-11-with-gui-support#1-overview) and  [here](https://devblogs.microsoft.com/commandline/the-windows-subsystem-for-linux-in-the-microsoft-store-is-now-generally-available-on-windows-10-and-11/)).
+ * The installation of WSL is simple, as it you can fetch it from the Microsoft Store for free (read more [here](https://learn.microsoft.com/en-us/windows/wsl/install) and 
+[here](https://devblogs.microsoft.com/commandline/the-windows-subsystem-for-linux-in-the-microsoft-store-is-now-generally-available-on-windows-10-and-11/)).
  * The installation of Docker engine within WSL is explained at https://dev.to/felipecrs/simply-run-docker-on-wsl2-3o8 and https://docs.docker.com/engine/install/ubuntu .
 
 <!-- 
