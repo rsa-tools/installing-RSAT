@@ -55,7 +55,7 @@ RSAT Docker containers are available at https://hub.docker.com/r/biocontainers/r
 
 ## Operating systems
 
-Docker containers have so far been tested on Linux and Windows systems. <!--and Mac OS systems. -->
+Docker containers have so far been tested on Linux, Windows and macOS (Intel) systems. <!--and Mac OS systems. -->
 
 Please let us know or send us a PR at https://github.com/rsa-tools/installing-RSAT if you succeed in running it on other settings.
 
