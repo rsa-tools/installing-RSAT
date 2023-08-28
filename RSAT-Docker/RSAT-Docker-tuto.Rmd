@@ -96,12 +96,12 @@ Software:
 
 If you want to fetch a ready-to-run Docker container with RSAT please select a tagged version from https://hub.docker.com/r/biocontainers/rsat/tags . 
 
-The steps below are for version **rsat:20230825_cv1**, you might change it as needed for other versions:
+The steps below are for version **rsat:20230828_cv1**, you might change it as needed for other versions:
 
  1. Download a container (this will take 10GB of your filesystem):
 
         # from the Linux/WSL terminal
-        docker pull biocontainers/rsat:20230825_cv1
+        docker pull biocontainers/rsat:20230828_cv1
         
     <!--This can also be done from the Docker Desktop app, as shown in the figure:
     ![](./DockerDesktopWindows.png) -->
@@ -115,7 +115,7 @@ The steps below are for version **rsat:20230825_cv1**, you might change it as ne
 
  3. Launch Docker RSAT container. Note that the local folders from **step 2** are mounted as volumes in the container. If you changed their locations please adjust their paths to the right of the colons. **Note:** after this instruction, all other commands should be typed and executed at the container's terminal. :
 
-        docker run --rm -v $HOME/rsat_data:/packages/rsat/public_html/data/ -v $HOME/rsat_results:/home/rsat_user/rsat_results -it biocontainers/rsat:20230825_cv1
+        docker run --rm -v $HOME/rsat_data:/packages/rsat/public_html/data/ -v $HOME/rsat_results:/home/rsat_user/rsat_results -it biocontainers/rsat:20230828_cv1
         
         # you should see a warning that can be safely ignored: 
         #
