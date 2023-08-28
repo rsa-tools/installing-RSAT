@@ -11,7 +11,7 @@
 
 <meta name="author" content="Najla Ksouri, Bruno Contreras Moreira" />
 
-<meta name="date" content="2023-07-27" />
+<meta name="date" content="2023-08-28" />
 
 <title>Installing the RSAT Docker container</title>
 
@@ -228,7 +228,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Installing the RSAT Docker container</h1>
 <h4 class="author">Najla Ksouri, Bruno Contreras Moreira</h4>
-<h4 class="date">2023-07-27</h4>
+<h4 class="date">2023-08-28</h4>
 
 </div>
 
@@ -251,7 +251,7 @@ class="uri">https://hub.docker.com/r/biocontainers/rsat/tags</a> .</p>
 <h2><span class="header-section-number">2.2</span> Operating
 systems</h2>
 <p>Docker containers have so far been tested on Linux, Windows and macOS
-(Intel) systems. <!--and Mac OS systems. --></p>
+(Intel) systems.</p>
 <p>Please let us know or send us a PR at <a
 href="https://github.com/rsa-tools/installing-RSAT"
 class="uri">https://github.com/rsa-tools/installing-RSAT</a> if you
@@ -279,10 +279,23 @@ class="uri">https://dev.to/felipecrs/simply-run-docker-on-wsl2-3o8</a>
 and <a href="https://docs.docker.com/engine/install/ubuntu"
 class="uri">https://docs.docker.com/engine/install/ubuntu</a> .</li>
 </ul>
-<!-- 
-We have also tested the [Docker Desktop](https://www.docker.com/products/docker-desktop), 
-which is available for Linux, Mac OS X and Windows systems, but c
+<p>Our community have also succeeded in running the RSAT container with
+<a href="https://www.docker.com/products/docker-desktop">Docker
+Desktop</a> for <strong>MacOS</strong> (also available for Linux and
+Windows systems).</p>
+<!--
+$> docker -v
+Docker version 24.0.2, build cb74dfc
 
+$> system_profiler SPSoftwareDataType SPHardwareDataType
+Software:
+    System Software Overview:
+      System Version: macOS 11.7.2 (20G1020)
+      Kernel Version: Darwin 20.6.0
+      Boot Volume: Macintosh HD
+      Secure Virtual Memory: Enabled
+-->
+<!--
 **Note:** see [instructions](https://stackoverflow.com/questions/61530874/docker-how-do-i-add-myself-to-the-docker-users-group-on-windows) to add your Windows user to the 'docker-users' group, you will need admin privileges. -->
 <hr />
 </div>
@@ -294,13 +307,13 @@ instructions</h1>
 select a tagged version from <a
 href="https://hub.docker.com/r/biocontainers/rsat/tags"
 class="uri">https://hub.docker.com/r/biocontainers/rsat/tags</a> .</p>
-<p>The steps below are for version <strong>rsat:20230602_cv1</strong>,
+<p>The steps below are for version <strong>rsat:20230825_cv1</strong>,
 you might change it as needed for other versions:</p>
 <ol style="list-style-type: decimal">
 <li><p>Download a container (this will take 10GB of your
 filesystem):</p>
 <pre><code># from the Linux/WSL terminal
-docker pull biocontainers/rsat:20230602_cv1</code></pre>
+docker pull biocontainers/rsat:20230825_cv1</code></pre>
 <!--This can also be done from the Docker Desktop app, as shown in the figure:
 ![](./DockerDesktopWindows.png) --></li>
 <li><p>Create local folders for input data and results, outside the
@@ -320,7 +333,7 @@ chmod -R a+w rsat_data/genomes rsat_results</code></pre></li>
 changed their locations please adjust their paths to the right of the
 colons. <strong>Note:</strong> after this instruction, all other
 commands should be typed and executed at the container’s terminal. :</p>
-<pre><code>docker run --rm -v $HOME/rsat_data:/packages/rsat/public_html/data/ -v $HOME/rsat_results:/home/rsat_user/rsat_results -it biocontainers/rsat:20230602_cv1
+<pre><code>docker run --rm -v $HOME/rsat_data:/packages/rsat/public_html/data/ -v $HOME/rsat_results:/home/rsat_user/rsat_results -it biocontainers/rsat:20230825_cv1
 
 # you should see a warning that can be safely ignored: 
 #
