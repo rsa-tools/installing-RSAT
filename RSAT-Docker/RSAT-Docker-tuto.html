@@ -11,7 +11,7 @@
 
 <meta name="author" content="Najla Ksouri, Bruno Contreras Moreira" />
 
-<meta name="date" content="2023-08-28" />
+<meta name="date" content="2024-02-22" />
 
 <title>Installing the RSAT Docker container</title>
 
@@ -228,7 +228,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Installing the RSAT Docker container</h1>
 <h4 class="author">Najla Ksouri, Bruno Contreras Moreira</h4>
-<h4 class="date">2023-08-28</h4>
+<h4 class="date">2024-02-22</h4>
 
 </div>
 
@@ -327,7 +327,7 @@ these folders anywhere in your system, but please check their paths and
 modify them in <strong>step 3</strong> accordingly:</p>
 <pre><code># assuming you are at $HOME 
 mkdir -p rsat_data/genomes rsat_results
-chmod -R a+w rsat_data/genomes rsat_results</code></pre></li>
+chmod -R a+w rsat_data rsat_results</code></pre></li>
 <li><p>Launch Docker RSAT container. Note that the local folders from
 <strong>step 2</strong> are mounted as volumes in the container. If you
 changed their locations please adjust their paths to the right of the

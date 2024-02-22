@@ -111,7 +111,7 @@ The steps below are for version **rsat:20230828_cv1**, you might change it as ne
  
         # assuming you are at $HOME 
         mkdir -p rsat_data/genomes rsat_results
-        chmod -R a+w rsat_data/genomes rsat_results
+        chmod -R a+w rsat_data rsat_results
 
  3. Launch Docker RSAT container. Note that the local folders from **step 2** are mounted as volumes in the container. If you changed their locations please adjust their paths to the right of the colons. **Note:** after this instruction, all other commands should be typed and executed at the container's terminal. :
 
