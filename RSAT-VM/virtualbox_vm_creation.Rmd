@@ -50,20 +50,15 @@ Ubuntu releases can be found here : <http://releases.ubuntu.com/releases/>
 
 The latest release tested was this one
 
-- **Ubuntu 20.04.1 LTS (Focal Fossa)**
+- Ubuntu 22.04.04 LTS (Jamy Jellyfish)
 
 RSAT has also been installed on VirtualBpx VMs with following releases
 
-
-- **Ubuntu 18.04.1 (Bionic Beaver)**
-
-- **Ubuntu 16.04.4 LTS (Xenial Xerus):**
-
-- **Ubuntu 14.04.5 LTS (Trusty Tahr)**
-
-- **Ubuntu 12.04.5 LTS (Precise Pangolin) ›**
-
-
+- Ubuntu 20.04.1 LTS (Focal Fossa)
+- Ubuntu 18.04.1 (Bionic Beaver)
+- Ubuntu 16.04.4 LTS (Xenial Xerus):
+- Ubuntu 14.04.5 LTS (Trusty Tahr)
+- Ubuntu 12.04.5 LTS (Precise Pangolin)
 
 ****************************************************************
 # Installation of the virtual machine
@@ -76,18 +71,21 @@ RSAT has also been installed on VirtualBpx VMs with following releases
 
 3. Parameters
 
-- Name and operating system (replace YYYY-MM by the curent year and month)
+- **Name and Operating System** (replace YYYY-MM by the curent year and month)
 
     - Name: rsat-vb-YYYY-MM
     - Type: Linux
-    - Version: Ubuntu (64 bits)
+    - Select the Ubuntu installation disk image (file with .iso extension)
 
+  Check the option ***"Skip unattended installation"***
 
 - Memory size:	2048 Mb (this can be modified afterwards). 
+- Processors: select it based on the number of cores of your computer and the inteded yse of the VM
 
-- Hard drive:	*Create a virtual hard drive now*. 
+- Virtual Hard Disk: activate	*Create a virtual hard drive now*. 
+- Disk Size: 25Gb
 
-- Hard drive file type: *VMDK* (Virtual Machine Disk). 
+<!--- Hard drive file type: *VMDK* (Virtual Machine Disk). 
 
     I chose this option because it ensures a wider compatibility with other OS and Virtual Machine management systems. 
     
@@ -109,6 +107,7 @@ RSAT has also been installed on VirtualBpx VMs with following releases
         - 2 Gb for /dev
 	      - 2 Gb for /run/user
 
+-->
 
 At this stage, the VM has been created and needs to be configured before installing the operating system. 
 
@@ -118,26 +117,28 @@ At this stage, the VM has been created and needs to be configured before install
 
 Before configuring the virtual machine, we need to tell VirtualBox how it will enable your local virtual machines to interact with their host (the operating system of the machine on which the VM is running).
 
-1. In the File menu
+1. In the **File** menu, select *Tools > Network Manager*
 
-2. Click on *Host-only Networks manager*
+2. Select  *Host-only Networks manager* tab
 
-     - Click on the "+" icon.
-     - This creates a network vboxnet0. 
-     - Select this network, click on the toothed wheel icon (*edit host-only network*), and set the following options:
+     - Click on the **Create** button ("+" icon).
+     - This creates a network named *Hostnetwork* 
+     - Select this network, click on the **Properties** button (toothed wheel icon), and check that the options correspond to this:
 
       - *Adapter* tab
-          - IPv4 Address: 192.168.56.1
-          - IPv4 Network Mask: 255.255.255.0
-          - IPv6 Adress: blank
-          - IPv6 Network Mask Length: 0
+          - Name: Homenetwork
+          - Mask: 255.255.255.0
+          - Lower bound: 192.168.56.1
+          - Upper bound: 192.168.56.199
 
+<!--
       - *DHCP Server* tab
           - Check *Enable Server*
           - *Server Address:* 192.168.56.100
           - *Server Mask:* 255.255.255.0
           - *Lower Address Bound:* 192.168.56.101
           - *Upper Address Bound:* 192.168.56.254
+-->
 
 ## Network configuration of the virtual machine
 
@@ -155,14 +156,14 @@ VirtualBox offers alternative ways to configure network communications between t
 We present here one possible way to configure your Virtual machine, but this should be adapted to the particular security/flexibility requirements of the network where the maching has to run. 
 
 
-### Adapter 1: Host-only adapter
+### Adapter 1: Host-only network
 
 The first network adapter is the safest: the only possible communication is from the host to the guest. This is sufficient to enable you to use the RSAT VM from your computer and only from there. Besides, your VM has no possibility to establish a connection to the external work. 
 
 - click on the tab *Adapter 1*,
 - check *Enable Network Adapter*
-- Attached to: *Host-only Adapter*
-- Name: *vboxnet0* (this network must have been created beforehand)
+- Attached to: *Host-only Network*
+- Name: *Hostnetwork* (this network must have been created beforehand, see above)
 
 ### Adapter 2: NAT
 
