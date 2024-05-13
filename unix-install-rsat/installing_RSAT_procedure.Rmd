@@ -430,14 +430,14 @@ If your Linux OS is not Ubuntu some adaptation of the scripts used in this step 
 
 ```{bash}
 ## NOTE: you must now move to the $INSTALL_ROOT directory before becoming admin
-cd ${INSTALL_ROOT}
+cd ${RSAT}
 
 ## This requires admin privileges
 sudo bash
 
 ## Go to the RSAT directory
-export INSTALL_ROOT=`pwd`
-cd ${INSTALL_ROOT}/rsat
+export RSAT=`pwd`
+cd ${RSAT}
 
 ## Check who you are  (should be root)
 whoami

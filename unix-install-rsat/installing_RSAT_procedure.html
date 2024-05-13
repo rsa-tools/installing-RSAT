@@ -374,29 +374,33 @@ href="https://git-lfs.github.com/">here</a>.</li>
 <h2 class="unlisted unnumbered">Mac OS X</h2>
 <p><br></p>
 <ol style="list-style-type: decimal">
-<li><strong>Operating system</strong>. This RSAT installation protocol
-is aimed at Mac OS X in Mojave (v10.14) and Catalina (v10.15). RSAT
-installation in previous Mac OS X versions is feasible but a manual
+<li><p><strong>Operating system</strong>. This RSAT installation
+protocol is aimed at Mac OS X in Mojave (v10.14) and Catalina (v10.15).
+RSAT installation in previous Mac OS X versions is feasible but a manual
 installation of packages (e.g. <code>brew</code> packages) is needed and
-it is beyond the scope of this tutorial.</li>
-<li><strong>Xcode</strong>. The complete version of the <em>Xcode</em>
-application should already be installed in your Mac OS X. You can
-download and install <em>Xcode</em> from <a
+it is beyond the scope of this tutorial.</p></li>
+<li><p><strong>Xcode</strong>. The complete version of the
+<em>Xcode</em> application should already be installed in your Mac OS X.
+You can download and install <em>Xcode</em> from <a
 href="https://developer.apple.com/download/">here</a>. Please be aware
 that downloading <em>Xcode</em> versions for Mac OS X requires an Apple
-Developer account.</li>
-<li><strong>Package manager</strong>. The <code>brew</code> package
+Developer account.</p></li>
+<li><p><strong>Package manager</strong>. The <code>brew</code> package
 manager should be already installed in the command line and it is
 recommended to update to the latest version. You can install
 <code>brew</code> from <a href="https://brew.sh/">here</a>. At the
 moment <code>brew</code> in RSAT is only supported for Mac OS X in
-Mojave (v10.14) and Catalina (v10.15).</li>
-<li><strong>Git and Git LFS</strong>. If you are installing the GitHub
-repositories the <code>git</code> and <code>git-lfs</code> applications
-should be available in the command line. You can install
-<code>git</code> from <a href="https://git-scm.com/downloads">here</a>
-and <code>git-lfs</code> from <a
-href="https://git-lfs.github.com/">here</a>.</li>
+Mojave (v10.14) and Catalina (v10.15).</p></li>
+<li><p><strong>Git and Git LFS</strong>. If you are installing the
+GitHub repositories the <code>git</code> and <code>git-lfs</code>
+applications should be available in the command line.</p>
+<ul>
+<li><p>For Mac OSX, git-lfs can be installed with Howebrew:</p>
+<p><code>brew install git-lfs</code></p></li>
+<li><p>alternatively, You can install <code>git</code> from <a
+href="https://git-scm.com/downloads">here</a> and <code>git-lfs</code>
+from <a href="https://git-lfs.github.com/">here</a>.</p></li>
+</ul></li>
 </ol>
 <p><br></p>
 <hr />
@@ -444,22 +448,25 @@ class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">INSTALL_ROOT</span><span class="op">=</span>~/packages</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> <span class="va">${INSTALL_ROOT}</span>/</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">## Make a clone of the different RSAT packages</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span>  <span class="va">${INSTALL_ROOT}</span>/</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/rsa-tools/rsat-code.git</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/rsa-tools/demo_files.git</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/rsa-tools/motif_databases.git</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/rsa-tools/sample_outputs.git</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co">## Create soft links to the data repositories</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> rsat-code rsat</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> rsat/public_html</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="fu">ln</span> <span class="at">-s</span> ../../demo_files</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="fu">ln</span> <span class="at">-s</span> ../../sample_outputs</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="fu">ln</span> <span class="at">-s</span> ../../motif_databases</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span>  <span class="va">${INSTALL_ROOT}</span>/rsat</span></code></pre></div>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">## Check that git-lfs is installed</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">which</span> git-lfs</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">## Install it if it is not avalable</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">## Make a clone of the different RSAT packages</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span>  <span class="va">${INSTALL_ROOT}</span>/</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/rsa-tools/rsat-code.git</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/rsa-tools/demo_files.git</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/rsa-tools/motif_databases.git</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/rsa-tools/sample_outputs.git</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co">## Create soft links to the data repositories</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> rsat-code rsat</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> rsat/public_html</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="fu">ln</span> <span class="at">-s</span> ../../demo_files</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="fu">ln</span> <span class="at">-s</span> ../../sample_outputs</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="fu">ln</span> <span class="at">-s</span> ../../motif_databases</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span>  <span class="va">${INSTALL_ROOT}</span>/rsat</span></code></pre></div>
 <hr />
 <!--
 ## ![tar_logo](images/box-seam.svg){width=20px}  &nbsp; Dowloading a tarball archive {.unlisted .unnumbered}
@@ -818,12 +825,14 @@ class="sourceCode bash"><code class="sourceCode bash"><span id="cb16-1"><a href=
 <span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a><span class="co">## </span><span class="al">NOTE</span><span class="co">: the following command should be adapted to your case.</span></span>
 <span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a><span class="co">## Restore the *login* and *group* of the user owing the $RSAT folder.</span></span>
 <span id="cb16-31"><a href="#cb16-31" aria-hidden="true" tabindex="-1"></a><span class="fu">chown</span> <span class="at">-R</span> MyLogin:MyGroup <span class="va">$RSAT</span></span>
-<span id="cb16-32"><a href="#cb16-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-33"><a href="#cb16-33" aria-hidden="true" tabindex="-1"></a><span class="co">## Exit sudo session</span></span>
-<span id="cb16-34"><a href="#cb16-34" aria-hidden="true" tabindex="-1"></a><span class="bu">exit</span></span>
-<span id="cb16-35"><a href="#cb16-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-36"><a href="#cb16-36" aria-hidden="true" tabindex="-1"></a><span class="co">## Check who you are (should be back to normal user identity)</span></span>
-<span id="cb16-37"><a href="#cb16-37" aria-hidden="true" tabindex="-1"></a><span class="fu">whoami</span> <span class="co">## This should give *YourUserName*</span></span></code></pre></div>
+<span id="cb16-32"><a href="#cb16-32" aria-hidden="true" tabindex="-1"></a><span class="co">## Example: </span></span>
+<span id="cb16-33"><a href="#cb16-33" aria-hidden="true" tabindex="-1"></a><span class="co">##    chown -R rsat:rsat $RSAT</span></span>
+<span id="cb16-34"><a href="#cb16-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-35"><a href="#cb16-35" aria-hidden="true" tabindex="-1"></a><span class="co">## Exit sudo session</span></span>
+<span id="cb16-36"><a href="#cb16-36" aria-hidden="true" tabindex="-1"></a><span class="bu">exit</span></span>
+<span id="cb16-37"><a href="#cb16-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-38"><a href="#cb16-38" aria-hidden="true" tabindex="-1"></a><span class="co">## Check who you are (should be back to normal user identity)</span></span>
+<span id="cb16-39"><a href="#cb16-39" aria-hidden="true" tabindex="-1"></a><span class="fu">whoami</span> <span class="co">## This should give *YourUserName*</span></span></code></pre></div>
 <hr />
 </div>
 <div id="mac-os-x-2" class="section level2 unlisted unnumbered">
