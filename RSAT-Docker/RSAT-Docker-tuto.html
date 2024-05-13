@@ -11,7 +11,7 @@
 
 <meta name="author" content="Najla Ksouri, Bruno Contreras Moreira" />
 
-<meta name="date" content="2024-02-22" />
+<meta name="date" content="2024-05-13" />
 
 <title>Installing the RSAT Docker container</title>
 
@@ -228,7 +228,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Installing the RSAT Docker container</h1>
 <h4 class="author">Najla Ksouri, Bruno Contreras Moreira</h4>
-<h4 class="date">2024-02-22</h4>
+<h4 class="date">2024-05-13</h4>
 
 </div>
 
@@ -236,8 +236,8 @@ div.tocify {
 <hr />
 <div id="introduction" class="section level1" number="1">
 <h1><span class="header-section-number">1</span> Introduction</h1>
-<p>This page explains how to install an interactive Docker container of
-the Regulatory Sequence Analysis Tools.</p>
+<p>This page explains how to install a Docker container of the
+Regulatory Sequence Analysis Tools.</p>
 </div>
 <div id="requirements" class="section level1" number="2">
 <h1><span class="header-section-number">2</span> Requirements</h1>
@@ -245,7 +245,10 @@ the Regulatory Sequence Analysis Tools.</p>
 <h2><span class="header-section-number">2.1</span> Availability</h2>
 <p>RSAT Docker containers are available at <a
 href="https://hub.docker.com/r/biocontainers/rsat/tags"
-class="uri">https://hub.docker.com/r/biocontainers/rsat/tags</a> .</p>
+class="uri">https://hub.docker.com/r/biocontainers/rsat/tags</a></p>
+<p>Each release corresponds to a tag from <a
+href="https://github.com/rsa-tools/rsat-code/tags"
+class="uri">https://github.com/rsa-tools/rsat-code/tags</a></p>
 </div>
 <div id="operating-systems" class="section level2" number="2.2">
 <h2><span class="header-section-number">2.2</span> Operating
@@ -307,13 +310,13 @@ instructions</h1>
 select a tagged version from <a
 href="https://hub.docker.com/r/biocontainers/rsat/tags"
 class="uri">https://hub.docker.com/r/biocontainers/rsat/tags</a> .</p>
-<p>The steps below are for version <strong>rsat:20230828_cv1</strong>,
+<p>The steps below are for version <strong>rsat:20240507_cv1</strong>,
 you might change it as needed for other versions:</p>
 <ol style="list-style-type: decimal">
 <li><p>Download a container (this will take 10GB of your
 filesystem):</p>
 <pre><code># from the Linux/WSL terminal
-docker pull biocontainers/rsat:20230828_cv1</code></pre>
+docker pull biocontainers/rsat:20240507_cv1</code></pre>
 <!--This can also be done from the Docker Desktop app, as shown in the figure:
 ![](./DockerDesktopWindows.png) --></li>
 <li><p>Create local folders for input data and results, outside the
@@ -333,7 +336,7 @@ chmod -R a+w rsat_data rsat_results</code></pre></li>
 changed their locations please adjust their paths to the right of the
 colons. <strong>Note:</strong> after this instruction, all other
 commands should be typed and executed at the container’s terminal. :</p>
-<pre><code>docker run --rm -v $HOME/rsat_data:/packages/rsat/public_html/data/ -v $HOME/rsat_results:/home/rsat_user/rsat_results -it biocontainers/rsat:20230828_cv1
+<pre><code>docker run --rm -v $HOME/rsat_data:/packages/rsat/public_html/data/ -v $HOME/rsat_results:/home/rsat_user/rsat_results -it biocontainers/rsat:20240507_cv1
 
 # you should see a warning that can be safely ignored: 
 #
@@ -350,7 +353,7 @@ href="http://protists.rsat.eu" class="uri">http://protists.rsat.eu</a>
 and <a href="http://teaching.rsat.eu"
 class="uri">http://teaching.rsat.eu</a></p>
 <pre><code>download-organism -v 2 -org Prunus_persica.Prunus_persica_NCBIv2.38 -server https://rsat.eead.csic.es/plants</code></pre></li>
-<li><p>Test container:</p>
+<li><p>Testing:</p>
 <pre><code>cd rsat_results 
 make -f ../test_data/peak-motifs.mk RNDSAMPLES=2 all</code></pre></li>
 <li><p>To install any organism, please follow the instructions at <a
@@ -364,17 +367,47 @@ hostname -I # should return IP address
 # finally open the following URL in your browser, using the IP address, ie http://172.17.0.2/rsat</code></pre></li>
 </ol>
 </div>
-<div id="a-complete-tutorial" class="section level1" number="4">
-<h1><span class="header-section-number">4</span> A complete
+<div id="complete-interactive-tutorial" class="section level1"
+number="4">
+<h1><span class="header-section-number">4</span> Complete interactive
 tutorial</h1>
-<p>Check a complete protocol on using a Docker container to carry out
-motif analysis in co-expression networks at <a
+<p>Once you installed the RSAT Docker container you can follow our
+protocol on using a Docker container interactively to carry out motif
+analysis in co-expression networks at:</p>
+<p><a
 href="https://eead-csic-compbio.github.io/coexpression_motif_discovery/peach/Tutorial.html"
-class="uri">https://eead-csic-compbio.github.io/coexpression_motif_discovery/peach/Tutorial.html</a>
-.</p>
+class="uri">https://eead-csic-compbio.github.io/coexpression_motif_discovery/peach/Tutorial.html</a></p>
 </div>
-<div id="dockerfiles" class="section level1" number="5">
-<h1><span class="header-section-number">5</span> Dockerfiles</h1>
+<div id="calling-rsat-tools-non-interactively" class="section level1"
+number="5">
+<h1><span class="header-section-number">5</span> Calling RSAT tools
+non-interactively</h1>
+<p>In addition to logging into the Docker container as explained in the
+previous section, you can also call individual tools from the terminal
+non-interactively. See the example below with <a
+href="https://doi.org/10.1093/nar/gkr1104"><em>peak-motifs</em></a> and
+a user-provided FASTA file (<code>test.fa</code>) in the current
+directory:</p>
+<pre><code>docker run -v $PWD:/home/rsat_user -v $PWD/out:/home/rsat_user/out biocontainers/rsat:20240507_cv1 peak-motifs -help
+
+docker run -v $PWD:/home/rsat_user -v $PWD/out:/home/rsat_user/out biocontainers/rsat:20240507_cv1 peak-motifs -i test.fa -outdir out -prefix test</code></pre>
+<p>A more ellaborated example follows, were discovered motifs are
+compared to the collection of plant DNA motifs from footprintDB; list
+all available motif collections at <a
+href="https://github.com/rsa-tools/motif_databases"
+class="uri">https://github.com/rsa-tools/motif_databases</a> :</p>
+<pre><code>docker run -v $PWD:/home/rsat_user -v $PWD/out:/home/rsat_user/out biocontainers/rsat:20240507_cv1 peak-motifs -i test.fa -outdir out -prefix test -motif_db footDB transfac  /packages/rsat/public_html/motif_databases/footprintDB/footprintDB.plants.motif.tf</code></pre>
+<p>Note these examples require binding two folders, but this might
+change with other tools:</p>
+<ul>
+<li>The current folder from where the container is called ($PWD). This
+allows processing any FASTA file in the current directory.</li>
+<li>The folder to save the results (out/). This should point to an
+existing local folder where anybody can write (chmod 777).</li>
+</ul>
+</div>
+<div id="dockerfiles" class="section level1" number="6">
+<h1><span class="header-section-number">6</span> Dockerfiles</h1>
 <p>Dockerfiles for the containers at <a
 href="https://hub.docker.com/r/biocontainers/rsat">biocontainers/rsat</a>
 can be found at <a
