@@ -156,21 +156,58 @@ https://eead-csic-compbio.github.io/coexpression_motif_discovery/peach/Tutorial.
 # Calling RSAT tools non-interactively
 
 In addition to logging into the Docker container as explained in the previous section,
-you can also call individual tools from the terminal non-interactively. See the example below with
-[*peak-motifs*](https://doi.org/10.1093/nar/gkr1104) and a user-provided FASTA file (`test.fa`) in the current directory:
+you can also call individual tools from the terminal non-interactively: 
 
-    docker run -v $PWD:/home/rsat_user -v $PWD/out:/home/rsat_user/out biocontainers/rsat:20240507_cv1 peak-motifs -help
+    export RSATDOCKER="biocontainers/rsat:20240507_cv1 rsat"
+    docker run $RSATDOCKER rsat
+    docker run $RSATDOCKER rsat peak-motifs -h
+    # short form
+    docker run $RSATDOCKER peak-motifs -h
 
-    docker run -v $PWD:/home/rsat_user -v $PWD/out:/home/rsat_user/out biocontainers/rsat:20240507_cv1 peak-motifs -i test.fa -outdir out -prefix test
+The container ships with **pre-installed motif databases** 
+(see <https://github.com/rsa-tools/motif_databases>), which can be used by different tools 
+to scan sequences or to annotate discovered DNA motifs. You can see which collections are 
+available with:
 
-A more ellaborated example follows, were discovered motifs are compared to the collection of plant DNA motifs from footprintDB; list all available motif collections at https://github.com/rsa-tools/motif_databases :
+    docker run 836f32d6cdea ls /packages/motif_databases
 
-    docker run -v $PWD:/home/rsat_user -v $PWD/out:/home/rsat_user/out biocontainers/rsat:20240507_cv1 peak-motifs -i test.fa -outdir out -prefix test -motif_db footDB transfac  /packages/rsat/public_html/motif_databases/footprintDB/footprintDB.plants.motif.tf
+The container ships with **no installed genomes**, but you can still use pre-installed genomes. 
+The easiest way would be to copy them from a Web instance, such as [RSAT::Plants](<https://rsat.eead.csic.es/plants/htmllink.cgi?title=RSAT-Data&file=data>).
+You would to create a local folder, say `server_data` and download there:
 
-Note these examples require binding two folders, but this might change with other tools:
+ 1. Any genome folder available at https://rsat.eead.csic.es/plants/data/genomes/
+ 2. File https://rsat.eead.csic.es/plants/data/supported_organisms.tab , which should be tweaked leaving only the lines of genomes selected in the previous step.
 
-* The current folder from where the container is called ($PWD). This allows processing any FASTA file in the current directory.
-* The folder to save the results (out/). This should point to an existing local folder where anybody can write (chmod 777).
+You can now check whether the genomes are available with:
+
+    docker run -v $PWD/server_data:/packages/rsat/data $RSATDOCKER rsat supported-organisms
+    
+## peak-motifs examples
+
+The next examples show how to run [*peak-motifs*](https://doi.org/10.1093/nar/gkr1104) with a user-provided FASTA file (`test.fa`) in the current directory:
+
+    docker run -v $PWD:/home/rsat_user -v $PWD/out:/home/rsat_user/out $RSATDOCKER peak-motifs -help
+
+    docker run -v $PWD:/home/rsat_user -v $PWD/out:/home/rsat_user/out $RSATDOCKER peak-motifs -i test.fa -outdir out -prefix test
+    
+Note that you can visualize the results by opening local folder `$PWD/out` with your browser.
+
+Two more examples follow, were any discovered motifs are compared to pre-installed ([footDB](https://footprintdb.eead.csic.es)) and user-provided motif databases in 
+[TRANSFAC](https://rsat.eead.csic.es/plants/help.convert-matrix.html#io_format) format:  
+
+    docker run -v $PWD:/home/rsat_user -v $PWD/out:/home/rsat_user/out $RSATDOCKER peak-motifs -i test.fa -outdir out -prefix test -motif_db footDB transfac /packages/motif_databases/footprintDB/footprintDB.plants.motif.tf
+    
+    docker run -v $PWD:/home/rsat_user -v $PWD/out:/home/rsat_user/out -v $PWD/user_motifs:/home/rsat_user/ext_motifs  $RSATDOCKER peak-motifs -i test.fa -outdir out -prefix test -motif_db custom transfac /home/rsat_user/ext_motifs/mymotifs.tf
+
+## Binding local folders
+
+Some examples seen before require binding local folders; the exact way this is done depends on the job:
+
+* The current folder from where the container is called ($PWD). This allows passing and processing any file in the current directory.
+* A folder to save the results (`out/`). This should point to an existing local folder where anybody can write (chmod 777).
+* A folder containing motifs in TRANSFAC format (`user_motif/`). 
+* A folder containing pre-installed genome data (`server_data/`).
+
 
 # Dockerfiles
 

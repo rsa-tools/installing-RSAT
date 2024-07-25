@@ -11,7 +11,7 @@
 
 <meta name="author" content="Najla Ksouri, Bruno Contreras Moreira" />
 
-<meta name="date" content="2024-05-13" />
+<meta name="date" content="2024-07-25" />
 
 <title>Installing the RSAT Docker container</title>
 
@@ -228,7 +228,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Installing the RSAT Docker container</h1>
 <h4 class="author">Najla Ksouri, Bruno Contreras Moreira</h4>
-<h4 class="date">2024-05-13</h4>
+<h4 class="date">2024-07-25</h4>
 
 </div>
 
@@ -384,27 +384,74 @@ number="5">
 non-interactively</h1>
 <p>In addition to logging into the Docker container as explained in the
 previous section, you can also call individual tools from the terminal
-non-interactively. See the example below with <a
-href="https://doi.org/10.1093/nar/gkr1104"><em>peak-motifs</em></a> and
+non-interactively:</p>
+<pre><code>export RSATDOCKER=&quot;biocontainers/rsat:20240507_cv1 rsat&quot;
+docker run $RSATDOCKER rsat
+docker run $RSATDOCKER rsat peak-motifs -h
+# short form
+docker run $RSATDOCKER peak-motifs -h</code></pre>
+<p>The container ships with <strong>pre-installed motif
+databases</strong> (see <a
+href="https://github.com/rsa-tools/motif_databases"
+class="uri">https://github.com/rsa-tools/motif_databases</a>), which can
+be used by different tools to scan sequences or to annotate discovered
+DNA motifs. You can see which collections are available with:</p>
+<pre><code>docker run 836f32d6cdea ls /packages/motif_databases</code></pre>
+<p>The container ships with <strong>no installed genomes</strong>, but
+you can still use pre-installed genomes. The easiest way would be to
+copy them from a Web instance, such as <a
+href="https://rsat.eead.csic.es/plants/htmllink.cgi?title=RSAT-Data&amp;file=data">RSAT::Plants</a>.
+You would to create a local folder, say <code>server_data</code> and
+download there:</p>
+<ol style="list-style-type: decimal">
+<li>Any genome folder available at <a
+href="https://rsat.eead.csic.es/plants/data/genomes/"
+class="uri">https://rsat.eead.csic.es/plants/data/genomes/</a></li>
+<li>File <a
+href="https://rsat.eead.csic.es/plants/data/supported_organisms.tab"
+class="uri">https://rsat.eead.csic.es/plants/data/supported_organisms.tab</a>
+, which should be tweaked leaving only the lines of genomes selected in
+the previous step.</li>
+</ol>
+<p>You can now check whether the genomes are available with:</p>
+<pre><code>docker run -v $PWD/server_data:/packages/rsat/data $RSATDOCKER rsat supported-organisms</code></pre>
+<div id="peak-motifs-examples" class="section level2" number="5.1">
+<h2><span class="header-section-number">5.1</span> peak-motifs
+examples</h2>
+<p>The next examples show how to run <a
+href="https://doi.org/10.1093/nar/gkr1104"><em>peak-motifs</em></a> with
 a user-provided FASTA file (<code>test.fa</code>) in the current
 directory:</p>
-<pre><code>docker run -v $PWD:/home/rsat_user -v $PWD/out:/home/rsat_user/out biocontainers/rsat:20240507_cv1 peak-motifs -help
+<pre><code>docker run -v $PWD:/home/rsat_user -v $PWD/out:/home/rsat_user/out $RSATDOCKER peak-motifs -help
 
-docker run -v $PWD:/home/rsat_user -v $PWD/out:/home/rsat_user/out biocontainers/rsat:20240507_cv1 peak-motifs -i test.fa -outdir out -prefix test</code></pre>
-<p>A more ellaborated example follows, were discovered motifs are
-compared to the collection of plant DNA motifs from footprintDB; list
-all available motif collections at <a
-href="https://github.com/rsa-tools/motif_databases"
-class="uri">https://github.com/rsa-tools/motif_databases</a> :</p>
-<pre><code>docker run -v $PWD:/home/rsat_user -v $PWD/out:/home/rsat_user/out biocontainers/rsat:20240507_cv1 peak-motifs -i test.fa -outdir out -prefix test -motif_db footDB transfac  /packages/rsat/public_html/motif_databases/footprintDB/footprintDB.plants.motif.tf</code></pre>
-<p>Note these examples require binding two folders, but this might
-change with other tools:</p>
+docker run -v $PWD:/home/rsat_user -v $PWD/out:/home/rsat_user/out $RSATDOCKER peak-motifs -i test.fa -outdir out -prefix test</code></pre>
+<p>Note that you can visualize the results by opening local folder
+<code>$PWD/out</code> with your browser.</p>
+<p>Two more examples follow, were any discovered motifs are compared to
+pre-installed (<a href="https://footprintdb.eead.csic.es">footDB</a>)
+and user-provided motif databases in <a
+href="https://rsat.eead.csic.es/plants/help.convert-matrix.html#io_format">TRANSFAC</a>
+format:</p>
+<pre><code>docker run -v $PWD:/home/rsat_user -v $PWD/out:/home/rsat_user/out $RSATDOCKER peak-motifs -i test.fa -outdir out -prefix test -motif_db footDB transfac /packages/motif_databases/footprintDB/footprintDB.plants.motif.tf
+
+docker run -v $PWD:/home/rsat_user -v $PWD/out:/home/rsat_user/out -v $PWD/user_motifs:/home/rsat_user/ext_motifs  $RSATDOCKER peak-motifs -i test.fa -outdir out -prefix test -motif_db custom transfac /home/rsat_user/ext_motifs/mymotifs.tf</code></pre>
+</div>
+<div id="binding-local-folders" class="section level2" number="5.2">
+<h2><span class="header-section-number">5.2</span> Binding local
+folders</h2>
+<p>Some examples seen before require binding local folders; the exact
+way this is done depends on the job:</p>
 <ul>
 <li>The current folder from where the container is called ($PWD). This
-allows processing any FASTA file in the current directory.</li>
-<li>The folder to save the results (out/). This should point to an
-existing local folder where anybody can write (chmod 777).</li>
+allows passing and processing any file in the current directory.</li>
+<li>A folder to save the results (<code>out/</code>). This should point
+to an existing local folder where anybody can write (chmod 777).</li>
+<li>A folder containing motifs in TRANSFAC format
+(<code>user_motif/</code>).</li>
+<li>A folder containing pre-installed genome data
+(<code>server_data/</code>).</li>
 </ul>
+</div>
 </div>
 <div id="dockerfiles" class="section level1" number="6">
 <h1><span class="header-section-number">6</span> Dockerfiles</h1>
