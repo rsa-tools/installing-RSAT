@@ -45,7 +45,7 @@ knitr::opts_chunk$set(
 ****************************************************************
 # Introduction
 
-This page explains how to install a Docker container of the Regulatory Sequence Analysis Tools. 
+This page explains how to install and run a Docker container of the Regulatory Sequence Analysis Tools. 
 
 # Requirements
 
@@ -73,7 +73,8 @@ On **Windows**, our recommended procedure is to i) install the Windows Subsystem
 [here](https://devblogs.microsoft.com/commandline/the-windows-subsystem-for-linux-in-the-microsoft-store-is-now-generally-available-on-windows-10-and-11/)).
  * The installation of Docker engine within WSL is explained at https://dev.to/felipecrs/simply-run-docker-on-wsl2-3o8 and https://docs.docker.com/engine/install/ubuntu .
 
-Our community have also succeeded in running the RSAT container with [Docker Desktop](https://www.docker.com/products/docker-desktop)
+Our community have also succeeded in running the RSAT container with 
+[Docker Desktop](https://www.docker.com/products/docker-desktop)
 for **MacOS** (also available for Linux and Windows systems).
 
 <!--
@@ -94,30 +95,40 @@ Software:
 
 ****************************************************************
 
+# Binding local folders
+
+Some examples below require binding local folders. These allow you to keep persistent
+files outside the Docker container, which you access even if the container is turned off.
+They are listed here:
+
+| folder   | description | creation command |
+| -------- | ----------- | ---------------- |
+| rsat_data/genomes | installed genomes, writable by anybody | `mkdir -p rsat_data/genomes; chmod -R a+w rsat_data` |
+| rsat_results/ | saved results, writable by anybody | `mkdir rsat_results; chmod -R a+w rsat_results` |
+| user_motifs/ | contains motifs in [TRANSFAC](https://rsat.eead.csic.es/plants/help.convert-matrix.html#io_format) format, readable by anybody | |
+
 # Installation instructions
 
-If you want to fetch a ready-to-run Docker container with RSAT please select a tagged version from https://hub.docker.com/r/biocontainers/rsat/tags . 
+If you want to fetch a ready-to-run Docker container with RSAT please select a tagged version from https://hub.docker.com/r/biocontainers/rsat/tags . For convenience, in the steps below 
+we set an **environmental variable** named `RSATDOCKER` with the chosen version:
 
-The steps below are for version **rsat:20240507_cv1**, you might change it as needed for other versions:
+ 4.1. Download a container (this will take 10GB of your filesystem):
 
- 1. Download a container (this will take 10GB of your filesystem):
-
-        # from the Linux/WSL terminal
-        docker pull biocontainers/rsat:20240507_cv1
+        # set env variable with tag at the Linux/WSL terminal
+        export RSATDOCKER="biocontainers/rsat:20240507_cv1"          
+        
+        # actually pull container image
+        docker pull $RSATDOCKER
         
     <!--This can also be done from the Docker Desktop app, as shown in the figure:
     ![](./DockerDesktopWindows.png) -->
         
 
- 2. Create local folders for input data and results, outside the container. In the example two folders are created, named *rsat_data/* and *rsat_results/*, which are placed in the current location ($HOME). In addition, a subfolder (*rsat_data/genomes*) is also created and permissions are changed so that anyone can write there. Note those command lines will work equally on Linux/Windows systems. **Note:** you can place these folders anywhere in your system, but please check their paths and modify them in **step 3** accordingly:
+ 4.2. Create local folders for input data and results, outside the container, as explained on section [Binding local folders](#binding-local-folders). The next example requires folders `rsat_data/` and `rsat_results/` in the current location (env variable `$PWD`). **Note:** you can place these folders anywhere in your system, but please check their paths and modify them in **step 3** accordingly:
  
-        # assuming you are at $HOME 
-        mkdir -p rsat_data/genomes rsat_results
-        chmod -R a+w rsat_data rsat_results
+ 4.3. Launch Docker RSAT container. Note that the local folders from **step 2** are mounted as volumes in the container. If you changed their locations please adjust their paths to the right of the colons. **Note:** after this instruction, all other commands should be typed and executed at the container's terminal:
 
- 3. Launch Docker RSAT container. Note that the local folders from **step 2** are mounted as volumes in the container. If you changed their locations please adjust their paths to the right of the colons. **Note:** after this instruction, all other commands should be typed and executed at the container's terminal. :
-
-        docker run --rm -v $HOME/rsat_data:/packages/rsat/public_html/data/ -v $HOME/rsat_results:/home/rsat_user/rsat_results -it biocontainers/rsat:20240507_cv1
+        docker run --rm -v $PWD/rsat_data:/packages/rsat/public_html/data/ -v $PWD/rsat_results:/home/rsat_user/rsat_results -it $RSATDOCKER
         
         # you should see a warning that can be safely ignored: 
         #
@@ -128,18 +139,18 @@ The steps below are for version **rsat:20240507_cv1**, you might change it as ne
         # The Apache error log may have more information
 
 
- 4. Download organism from public RSAT server, such as the Plants server. Other available servers are http://fungi.rsat.eu, http://metazoa.rsat.eu, http://protists.rsat.eu and http://teaching.rsat.eu
+ 4.4. Download an organism from public RSAT servers, such as the Plants server. Other available servers are http://fungi.rsat.eu, http://metazoa.rsat.eu, http://protists.rsat.eu and http://teaching.rsat.eu
 
         download-organism -v 2 -org Prunus_persica.Prunus_persica_NCBIv2.38 -server https://rsat.eead.csic.es/plants
 
- 5. Testing:
+ 4.5. Testing:
 
         cd rsat_results 
         make -f ../test_data/peak-motifs.mk RNDSAMPLES=2 all
 
- 6. To install any organism, please follow the instructions at [managing-RSAT](https://rsa-tools.github.io/managing-RSAT/genome_installation/install_organisms_FASTA_GTF.html).
+ 4.6. To install any organism, please follow the instructions at [managing-RSAT](https://rsa-tools.github.io/managing-RSAT/genome_installation/install_organisms_FASTA_GTF.html).
 
- 7. To connect to RSAT Web server running from Docker container (Linux only): 
+ 4.7. To connect to RSAT Web server running from Docker container (Linux only): 
 
         # to start the Docker Web server launch the container and do (check password in Dockerfile):
         sudo service apache2 restart
@@ -147,18 +158,15 @@ The steps below are for version **rsat:20240507_cv1**, you might change it as ne
 
         # finally open the following URL in your browser, using the IP address, ie http://172.17.0.2/rsat
  
-# Complete interactive tutorial
+# Step-by-step interactive tutorial
 
-Once you installed the RSAT Docker container you can follow our protocol on using a Docker container interactively to carry out motif analysis in co-expression networks at:
-
-https://eead-csic-compbio.github.io/coexpression_motif_discovery/peach/Tutorial.html 
+Once you installation is done you can follow our protocol on using a Docker container interactively to carry out motif analysis in co-expression networks at: https://eead-csic-compbio.github.io/coexpression_motif_discovery/peach/Tutorial.html 
 
 # Calling RSAT tools non-interactively
 
-In addition to logging into the Docker container as explained in the previous section,
+In addition to logging into the Docker container as explained in the previous sections,
 you can also call individual tools from the terminal non-interactively: 
 
-    export RSATDOCKER="biocontainers/rsat:20240507_cv1 rsat"
     docker run $RSATDOCKER rsat
     docker run $RSATDOCKER rsat peak-motifs -h
     # short form
@@ -169,44 +177,36 @@ The container ships with **pre-installed motif databases**
 to scan sequences or to annotate discovered DNA motifs. You can see which collections are 
 available with:
 
-    docker run 836f32d6cdea ls /packages/motif_databases
+    docker run $RSATDOCKER ls /packages/motif_databases
+    
+    # to check files in a particular database or collection
+    docker run $RSATDOCKER ls /packages/motif_databases/footprintDB
 
-The container ships with **no installed genomes**, but you can still use pre-installed genomes. 
-The easiest way would be to copy them from a Web instance, such as [RSAT::Plants](<https://rsat.eead.csic.es/plants/htmllink.cgi?title=RSAT-Data&file=data>).
-You would to create a local folder, say `server_data` and download there:
+The container ships with **no installed genomes**, but you can easily copy them
+from a Web instance, such as [RSAT::Plants](<https://rsat.eead.csic.es/plants/htmllink.cgi?title=RSAT-Data&file=data>),
+as explained in step 4.4:
 
- 1. Any genome folder available at https://rsat.eead.csic.es/plants/data/genomes/
- 2. File https://rsat.eead.csic.es/plants/data/supported_organisms.tab , which should be tweaked leaving only the lines of genomes selected in the previous step.
+    docker run -v $PWD/rsat_data:/packages/rsat/data $RSATDOCKER download-organism -v 2 -org Prunus_persica.Prunus_persica_NCBIv2.38 -server https://rsat.eead.csic.es/plants
 
 You can now check whether the genomes are available with:
 
-    docker run -v $PWD/server_data:/packages/rsat/data $RSATDOCKER rsat supported-organisms
+    docker run -v $PWD/rsat_data:/packages/rsat/data $RSATDOCKER supported-organisms
     
 ## peak-motifs examples
 
-The next examples show how to run [*peak-motifs*](https://doi.org/10.1093/nar/gkr1104) with a user-provided FASTA file (`test.fa`) in the current directory:
+The next examples show how to run [*peak-motifs*](https://doi.org/10.1093/nar/gkr1104) non-interactively with a user-provided FASTA file (`test.fa`) in the current directory:
 
-    docker run -v $PWD:/home/rsat_user -v $PWD/out:/home/rsat_user/out $RSATDOCKER peak-motifs -help
-
-    docker run -v $PWD:/home/rsat_user -v $PWD/out:/home/rsat_user/out $RSATDOCKER peak-motifs -i test.fa -outdir out -prefix test
+    docker run -v $PWD:/home/rsat_user -v $PWD/rsat_results:/home/rsat_user/out $RSATDOCKER peak-motifs -i test.fa -outdir out -prefix test
     
-Note that you can visualize the results by opening local folder `$PWD/out` with your browser.
+**Note:** you can visualize the results by opening local folder `$PWD/rsat_results` with your browser.
 
-Two more examples follow, were any discovered motifs are compared to pre-installed ([footDB](https://footprintdb.eead.csic.es)) and user-provided motif databases in 
-[TRANSFAC](https://rsat.eead.csic.es/plants/help.convert-matrix.html#io_format) format:  
+Two more examples follow, were any discovered motifs are compared to pre-installed database ([footprintDB](https://footprintdb.eead.csic.es)) and to user-provided motifs in [TRANSFAC](https://rsat.eead.csic.es/plants/help.convert-matrix.html#io_format) format, 
+saved in a file named `mymotifs.tf`:  
 
-    docker run -v $PWD:/home/rsat_user -v $PWD/out:/home/rsat_user/out $RSATDOCKER peak-motifs -i test.fa -outdir out -prefix test -motif_db footDB transfac /packages/motif_databases/footprintDB/footprintDB.plants.motif.tf
+    docker run -v $PWD:/home/rsat_user -v $PWD/rsat_results:/home/rsat_user/out $RSATDOCKER peak-motifs -i test.fa -outdir out -prefix test -motif_db footDB transfac /packages/motif_databases/footprintDB/footprintDB.plants.motif.tf
     
-    docker run -v $PWD:/home/rsat_user -v $PWD/out:/home/rsat_user/out -v $PWD/user_motifs:/home/rsat_user/ext_motifs  $RSATDOCKER peak-motifs -i test.fa -outdir out -prefix test -motif_db custom transfac /home/rsat_user/ext_motifs/mymotifs.tf
+    docker run -v $PWD:/home/rsat_user -v $PWD/rsat_results:/home/rsat_user/out -v $PWD/user_motifs:/home/rsat_user/ext_motifs  $RSATDOCKER peak-motifs -i test.fa -outdir out -prefix test -motif_db custom transfac /home/rsat_user/ext_motifs/mymotifs.tf
 
-## Binding local folders
-
-Some examples seen before require binding local folders; the exact way this is done depends on the job:
-
-* The current folder from where the container is called ($PWD). This allows passing and processing any file in the current directory.
-* A folder to save the results (`out/`). This should point to an existing local folder where anybody can write (chmod 777).
-* A folder containing motifs in TRANSFAC format (`user_motif/`). 
-* A folder containing pre-installed genome data (`server_data/`).
 
 
 # Dockerfiles
