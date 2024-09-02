@@ -11,7 +11,7 @@
 
 <meta name="author" content="Najla Ksouri, Bruno Contreras Moreira" />
 
-<meta name="date" content="2024-07-26" />
+<meta name="date" content="2024-09-02" />
 
 <title>Installing the RSAT Docker container</title>
 
@@ -228,7 +228,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Installing the RSAT Docker container</h1>
 <h4 class="author">Najla Ksouri, Bruno Contreras Moreira</h4>
-<h4 class="date">2024-07-26</h4>
+<h4 class="date">2024-09-02</h4>
 
 </div>
 
@@ -353,17 +353,16 @@ class="uri">https://hub.docker.com/r/biocontainers/rsat/tags</a> . For
 convenience, in the steps below we set an <strong>environmental
 variable</strong> named <code>RSATDOCKER</code> with the chosen
 version:</p>
-<p>4.1. Download a container (this will take 10GB of your
+<p>4.1. Download a container (this will take ~8GB of your
 filesystem):</p>
 <pre><code>    # set env variable with tag at the Linux/WSL terminal
     export RSATDOCKER=&quot;biocontainers/rsat:20240507_cv1&quot;          
     
     # actually pull container image
     docker pull $RSATDOCKER
-    
-&lt;!--This can also be done from the Docker Desktop app, as shown in the figure:
-![](./DockerDesktopWindows.png) --&gt;
     </code></pre>
+<!--This can also be done from the Docker Desktop app, as shown in the figure:
+    ![](./DockerDesktopWindows.png) -->
 <p>4.2. Create local folders for input data and results, outside the
 container, as explained on section <a
 href="#binding-local-folders">Binding local folders</a>. The next
@@ -476,7 +475,7 @@ class="uri">https://github.com/BioContainers/containers/tree/master/rsat</a></p>
 <p>Those are based on a standalone Dockerfile, available at <a
 href="https://github.com/rsa-tools/rsat-code/tree/master/docker"
 class="uri">https://github.com/rsa-tools/rsat-code/tree/master/docker</a>,
-which we use for testing.</p>
+which we use for development and testing.</p>
 </div>
 
 

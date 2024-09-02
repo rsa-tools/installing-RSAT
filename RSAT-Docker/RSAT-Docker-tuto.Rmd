@@ -112,7 +112,7 @@ They are listed here:
 If you want to fetch a ready-to-run Docker container with RSAT please select a tagged version from https://hub.docker.com/r/biocontainers/rsat/tags . For convenience, in the steps below 
 we set an **environmental variable** named `RSATDOCKER` with the chosen version:
 
- 4.1. Download a container (this will take 10GB of your filesystem):
+ 4.1. Download a container (this will take ~8GB of your filesystem):
 
         # set env variable with tag at the Linux/WSL terminal
         export RSATDOCKER="biocontainers/rsat:20240507_cv1"          
@@ -120,9 +120,8 @@ we set an **environmental variable** named `RSATDOCKER` with the chosen version:
         # actually pull container image
         docker pull $RSATDOCKER
         
-    <!--This can also be done from the Docker Desktop app, as shown in the figure:
+<!--This can also be done from the Docker Desktop app, as shown in the figure:
     ![](./DockerDesktopWindows.png) -->
-        
 
  4.2. Create local folders for input data and results, outside the container, as explained on section [Binding local folders](#binding-local-folders). The next example requires folders `rsat_data/` and `rsat_results/` in the current location (env variable `$PWD`). **Note:** you can place these folders anywhere in your system, but please check their paths and modify them in **step 3** accordingly:
  
@@ -214,5 +213,5 @@ saved in a file named `mymotifs.tf`:
 Dockerfiles for the containers at [biocontainers/rsat](https://hub.docker.com/r/biocontainers/rsat) 
 can be found at https://github.com/BioContainers/containers/tree/master/rsat
 
-Those are based on a standalone Dockerfile, available at https://github.com/rsa-tools/rsat-code/tree/master/docker, which we use for testing.
+Those are based on a standalone Dockerfile, available at https://github.com/rsa-tools/rsat-code/tree/master/docker, which we use for development and testing.
 
