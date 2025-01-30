@@ -14,7 +14,7 @@ Note that RSAT VirtualBox virtual machines are deprecated.
 | rsat-core | command-line tools only (via conda) | Linux, Mac OS X | [rsat-core installation procedure](conda-install-rsat/bioconda-rsat-core.html)
 | Web server | command line tools + web server + web services | Unix, Mac OS X | [Installation procedure for Ubuntu](unix-install-rsat/installing_RSAT_procedure.html) | 
 | Docker container | Ready-to-use Docker container, must download/install genomes | Linux, Mac OS X, Windows | [RSAT Docker tutorial](RSAT-Docker/RSAT-Docker-tuto.html) |
-| Apptainer container | Ready to use Apptainer container, must download/install genomes | Linux|[Rsat Apptainer tutorial](https://rsa-tools.github.io/installing-RSAT/RSAT-Docker/RSAT-Apptainer-tuto.html)|
+| Apptainer container | Ready to use Apptainer container, must download/install genomes | Linux|[Rsat Apptainer tutorial](RSAT-Docker/RSAT-Apptainer-tuto.html)|
 
 
 
