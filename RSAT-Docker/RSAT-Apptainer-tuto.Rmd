@@ -1,0 +1,166 @@
+---
+title: "Installing the RSAT Docker container"
+author: "Najla Ksouri, Bruno Contreras Moreira"
+date: '`r Sys.Date()`'
+output:
+  html_document:
+    self_contained: no
+    fig_caption: yes
+    highlight: zenburn
+    number_sections: yes
+    theme: cerulean
+    toc: yes
+    toc_depth: 4
+    toc_float: yes
+  pdf_document:
+    fig_caption: yes
+    highlight: zenburn
+    number_sections: yes
+    toc: yes
+    toc_depth: 4
+  word_document: default
+editor_options: 
+  chunk_output_type: console
+#css: ../../course.css
+---
+
+
+```{r setup, include=FALSE}
+library(knitr, warn.conflicts = FALSE)
+
+knitr::opts_chunk$set(
+  echo = TRUE, 
+  eval = FALSE, 
+  cache = TRUE, 
+  message = FALSE, 
+  warning = FALSE, 
+  comment = "",  
+  fig.align = "center",
+  fig.width = 7, 
+  fig.height = 5,
+  out.width = "90%",
+  fig.path = "figures/")
+```
+
+****************************************************************
+# Introduction
+
+This page explains how to install and run an Apptainer container of the Regulatory Sequence Analysis Tools. 
+
+# Requirements
+
+## Availability
+
+RSAT Docker containers are available at https://hub.docker.com/r/biocontainers/rsat/tags . This docker images can be used as a base to build singularity contianers
+
+As each release corresponds to a tag from https://github.com/rsa-tools/rsat-code/tags , docker containers and apptiner continers are build upon those tags
+
+## Operating systems
+
+Apptainer containers have so far been tested on Linux, but as they are build upon docker images, they should work in any platform in which apptainier is available and the docker image is tested.
+
+Please let us know or send us a PR at https://github.com/rsa-tools/installing-RSAT if you succeed in running it on other settings.
+
+## Apptainer
+
+To run containers you must have Apptainer or Singularity installed in your system. 
+
+You can find instructions for installing Apptainer runtime on **Linux** at https://apptainer.org/docs/admin/main/installation.html#install-from-pre-built-packages .
+
+On **Windows**, our recommended procedure is to i) install the Windows Subsystem for Linux (WSL) and then ii) the Apptainer runtime:
+
+ * The installation of WSL is simple, as it you can fetch it from the Microsoft Store for free (read more [here](https://learn.microsoft.com/en-us/windows/wsl/install) and 
+[here](https://devblogs.microsoft.com/commandline/the-windows-subsystem-for-linux-in-the-microsoft-store-is-now-generally-available-on-windows-10-and-11/)).
+
+
+# Binding local folders
+
+To run RSAT inside apptainer, some paths are required binding local folders, so the container 
+can save files persistently, because continers are read-only. Some are mandatory for apache
+webserver to work properly, while rsat paths are for persistent storage of the application
+
+| folder   | description | creation command |
+| -------- | ----------- | ---------------- |
+| rsat_data | installed data, such as genomes and motifs, writable by anybody | `mkdir -p rsat_data/genomes; chmod -R a+w rsat_data` |
+| rsat_results/ | saved results, writable by anybody | `mkdir rsat_results; chmod -R a+w rsat_results` |
+| user_motifs/ | contains motifs in [TRANSFAC](https://rsat.eead.csic.es/plants/help.convert-matrix.html#io_format) format, readable by anybody | |
+| /var/log/apache2/| contains apache logs, writable by user ||
+| /var/run/apache2/| contains apche pid file, writable by user||
+
+Generate
+
+# Installation instructions
+
+ 4.1. Download a container (this will take ~8GB of your filesystem):
+
+        # set env variable with tag at the Linux/WSL terminal
+        export RSATDOCKER="biocontainers/rsat:20240507_cv1"          
+        
+        # actually pull container image
+        apptainer pull $RSATDOCKER rsat.sif
+
+This command generates a apptainer container file (rsat.sif) which is stored in your current working directory
+
+To open a bash terminal inside the continer, execute
+
+   bind_paths="rsat-paths/webserver/logs/:/var/log/apache2,rsat-paths/data/:/packages/rsat/public_html/data/,rsat-paths/webserver/conf/rsat.conf:/etc/apache2/sites-enabled/rsat.conf,rsat-paths/webserver/conf/ports.conf:/etc/apache2/ports.conf,rsat-paths/downloads:/packages/rsat/downloads/,/tmp/apache2:/var/run/apache2"
+   apptainer run --bind $bind_paths  rsat.sif /bin/bash
+
+# Step-by-step interactive tutorial
+
+Once you installation is done you can follow our protocol on using a Docker container interactively to carry out motif analysis in co-expression networks at: https://eead-csic-compbio.github.io/coexpression_motif_discovery/peach/Tutorial.html 
+
+# Calling RSAT tools non-interactively
+
+In addition to logging into the Apptainer container as explained in the previous sections,
+you can also call individual tools from the terminal non-interactively: 
+
+    apptainer run --bind $bind_paths rsat.sif peak-motif -h
+    docker run $RSATDOCKER rsat peak-motifs -h
+    # short form
+    docker run $RSATDOCKER peak-motifs -h
+
+The container ships with **pre-installed motif databases** 
+(see <https://github.com/rsa-tools/motif_databases>), which can be used by different tools 
+to scan sequences or to annotate discovered DNA motifs. You can see which collections are 
+available with:
+
+    docker run $RSATDOCKER ls /packages/motif_databases
+    
+    # to check files in a particular database or collection
+    docker run $RSATDOCKER ls /packages/motif_databases/footprintDB
+
+The container ships with **no installed genomes**, but you can easily copy them
+from a Web instance, such as [RSAT::Plants](<https://rsat.eead.csic.es/plants/htmllink.cgi?title=RSAT-Data&file=data>),
+as explained in step 4.4:
+
+    docker run -v $PWD/rsat_data:/packages/rsat/data $RSATDOCKER download-organism -v 2 -org Prunus_persica.Prunus_persica_NCBIv2.38 -server https://rsat.eead.csic.es/plants
+
+You can now check whether the genomes are available with:
+
+    docker run -v $PWD/rsat_data:/packages/rsat/data $RSATDOCKER supported-organisms
+    
+## peak-motifs examples
+
+The next examples show how to run [*peak-motifs*](https://doi.org/10.1093/nar/gkr1104) non-interactively with a user-provided FASTA file (`test.fa`) in the current directory:
+
+    docker run -v $PWD:/home/rsat_user -v $PWD/rsat_results:/home/rsat_user/out $RSATDOCKER peak-motifs -i test.fa -outdir out -prefix test
+    
+**Note:** you can visualize the results by opening local folder `$PWD/rsat_results` with your browser.
+
+Two more examples follow, were any discovered motifs are compared to pre-installed database ([footprintDB](https://footprintdb.eead.csic.es)) and to user-provided motifs in [TRANSFAC](https://rsat.eead.csic.es/plants/help.convert-matrix.html#io_format) format, 
+saved in a file named `mymotifs.tf`:  
+
+    docker run -v $PWD:/home/rsat_user -v $PWD/rsat_results:/home/rsat_user/out $RSATDOCKER peak-motifs -i test.fa -outdir out -prefix test -motif_db footDB transfac /packages/motif_databases/footprintDB/footprintDB.plants.motif.tf
+    
+    docker run -v $PWD:/home/rsat_user -v $PWD/rsat_results:/home/rsat_user/out -v $PWD/user_motifs:/home/rsat_user/ext_motifs  $RSATDOCKER peak-motifs -i test.fa -outdir out -prefix test -motif_db custom transfac /home/rsat_user/ext_motifs/mymotifs.tf
+
+
+
+# Dockerfiles
+
+Dockerfiles for the containers at [biocontainers/rsat](https://hub.docker.com/r/biocontainers/rsat) 
+can be found at https://github.com/BioContainers/containers/tree/master/rsat
+
+Those are based on a standalone Dockerfile, available at https://github.com/rsa-tools/rsat-code/tree/master/docker, which we use for development and testing.
+
