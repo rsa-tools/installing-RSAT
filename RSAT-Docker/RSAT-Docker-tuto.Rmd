@@ -140,7 +140,7 @@ we set an **environmental variable** named `RSATDOCKER` with the chosen version:
 
  4.4. Download an organism from public RSAT servers, such as the Plants server. Other available servers are http://fungi.rsat.eu, http://metazoa.rsat.eu, http://protists.rsat.eu and http://teaching.rsat.eu
 
-        download-organism -v 2 -org Prunus_persica.Prunus_persica_NCBIv2.38 -server https://rsat.eead.csic.es/plants
+        download-organism -v 2 -org Prunus_persica.Prunus_persica_NCBIv2.60 -server https://rsat.eead.csic.es/plants
 
  4.5. Testing:
 
@@ -185,7 +185,7 @@ The container ships with **no installed genomes**, but you can easily copy them
 from a Web instance, such as [RSAT::Plants](<https://rsat.eead.csic.es/plants/htmllink.cgi?title=RSAT-Data&file=data>),
 as explained in step 4.4:
 
-    docker run -v $PWD/rsat_data:/packages/rsat/data $RSATDOCKER download-organism -v 2 -org Prunus_persica.Prunus_persica_NCBIv2.38 -server https://rsat.eead.csic.es/plants
+    docker run -v $PWD/rsat_data:/packages/rsat/data $RSATDOCKER download-organism -v 2 -org Prunus_persica.Prunus_persica_NCBIv2.60 -server https://rsat.eead.csic.es/plants
 
 You can now check whether the genomes are available with:
 
