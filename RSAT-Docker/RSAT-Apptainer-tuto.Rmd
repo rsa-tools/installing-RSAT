@@ -1,6 +1,6 @@
 ---
 title: "Installing the RSAT Apptainer container"
-author: "Najla Ksouri, Bruno Contreras Moreira, Fabián Robledo Yagüe"
+author: "Fabián Robledo Yagüe, Bruno Contreras Moreira"
 date: '`r Sys.Date()`'
 output:
   html_document:
