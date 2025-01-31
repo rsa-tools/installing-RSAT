@@ -53,16 +53,16 @@ This page explains how to install and run an Apptainer container of the Regulato
 ## Availability
 
 RSAT Docker containers are available at https://hub.docker.com/r/biocontainers/rsat/tags . 
-This docker images can be used as a base to build Apptainer contianers. Comparing
+These docker images can be used as a base to build Apptainer contianers. Comparing
 to the RSAT Docker image, which needs about 8GB of disk space, Apptainer only 
-needs 1.5 GB
+needs 1.5 GB.
 
 As each release corresponds to a tag from https://github.com/rsa-tools/rsat-code/tags , 
-docker containers and apptiner continers are build upon those tags
+docker containers and apptiner continers are build upon those tags.
 
 ## Operating systems
 
-Apptainer containers have so far been tested on Linux, but as they are build upon docker images, they should work in any platform in which apptainier is available and the docker image is tested.
+Apptainer containers have so far been tested on Linux, but as they are derived from docker images, they should work in any platform in which apptainer is available and the docker image is tested.
 
 Please let us know or send us a PR at https://github.com/rsa-tools/installing-RSAT if you succeed in running it on other settings.
 
@@ -80,29 +80,29 @@ On **Windows**, our recommended procedure is to i) install the Windows Subsystem
 
 # Binding local folders
 
-To run RSAT inside apptainer, some paths are required binding local folders, so the container 
-can save files persistently, because continers are read-only. Some are mandatory for apache
+To run RSAT inside apptainer, some paths are required for binding local folders, so the container 
+can save files persistently (containers are read-only). Some are mandatory for the Apache
 webserver to work properly, while rsat paths are for persistent storage of the application
 
 | folder   | description | creation command |
 | -------- | ----------- | ---------------- |
-| rsat_data | installed data, such as genomes and motifs, writable by anybody | `mkdir -p rsat_data/genomes; chmod -R a+w rsat_data` |
+| rsat_data/ | installed data, such as genomes and motifs, writable by anybody | `mkdir -p rsat_data/genomes; chmod -R a+w rsat_data` |
 | rsat_results/ | saved results, writable by anybody | `mkdir rsat_results; chmod -R a+w rsat_results` |
 | user_motifs/ | contains motifs in [TRANSFAC](https://rsat.eead.csic.es/plants/help.convert-matrix.html#io_format) format, readable by anybody | |
 | apache2_logs/| contains apache logs, writable by user |`mkdir apache2_logs; chmod -R a+w apache2_logs`|
-| apache2/| contains apche pid file, writable by user|`mkdir apache2; chmod -R a+w apache2`|
+| apache2/| contains apache pid file, writable by user|`mkdir apache2; chmod -R a+w apache2`|
 
-For convinence, in this tutorial all binded paths will be inside a rsat-paths 
+For convenience, in this tutorial all bound paths will be inside a rsat-paths 
 folder, with a folder for apache related stuff and then rsat, but you can use 
-whatever folder structure you want
+whatever folder structure you want.
 
 # Installation instructions
 
 **Note**: This tutorial follows the same steps as the one performed when using the docker
 container, and when downloading data, the same steps as a normal installation. 
 The only changes made are those requiered to launch and use software inside the
-apptainer container, but in essence, any rsat tutorial which uses Docker
-can be performed with singularity
+apptainer container. Note that any rsat tutorial which uses Docker
+can be performed with singularity.
 
  4.1. Download the container:
 
@@ -113,12 +113,12 @@ can be performed with singularity
         apptainer pull $RSATDOCKER rsat.sif
 
 This command generates a apptainer container file (rsat.sif) which is stored in your current working directory.
-From there, you can place it in whichever directory you want
+From there, you can place it in whichever directory you want.
 
 4.2. Create local folders for input data and results, outside the container, as explained on section [Binding local folders](#binding-local-folders). The next example requires folders `rsat_data/` and `rsat_results/` in the current location (env variable `$PWD`). **Note:** you can place these folders anywhere in your system, but please check their paths and modify them in **step 3** accordingly:
  
  To use these paths with the container, set the --bind variable with the desired folders.
- In this example, all paths mentioned in the "Binding folders" chapter are binded:
+ In this example, all paths mentioned in the "Binding folders" chapter are bound:
  The parameter follos the next pattern:
  
   <Path in your computer>:<Path inside container>
@@ -127,14 +127,14 @@ From there, you can place it in whichever directory you want
  
         bind_paths="rsat-paths/webserver/logs/:/var/log/apache2,rsat-paths/data/:/packages/rsat/public_html/data/,rsat-paths/webserver/conf/rsat.conf:/etc/apache2/sites-enabled/rsat.conf,rsat-paths/webserver/conf/ports.conf:/etc/apache2/ports.conf,rsat-paths/downloads:/packages/rsat/downloads/,/tmp/apache2:/var/run/apache2"
  
- Important paths inside the container that should be binded:
+ Important paths inside the container that should be bound:
  
  - /packages/rsat/public_html/data/ -> This path stores downloaded and generated data 
- and need to be bibded to store data persistenly in disk. Not doing this erases all downloaded 
+ and need to be bound to store data persistenly in disk. Not doing this erases all downloaded 
  when the container ends.
  
- - /home/rsat/rsat_results/ -> Analysis results are saved here, and it's needed
- to read them outside the container and save them for future access
+ - /home/rsat/rsat_results/ -> Analysis results are saved here, needed so
+ they can be read from outside the container and saved for future use.
  
  - /packages/rsat/public_html/tmp/ -> Temporal files written by Rsat, needed
  to download and install organisms
@@ -143,7 +143,7 @@ From there, you can place it in whichever directory you want
  apache server are stored here.
  
  - /etc/apache2/ports.conf -> More apache configuration file, to change the port
- used by RSAT. Necesary to run apptainer without root privileges: apache default port (80) is
+ used by RSAT. Necessary to run apptainer **without root privileges**: apache default port (80) is
  restricted to admin. Change it to any port higher than 1024.
  
  - /var/run/apache2 -> Needed for apache to work correctly as a container is
@@ -189,7 +189,7 @@ please, bind both /var/log/apache2 and /var/run/apache2
 
 # Step-by-step interactive tutorial
 
-Once you installation is done you can follow our protocol on using a container interactively to carry out motif analysis in co-expression networks at: https://eead-csic-compbio.github.io/coexpression_motif_discovery/peach/Tutorial.html 
+Once the installation is done you can follow our protocol on using a container interactively to carry out motif analysis in co-expression networks at: https://eead-csic-compbio.github.io/coexpression_motif_discovery/peach/Tutorial.html 
 
 Althought the tutorial was made with Docker in mind, the tutorial can be followed
 using the apptainer container instead of Docker
@@ -238,8 +238,8 @@ saved in a file named `mymotifs.tf`:
 
 # Adding custom motif collections
 
-Rsat comes with motif databases for different organisms but also allows to add
-user defined collections. In order to acomplish that, 2 extra items must be binded
+RSAT ships with several motif databases but also allows to add
+user-defined collections. In order to acomplish that, two extra items must be bound
 to the container to hold the data:
 
 * /packages/motif_databases/db_matrix_files.tab, a file, which contains the list of collections,
@@ -247,8 +247,7 @@ IDs and where are stored in the server. Location path must be a subdirectory rel
 /package/motif_databases/, and can be copied from the container or downloaded dirctly from
 [motif databases github repository](https://raw.githubusercontent.com/rsa-tools/motif_databases/refs/heads/master/db_matrix_files.tab).
 Modify this file to add new motif collections: Each row represent a different collection,
-and each column, separated by tabs provides different information
-
+and each column, separated by tabs, provides different information:
 
        ;Column description
        ;1       DB_NAME Database name
@@ -289,6 +288,6 @@ may also kill apache running in the host system.
 
 * I couldn't finish an RSAT command because some folder could not be created
 
-Apptainer is read-only, and therefore, nothing can be saved unless is in a binded
-folder with read and write access. Check the binded folders in this page, to see 
+Apptainer is read-only, and therefore, nothing can be saved unless is in a bound
+folder with read and write access. Check the bound folders in this page, to see 
 if some are missed, or bind that path to a folder of your liking
