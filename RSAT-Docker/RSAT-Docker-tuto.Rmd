@@ -1,6 +1,6 @@
 ---
 title: "Installing the RSAT Docker container"
-author: "Najla Ksouri, Bruno Contreras Moreira, Fabián Robledo Yagüe"
+author: "Najla Ksouri, Fabián Robledo Yagüe, Bruno Contreras Moreira"
 date: '`r Sys.Date()`'
 output:
   html_document:
@@ -208,15 +208,15 @@ saved in a file named `mymotifs.tf`:
 
 # Adding custom motif collections
 
-Rsat comes with motif databases for different organisms but also allows to add
-user defined collections. In order to acomplish that, 2 extra items must be binded
+RSAT ships with several motif databases but also allows to add
+user-defined collections. In order to acomplish that, two extra items must be bound
 to the container to hold the data:
 
 * /packages/motif_databases/db_matrix_files.tab, which contains the list of collections,
-IDs and where are stored in the server. Location path must be a subdirectory relative to
+IDs and where they are stored in the server. Location path must be a subdirectory relative to
 /package/motif_databases/, and can be copied from the container or downloaded dirctly from
 [motif databases github repository](https://raw.githubusercontent.com/rsa-tools/motif_databases/refs/heads/master/db_matrix_files.tab).
-Modify this file to add new motif collections: Each row represent a different collection,
+Modify this file to add new motif collections: Each row represents a different collection,
 and each column, separated by tabs provides different information
 
 
