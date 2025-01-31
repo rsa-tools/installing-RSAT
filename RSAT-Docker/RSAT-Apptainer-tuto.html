@@ -11,7 +11,7 @@
 
 <meta name="author" content="Najla Ksouri, Bruno Contreras Moreira, Fabián Robledo Yagüe" />
 
-<meta name="date" content="2025-01-30" />
+<meta name="date" content="2025-01-31" />
 
 <title>Installing the RSAT Apptainer container</title>
 
@@ -230,7 +230,7 @@ div.tocify {
 container</h1>
 <h4 class="author">Najla Ksouri, Bruno Contreras Moreira, Fabián Robledo
 Yagüe</h4>
-<h4 class="date">2025-01-30</h4>
+<h4 class="date">2025-01-31</h4>
 
 </div>
 
@@ -248,7 +248,9 @@ the Regulatory Sequence Analysis Tools.</p>
 <p>RSAT Docker containers are available at <a
 href="https://hub.docker.com/r/biocontainers/rsat/tags"
 class="uri">https://hub.docker.com/r/biocontainers/rsat/tags</a> . This
-docker images can be used as a base to build Apptainer contianers</p>
+docker images can be used as a base to build Apptainer contianers.
+Comparing to the RSAT Docker image, which needs about 8GB of disk space,
+Apptainer only needs 1.5 GB</p>
 <p>As each release corresponds to a tag from <a
 href="https://github.com/rsa-tools/rsat-code/tags"
 class="uri">https://github.com/rsa-tools/rsat-code/tags</a> , docker
@@ -336,7 +338,7 @@ format, readable by anybody</td>
 </tr>
 </tbody>
 </table>
-<p>For convinence, in this tutorial al binded paths will be inside a
+<p>For convinence, in this tutorial all binded paths will be inside a
 rsat-paths folder, with a folder for apache related stuff and then rsat,
 but you can use whatever folder structure you want</p>
 </div>
@@ -491,8 +493,46 @@ format, saved in a file named <code>mymotifs.tf</code>:</p>
 apptainer run --bind $bind_paths rsat.sif peak-motifs -i test.fa -outdir out -prefix test -motif_db custom transfac /home/rsat_user/ext_motifs/mymotifs.tf</code></pre>
 </div>
 </div>
-<div id="troubleshooting" class="section level1" number="7">
-<h1><span class="header-section-number">7</span> Troubleshooting</h1>
+<div id="adding-custom-motif-collections" class="section level1"
+number="7">
+<h1><span class="header-section-number">7</span> Adding custom motif
+collections</h1>
+<p>Rsat comes with motif databases for different organisms but also
+allows to add user defined collections. In order to acomplish that, 2
+extra items must be binded to the container to hold the data:</p>
+<ul>
+<li><p>/packages/motif_databases/db_matrix_files.tab, a file, which
+contains the list of collections, IDs and where are stored in the
+server. Location path must be a subdirectory relative to
+/package/motif_databases/, and can be copied from the container or
+downloaded dirctly from <a
+href="https://raw.githubusercontent.com/rsa-tools/motif_databases/refs/heads/master/db_matrix_files.tab">motif
+databases github repository</a>. Modify this file to add new motif
+collections: Each row represent a different collection, and each column,
+separated by tabs provides different information</p>
+<pre><code> ;Column description
+ ;1       DB_NAME Database name
+ ;2       FORMAT  Matrix format (see convert-matrices for supported formats)
+ ;3       FILE    Matrix file (path relative to the motif DB directory /packages/motif_databases/)
+ ;4       DESCR   Human-readable description of the database (source, data type, ...)
+ ;5       VERSION Version (date) of the import
+ ;6       URL     URL from the file from which matrices were obtained
+ ;7       LABEL   label to group in the web matrix selector
+ ;8       DATABASE        source database
+
+ #COLLECTION     FORMAT  FILE    DESCR   VERSION URL     CATEGORY        DATABASE
+ Yeastract      tf      Yeastract/yeastract_20150629.tf Yeastract s_cerevisiae  20130918        http://www.yeastract.com/       Fungi   Yeastract</code></pre></li>
+<li><p>/packages/motif_databases/ext_motifs, a folder, which contains
+the motif collections and allows rsat to access them.</p></li>
+</ul>
+<p>For example, to add a external database, modify the db_matrix_file.sb
+and add a new record. The database itself must be stored in that
+path:</p>
+<pre><code>#COLLECTION     FORMAT  FILE    DESCR   VERSION URL     CATEGORY        DATABASE
+ExternalDB   tf      ext_motifs/ExternalDB/ExternalDB.tf    ExternalDB      2015-11    http://example.edu/exampledb Vertebrate Metazoa  ExternalDB</code></pre>
+</div>
+<div id="troubleshooting" class="section level1" number="8">
+<h1><span class="header-section-number">8</span> Troubleshooting</h1>
 <ul>
 <li>I started RSAT with apptainer, but I killed the container. The
 webpage is blank, and I can’t reopen it because the port is taken</li>
