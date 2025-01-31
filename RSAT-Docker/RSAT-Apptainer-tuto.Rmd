@@ -170,7 +170,7 @@ please, bind both /var/log/apache2 and /var/run/apache2
 
  4.4. Download an organism from public RSAT servers, such as the Plants server. Other available servers are http://fungi.rsat.eu, http://metazoa.rsat.eu, http://protists.rsat.eu and http://teaching.rsat.eu
 
-        download-organism -v 2 -org Oryza_sativa.IRGSP-1.0.60 -server https://rsat.eead.csic.es/plants
+        download-organism -v 2 -org Prunus_persica.Prunus_persica_NCBIv2.60 -server https://rsat.eead.csic.es/plants
 
  4.5. Testing:
 
