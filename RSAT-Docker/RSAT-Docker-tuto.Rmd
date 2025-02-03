@@ -105,7 +105,7 @@ They are listed here:
 | -------- | ----------- | ---------------- |
 | rsat_data/genomes | installed genomes, writable by anybody | `mkdir -p rsat_data/genomes; chmod -R a+w rsat_data` |
 | rsat_results/ | saved results, writable by anybody | `mkdir rsat_results; chmod -R a+w rsat_results` |
-| user_motifs/ | contains motifs in [TRANSFAC](https://rsat.eead.csic.es/plants/help.convert-matrix.html#io_format) format, readable by anybody | |
+| user_motifs/ | contains motifs in [TRANSFAC](https://rsat.eead.csic.es/plants/help.convert-matrix.html#io_format) format, readable by anybody | `mkdir user_motifs; chmod -R a+w user_motifs` |
 
 # Installation instructions
 
