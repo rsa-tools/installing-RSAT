@@ -9,9 +9,9 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
-<meta name="author" content="Najla Ksouri, Bruno Contreras Moreira, Fabián Robledo Yagüe" />
+<meta name="author" content="Najla Ksouri, Fabián Robledo Yagüe, Bruno Contreras Moreira" />
 
-<meta name="date" content="2025-01-31" />
+<meta name="date" content="2025-02-03" />
 
 <title>Installing the RSAT Docker container</title>
 
@@ -227,9 +227,9 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Installing the RSAT Docker container</h1>
-<h4 class="author">Najla Ksouri, Bruno Contreras Moreira, Fabián Robledo
-Yagüe</h4>
-<h4 class="date">2025-01-31</h4>
+<h4 class="author">Najla Ksouri, Fabián Robledo Yagüe, Bruno Contreras
+Moreira</h4>
+<h4 class="date">2025-02-03</h4>
 
 </div>
 
@@ -470,18 +470,19 @@ docker run -v $PWD:/home/rsat_user -v $PWD/rsat_results:/home/rsat_user/out -v $
 number="7">
 <h1><span class="header-section-number">7</span> Adding custom motif
 collections</h1>
-<p>Rsat comes with motif databases for different organisms but also
-allows to add user defined collections. In order to acomplish that, 2
-extra items must be binded to the container to hold the data:</p>
+<p>RSAT ships with several motif databases but also allows to add
+user-defined collections. In order to acomplish that, two extra items
+must be bound to the container to hold the data:</p>
 <ul>
 <li><p>/packages/motif_databases/db_matrix_files.tab, which contains the
-list of collections, IDs and where are stored in the server. Location
-path must be a subdirectory relative to /package/motif_databases/, and
-can be copied from the container or downloaded dirctly from <a
+list of collections, IDs and where they are stored in the server.
+Location path must be a subdirectory relative to
+/package/motif_databases/, and can be copied from the container or
+downloaded dirctly from <a
 href="https://raw.githubusercontent.com/rsa-tools/motif_databases/refs/heads/master/db_matrix_files.tab">motif
 databases github repository</a>. Modify this file to add new motif
-collections: Each row represent a different collection, and each column,
-separated by tabs provides different information</p>
+collections: Each row represents a different collection, and each
+column, separated by tabs provides different information</p>
 <pre><code> ;Column description
  ;1       DB_NAME Database name
  ;2       FORMAT  Matrix format (see convert-matrices for supported formats)

@@ -84,13 +84,13 @@ To run RSAT inside apptainer, some paths are required for binding local folders,
 can save files persistently (containers are read-only). Some are mandatory for the Apache
 webserver to work properly, while rsat paths are for persistent storage of the application
 
-| folder   | description | creation command |
-| -------- | ----------- | ---------------- |
-| rsat_data/ | installed data, such as genomes and motifs, writable by anybody | `mkdir -p rsat_data/genomes; chmod -R a+w rsat_data` |
-| rsat_results/ | saved results, writable by anybody | `mkdir rsat_results; chmod -R a+w rsat_results` |
-| user_motifs/ | contains motifs in [TRANSFAC](https://rsat.eead.csic.es/plants/help.convert-matrix.html#io_format) format, readable by anybody | |
-| apache2_logs/| contains apache logs, writable by user |`mkdir apache2_logs; chmod -R a+w apache2_logs`|
-| apache2/| contains apache pid file, writable by user|`mkdir apache2; chmod -R a+w apache2`|
+| folder   |Path inside container |description | creation command |
+| -------- |---------------------|----------- | ---------------- |
+| rsat_data/| /packages/rsat/public_html/data/ | installed data, such as genomes and motifs, writable by anybody | `mkdir -p rsat_data/genomes; chmod -R a+w rsat_data` |
+| rsat_results/| /home/rsatuser/rsat_results | saved results, writable by anybody | `mkdir rsat_results; chmod -R a+w rsat_results` |
+| user_motifs/ |/packages/motif_databases/ext_motifs| contains motifs in [TRANSFAC](https://rsat.eead.csic.es/plants/help.convert-matrix.html#io_format) format, readable by anybody | `mkdir user_motifs; chmod -R a+w user_motifs` |
+| apache2_logs/|/var/log/apache2| contains apache logs, writable by user |`mkdir apache2_logs; chmod -R a+w apache2_logs`|
+| apache2/| /var/run/apache2 | contains apache pid file, writable by user|`mkdir apache2; chmod -R a+w apache2`|
 
 For convenience, in this tutorial all bound paths will be inside a rsat-paths 
 folder, with a folder for apache related stuff and then rsat, but you can use 
@@ -118,8 +118,8 @@ From there, you can place it in whichever directory you want.
 4.2. Create local folders for input data and results, outside the container, as explained on section [Binding local folders](#binding-local-folders). The next example requires folders `rsat_data/` and `rsat_results/` in the current location (env variable `$PWD`). **Note:** you can place these folders anywhere in your system, but please check their paths and modify them in **step 3** accordingly:
  
  To use these paths with the container, set the --bind variable with the desired folders.
- In this example, all paths mentioned in the "Binding folders" chapter are bound:
- The parameter follos the next pattern:
+ In this example, all paths mentioned in the "Binding folders" chapter are bound, and also some optional ones:
+ The parameter follows the next pattern:
  
   <Path in your computer>:<Path inside container>
   
@@ -133,7 +133,7 @@ From there, you can place it in whichever directory you want.
  and need to be bound to store data persistenly in disk. Not doing this erases all downloaded 
  when the container ends.
  
- - /home/rsat/rsat_results/ -> Analysis results are saved here, needed so
+ - /home/rsat_user/rsat_results/ -> Analysis results are saved here, needed so
  they can be read from outside the container and saved for future use.
  
  - /packages/rsat/public_html/tmp/ -> Temporal files written by Rsat, needed
@@ -146,15 +146,16 @@ From there, you can place it in whichever directory you want.
  used by RSAT. Necessary to run apptainer **without root privileges**: apache default port (80) is
  restricted to admin. Change it to any port higher than 1024.
  
- - /var/run/apache2 -> Needed for apache to work correctly as a container is
- Read Only 
+ - /var/run/apache2 -> Needed for apache to work correctly as an Apptainer container 
+ is Read Only by default
  
  4.3. Launch Apptainer RSAT container and open a terminal inside it. Note that the local folders from **step 2** are mounted as volumes in the container. If you changed their locations please adjust their paths to the right of the colons. **Note:** after this instruction, all other commands should be typed and executed at the container's terminal:
 
         apptainer run --bind $bind-paths rsat.sif /bin/bash
 
 **Recommendation**: Start the RSAT server in a screen terminal to keep 
-the web server opened, for future access and interact with a terminal
+the web server opened, for future access and interact with a terminal inside 
+the container
 
 In case you didn't bind /var/log/apache2 path, you'll see this error, informing
 that apache server could not be started. In case you plan to use the web server,
