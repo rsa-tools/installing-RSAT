@@ -1,6 +1,6 @@
 ---
 title: "Installing the RSAT Docker container"
-author: "Najla Ksouri, Bruno Contreras Moreira"
+author: "Najla Ksouri, Fabián Robledo Yagüe, Bruno Contreras Moreira"
 date: '`r Sys.Date()`'
 output:
   html_document:
@@ -105,7 +105,7 @@ They are listed here:
 | -------- | ----------- | ---------------- |
 | rsat_data/genomes | installed genomes, writable by anybody | `mkdir -p rsat_data/genomes; chmod -R a+w rsat_data` |
 | rsat_results/ | saved results, writable by anybody | `mkdir rsat_results; chmod -R a+w rsat_results` |
-| user_motifs/ | contains motifs in [TRANSFAC](https://rsat.eead.csic.es/plants/help.convert-matrix.html#io_format) format, readable by anybody | |
+| user_motifs/ | contains motifs in [TRANSFAC](https://rsat.eead.csic.es/plants/help.convert-matrix.html#io_format) format, readable by anybody | `mkdir user_motifs; chmod -R a+w user_motifs` |
 
 # Installation instructions
 
@@ -206,7 +206,42 @@ saved in a file named `mymotifs.tf`:
     
     docker run -v $PWD:/home/rsat_user -v $PWD/rsat_results:/home/rsat_user/out -v $PWD/user_motifs:/home/rsat_user/ext_motifs  $RSATDOCKER peak-motifs -i test.fa -outdir out -prefix test -motif_db custom transfac /home/rsat_user/ext_motifs/mymotifs.tf
 
+# Adding custom motif collections
 
+RSAT ships with several motif databases but also allows to add
+user-defined collections. In order to acomplish that, two extra items must be bound
+to the container to hold the data:
+
+* /packages/motif_databases/db_matrix_files.tab, which contains the list of collections,
+IDs and where they are stored in the server. Location path must be a subdirectory relative to
+/package/motif_databases/, and can be copied from the container or downloaded dirctly from
+[motif databases github repository](https://raw.githubusercontent.com/rsa-tools/motif_databases/refs/heads/master/db_matrix_files.tab).
+Modify this file to add new motif collections: Each row represents a different collection,
+and each column, separated by tabs provides different information
+
+
+       ;Column description
+       ;1       DB_NAME Database name
+       ;2       FORMAT  Matrix format (see convert-matrices for supported formats)
+       ;3       FILE    Matrix file (path relative to the motif DB directory /packages/motif_databases/)
+       ;4       DESCR   Human-readable description of the database (source, data type, ...)
+       ;5       VERSION Version (date) of the import
+       ;6       URL     URL from the file from which matrices were obtained
+       ;7       LABEL   label to group in the web matrix selector
+       ;8       DATABASE        source database
+
+       #COLLECTION     FORMAT  FILE    DESCR   VERSION URL     CATEGORY        DATABASE
+       Yeastract      tf      Yeastract/yeastract_20150629.tf Yeastract s_cerevisiae  20130918        http://www.yeastract.com/       Fungi   Yeastract
+
+
+* /packages/motif_databases/ext_motifs, which contains the motif collections
+and allows rsat to access them. 
+
+For example, to add a external database, modify the db_matrix_file.sb and add 
+a new record. The database itself must be stored in that path:
+
+    #COLLECTION     FORMAT  FILE    DESCR   VERSION URL     CATEGORY        DATABASE
+    ExternalDB   tf      ext_motifs/ExternalDB/ExternalDB.tf    ExternalDB      2015-11    http://example.edu/exampledb Vertebrate Metazoa  ExternalDB
 
 # Dockerfiles
 

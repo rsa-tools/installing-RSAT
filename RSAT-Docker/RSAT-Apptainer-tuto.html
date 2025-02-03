@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Fabián Robledo Yagüe, Bruno Contreras Moreira" />
+
+<meta name="date" content="2025-02-03" />
+
+<title>Installing the RSAT Apptainer container</title>
+
+<script src="RSAT-Apptainer-tuto_files/header-attrs-2.29/header-attrs.js"></script>
+<script src="RSAT-Apptainer-tuto_files/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="RSAT-Apptainer-tuto_files/bootstrap-3.3.5/css/cerulean.min.css" rel="stylesheet" />
+<script src="RSAT-Apptainer-tuto_files/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="RSAT-Apptainer-tuto_files/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="RSAT-Apptainer-tuto_files/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="RSAT-Apptainer-tuto_files/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="RSAT-Apptainer-tuto_files/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="RSAT-Apptainer-tuto_files/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="RSAT-Apptainer-tuto_files/navigation-1.1/tabsets.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Installing the RSAT Apptainer
+container</h1>
+<h4 class="author">Fabián Robledo Yagüe, Bruno Contreras Moreira</h4>
+<h4 class="date">2025-02-03</h4>
+
+</div>
+
+
+<hr />
+<div id="introduction" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> Introduction</h1>
+<p>This page explains how to install and run an Apptainer container of
+the Regulatory Sequence Analysis Tools.</p>
+</div>
+<div id="requirements" class="section level1" number="2">
+<h1><span class="header-section-number">2</span> Requirements</h1>
+<div id="availability" class="section level2" number="2.1">
+<h2><span class="header-section-number">2.1</span> Availability</h2>
+<p>RSAT Docker containers are available at <a
+href="https://hub.docker.com/r/biocontainers/rsat/tags"
+class="uri">https://hub.docker.com/r/biocontainers/rsat/tags</a> . These
+docker images can be used as a base to build Apptainer contianers.
+Comparing to the RSAT Docker image, which needs about 8GB of disk space,
+Apptainer only needs 1.5 GB.</p>
+<p>As each release corresponds to a tag from <a
+href="https://github.com/rsa-tools/rsat-code/tags"
+class="uri">https://github.com/rsa-tools/rsat-code/tags</a> , docker
+containers and apptiner continers are build upon those tags.</p>
+</div>
+<div id="operating-systems" class="section level2" number="2.2">
+<h2><span class="header-section-number">2.2</span> Operating
+systems</h2>
+<p>Apptainer containers have so far been tested on Linux, but as they
+are derived from docker images, they should work in any platform in
+which apptainer is available and the docker image is tested.</p>
+<p>Please let us know or send us a PR at <a
+href="https://github.com/rsa-tools/installing-RSAT"
+class="uri">https://github.com/rsa-tools/installing-RSAT</a> if you
+succeed in running it on other settings.</p>
+</div>
+<div id="apptainer" class="section level2" number="2.3">
+<h2><span class="header-section-number">2.3</span> Apptainer</h2>
+<p>To run containers you must have Apptainer or Singularity installed in
+your system.</p>
+<p>You can find instructions for installing Apptainer runtime on
+<strong>Linux</strong> at <a
+href="https://apptainer.org/docs/admin/main/installation.html#install-from-pre-built-packages"
+class="uri">https://apptainer.org/docs/admin/main/installation.html#install-from-pre-built-packages</a>
+.</p>
+<p>On <strong>Windows</strong>, our recommended procedure is to i)
+install the Windows Subsystem for Linux (WSL) and then ii) the Apptainer
+runtime:</p>
+<ul>
+<li>The installation of WSL is simple, as it you can fetch it from the
+Microsoft Store for free (read more <a
+href="https://learn.microsoft.com/en-us/windows/wsl/install">here</a>
+and <a
+href="https://devblogs.microsoft.com/commandline/the-windows-subsystem-for-linux-in-the-microsoft-store-is-now-generally-available-on-windows-10-and-11/">here</a>).</li>
+</ul>
+</div>
+</div>
+<div id="binding-local-folders" class="section level1" number="3">
+<h1><span class="header-section-number">3</span> Binding local
+folders</h1>
+<p>To run RSAT inside apptainer, some paths are required for binding
+local folders, so the container can save files persistently (containers
+are read-only). Some are mandatory for the Apache webserver to work
+properly, while rsat paths are for persistent storage of the
+application</p>
+<table style="width:100%;">
+<colgroup>
+<col width="14%" />
+<col width="37%" />
+<col width="19%" />
+<col width="28%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>folder</th>
+<th>Path inside container</th>
+<th>description</th>
+<th>creation command</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>rsat_data/</td>
+<td>/packages/rsat/public_html/data/</td>
+<td>installed data, such as genomes and motifs, writable by anybody</td>
+<td><code>mkdir -p rsat_data/genomes; chmod -R a+w rsat_data</code></td>
+</tr>
+<tr class="even">
+<td>rsat_results/</td>
+<td>/home/rsatuser/rsat_results</td>
+<td>saved results, writable by anybody</td>
+<td><code>mkdir rsat_results; chmod -R a+w rsat_results</code></td>
+</tr>
+<tr class="odd">
+<td>user_motifs/</td>
+<td>/packages/motif_databases/ext_motifs</td>
+<td>contains motifs in <a
+href="https://rsat.eead.csic.es/plants/help.convert-matrix.html#io_format">TRANSFAC</a>
+format, readable by anybody</td>
+<td><code>mkdir user_motifs; chmod -R a+w user_motifs</code></td>
+</tr>
+<tr class="even">
+<td>apache2_logs/</td>
+<td>/var/log/apache2</td>
+<td>contains apache logs, writable by user</td>
+<td><code>mkdir apache2_logs; chmod -R a+w apache2_logs</code></td>
+</tr>
+<tr class="odd">
+<td>apache2/</td>
+<td>/var/run/apache2</td>
+<td>contains apache pid file, writable by user</td>
+<td><code>mkdir apache2; chmod -R a+w apache2</code></td>
+</tr>
+</tbody>
+</table>
+<p>For convenience, in this tutorial all bound paths will be inside a
+rsat-paths folder, with a folder for apache related stuff and then rsat,
+but you can use whatever folder structure you want.</p>
+</div>
+<div id="installation-instructions" class="section level1" number="4">
+<h1><span class="header-section-number">4</span> Installation
+instructions</h1>
+<p><strong>Note</strong>: This tutorial follows the same steps as the
+one performed when using the docker container, and when downloading
+data, the same steps as a normal installation. The only changes made are
+those requiered to launch and use software inside the apptainer
+container. Note that any rsat tutorial which uses Docker can be
+performed with singularity.</p>
+<p>4.1. Download the container:</p>
+<pre><code>    # set env variable with tag at the Linux/WSL terminal
+    export RSATDOCKER=&quot;biocontainers/rsat:20240507_cv1&quot;          
+    
+    # actually pull container image
+    apptainer pull $RSATDOCKER rsat.sif</code></pre>
+<p>This command generates a apptainer container file (rsat.sif) which is
+stored in your current working directory. From there, you can place it
+in whichever directory you want.</p>
+<p>4.2. Create local folders for input data and results, outside the
+container, as explained on section <a
+href="#binding-local-folders">Binding local folders</a>. The next
+example requires folders <code>rsat_data/</code> and
+<code>rsat_results/</code> in the current location (env variable
+<code>$PWD</code>). <strong>Note:</strong> you can place these folders
+anywhere in your system, but please check their paths and modify them in
+<strong>step 3</strong> accordingly:</p>
+<p>To use these paths with the container, set the –bind variable with
+the desired folders. In this example, all paths mentioned in the
+“Binding folders” chapter are bound, and also some optional ones: The
+parameter follows the next pattern:</p>
+<p><Path in your computer>:<Path inside container></p>
+<p>In case more bindings are needed, use a comma (with no spaces) to
+separate them.</p>
+<pre><code>    bind_paths=&quot;rsat-paths/webserver/logs/:/var/log/apache2,rsat-paths/data/:/packages/rsat/public_html/data/,rsat-paths/webserver/conf/rsat.conf:/etc/apache2/sites-enabled/rsat.conf,rsat-paths/webserver/conf/ports.conf:/etc/apache2/ports.conf,rsat-paths/downloads:/packages/rsat/downloads/,/tmp/apache2:/var/run/apache2&quot;</code></pre>
+<p>Important paths inside the container that should be bound:</p>
+<ul>
+<li><p>/packages/rsat/public_html/data/ -&gt; This path stores
+downloaded and generated data and need to be bound to store data
+persistenly in disk. Not doing this erases all downloaded when the
+container ends.</p></li>
+<li><p>/home/rsat_user/rsat_results/ -&gt; Analysis results are saved
+here, needed so they can be read from outside the container and saved
+for future use.</p></li>
+<li><p>/packages/rsat/public_html/tmp/ -&gt; Temporal files written by
+Rsat, needed to download and install organisms</p></li>
+<li><p>/etc/apache2/sites-enabled/rsat.conf -&gt; Rsat configuration for
+the apache server are stored here.</p></li>
+<li><p>/etc/apache2/ports.conf -&gt; More apache configuration file, to
+change the port used by RSAT. Necessary to run apptainer <strong>without
+root privileges</strong>: apache default port (80) is restricted to
+admin. Change it to any port higher than 1024.</p></li>
+<li><p>/var/run/apache2 -&gt; Needed for apache to work correctly as an
+Apptainer container is Read Only by default</p></li>
+</ul>
+<p>4.3. Launch Apptainer RSAT container and open a terminal inside it.
+Note that the local folders from <strong>step 2</strong> are mounted as
+volumes in the container. If you changed their locations please adjust
+their paths to the right of the colons. <strong>Note:</strong> after
+this instruction, all other commands should be typed and executed at the
+container’s terminal:</p>
+<pre><code>    apptainer run --bind $bind-paths rsat.sif /bin/bash</code></pre>
+<p><strong>Recommendation</strong>: Start the RSAT server in a screen
+terminal to keep the web server opened, for future access and interact
+with a terminal inside the container</p>
+<p>In case you didn’t bind /var/log/apache2 path, you’ll see this error,
+informing that apache server could not be started. In case you plan to
+use the web server, please, bind both /var/log/apache2 and
+/var/run/apache2</p>
+<pre><code>    # * Starting Apache httpd web server apache2
+    # (13)Permission denied: AH00091: apache2: could not open error log file /var/log/apache2/error.log.
+    # AH00015: Unable to open logs
+    # Action &#39;start&#39; failed.
+    # The Apache error log may have more information</code></pre>
+<p>4.4. Download an organism from public RSAT servers, such as the
+Plants server. Other available servers are <a
+href="http://fungi.rsat.eu" class="uri">http://fungi.rsat.eu</a>, <a
+href="http://metazoa.rsat.eu" class="uri">http://metazoa.rsat.eu</a>, <a
+href="http://protists.rsat.eu" class="uri">http://protists.rsat.eu</a>
+and <a href="http://teaching.rsat.eu"
+class="uri">http://teaching.rsat.eu</a></p>
+<pre><code>    download-organism -v 2 -org Prunus_persica.Prunus_persica_NCBIv2.60 -server https://rsat.eead.csic.es/plants</code></pre>
+<p>4.5. Testing:</p>
+<pre><code>    cd rsat_results 
+    make -f ../test_data/peak-motifs.mk RNDSAMPLES=2 all</code></pre>
+<p>4.6. To install any organism, please follow the instructions at <a
+href="https://rsa-tools.github.io/managing-RSAT/genome_installation/install_organisms_FASTA_GTF.html">managing-RSAT</a>.</p>
+<p>4.7. To connect to RSAT Web server running from Docker container
+(Linux only):</p>
+<pre><code>    # to start the Web server launch the container and do
+    hostname -I # should return IP address
+
+    # finally open the following URL in your browser, using the IP address, ie http://172.17.0.2/rsat</code></pre>
+</div>
+<div id="step-by-step-interactive-tutorial" class="section level1"
+number="5">
+<h1><span class="header-section-number">5</span> Step-by-step
+interactive tutorial</h1>
+<p>Once the installation is done you can follow our protocol on using a
+container interactively to carry out motif analysis in co-expression
+networks at: <a
+href="https://eead-csic-compbio.github.io/coexpression_motif_discovery/peach/Tutorial.html"
+class="uri">https://eead-csic-compbio.github.io/coexpression_motif_discovery/peach/Tutorial.html</a></p>
+<p>Althought the tutorial was made with Docker in mind, the tutorial can
+be followed using the apptainer container instead of Docker</p>
+</div>
+<div id="calling-rsat-tools-non-interactively" class="section level1"
+number="6">
+<h1><span class="header-section-number">6</span> Calling RSAT tools
+non-interactively</h1>
+<p>In addition to logging into the Apptainer container as explained in
+the previous sections, you can also call individual tools from the
+terminal non-interactively:</p>
+<pre><code>apptainer run --bind $bind_paths rsat.sif peak-motif -h</code></pre>
+<p>The container ships with <strong>pre-installed motif
+databases</strong> (see <a
+href="https://github.com/rsa-tools/motif_databases"
+class="uri">https://github.com/rsa-tools/motif_databases</a>), which can
+be used by different tools to scan sequences or to annotate discovered
+DNA motifs. You can see which collections are available with:</p>
+<pre><code>apptainer run --bind $bind_paths rsat.sif ls /packages/motif_databases
+
+# to check files in a particular database or collection
+apptainer run --bind $bind_paths rsat.sif ls /packages/motif_databases/footprintDB</code></pre>
+<p>The container ships with <strong>no installed genomes</strong>, but
+you can easily copy them from a Web instance, such as <a
+href="https://rsat.eead.csic.es/plants/htmllink.cgi?title=RSAT-Data&amp;file=data">RSAT::Plants</a>,
+as explained in step 4.4:</p>
+<pre><code>apptainer run --bind $bind_paths rsat.sif download-organism -v 2 -org Prunus_persica.Prunus_persica_NCBIv2.38 -server https://rsat.eead.csic.es/plants</code></pre>
+<p>You can now check whether the genomes are available with:</p>
+<pre><code>apptainer run --bind $bind_paths rsat.sif supported-organisms</code></pre>
+<div id="peak-motifs-examples" class="section level2" number="6.1">
+<h2><span class="header-section-number">6.1</span> peak-motifs
+examples</h2>
+<p>The next examples show how to run <a
+href="https://doi.org/10.1093/nar/gkr1104"><em>peak-motifs</em></a>
+non-interactively with a user-provided FASTA file (<code>test.fa</code>)
+in the current directory:</p>
+<pre><code>apptainer run --bind $bind_paths rsat.sif peak-motifs -i test.fa -outdir out -prefix test</code></pre>
+<p><strong>Note:</strong> you can visualize the results by opening local
+folder <code>$PWD/rsat_results</code> with your browser.</p>
+<p>Two more examples follow, were any discovered motifs are compared to
+pre-installed database (<a
+href="https://footprintdb.eead.csic.es">footprintDB</a>) and to
+user-provided motifs in <a
+href="https://rsat.eead.csic.es/plants/help.convert-matrix.html#io_format">TRANSFAC</a>
+format, saved in a file named <code>mymotifs.tf</code>:</p>
+<pre><code>apptainer run --bind $bind_paths rsat.sif peak-motifs -i test.fa -outdir out -prefix test -motif_db footDB transfac /packages/motif_databases/footprintDB/footprintDB.plants.motif.tf
+
+apptainer run --bind $bind_paths rsat.sif peak-motifs -i test.fa -outdir out -prefix test -motif_db custom transfac /home/rsat_user/ext_motifs/mymotifs.tf</code></pre>
+</div>
+</div>
+<div id="adding-custom-motif-collections" class="section level1"
+number="7">
+<h1><span class="header-section-number">7</span> Adding custom motif
+collections</h1>
+<p>RSAT ships with several motif databases but also allows to add
+user-defined collections. In order to acomplish that, two extra items
+must be bound to the container to hold the data:</p>
+<ul>
+<li><p>/packages/motif_databases/db_matrix_files.tab, a file, which
+contains the list of collections, IDs and where they are stored in the
+server. Location path must be a subdirectory relative to
+/package/motif_databases/, and can be copied from the container or
+downloaded dirctly from <a
+href="https://raw.githubusercontent.com/rsa-tools/motif_databases/refs/heads/master/db_matrix_files.tab">motif
+databases github repository</a>. Modify this file to add new motif
+collections: Each row represents a different collection, and each
+column, separated by tabs, provides different information:</p>
+<pre><code> ;Column description
+ ;1       DB_NAME Database name
+ ;2       FORMAT  Matrix format (see convert-matrices for supported formats)
+ ;3       FILE    Matrix file (path relative to the motif DB directory /packages/motif_databases/)
+ ;4       DESCR   Human-readable description of the database (source, data type, ...)
+ ;5       VERSION Version (date) of the import
+ ;6       URL     URL from the file from which matrices were obtained
+ ;7       LABEL   label to group in the web matrix selector
+ ;8       DATABASE        source database
+
+ #COLLECTION     FORMAT  FILE    DESCR   VERSION URL     CATEGORY        DATABASE
+ Yeastract      tf      Yeastract/yeastract_20150629.tf Yeastract s_cerevisiae  20130918        http://www.yeastract.com/       Fungi   Yeastract</code></pre></li>
+<li><p>/packages/motif_databases/ext_motifs, a folder, which contains
+the motif collections and allows rsat to access them.</p></li>
+</ul>
+<p>For example, to add a external database, modify the db_matrix_file.sb
+and add a new record. The database itself must be stored in that
+path:</p>
+<pre><code>#COLLECTION     FORMAT  FILE    DESCR   VERSION URL     CATEGORY        DATABASE
+ExternalDB   tf      ext_motifs/ExternalDB/ExternalDB.tf    ExternalDB      2015-11    http://example.edu/exampledb Vertebrate Metazoa  ExternalDB</code></pre>
+</div>
+<div id="troubleshooting" class="section level1" number="8">
+<h1><span class="header-section-number">8</span> Troubleshooting</h1>
+<ul>
+<li>I started RSAT with apptainer, but I killed the container. The
+webpage is blank, and I can’t reopen it because the port is taken</li>
+</ul>
+<p>Apptainer is a bit tricky to use with services like apache, and when
+the container exits with apache started, apptainer kills it immediately
+without liberating the port instead of waiting to end. If needed, stop
+apache <code>service apache2 stop</code> inside the container to avoid
+this error before exiting the container.</p>
+<p>In case this error already happened, kill all processes of the
+container running apache in host, with
+<code>kill -9 $(ps -aux | grep apache2 | grep -v 'grep' | awk '{print $2}' | tr '\n' ' ')</code>,
+however you like or however your host allow to kill proceses. Note that
+this command may also kill apache running in the host system.</p>
+<ul>
+<li>I couldn’t finish an RSAT command because some folder could not be
+created</li>
+</ul>
+<p>Apptainer is read-only, and therefore, nothing can be saved unless is
+in a bound folder with read and write access. Check the bound folders in
+this page, to see if some are missed, or bind that path to a folder of
+your liking</p>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3,h4",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

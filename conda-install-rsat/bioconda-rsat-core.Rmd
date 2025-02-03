@@ -124,7 +124,17 @@ conda list ## List the packages in the environment
 conda install -c bioconda rsat-core
 ```
 
+You may or may not encounter an error in which RSAT could not be installed
+because r-jpeg cannot be installed due to conda strict policy at solving
+dependencies. This error is related to how conda manages channels in case some 
+package is available in several of them. If that is your case, config conda to 
+use the flexible approach using this command:
 
+```{bash eval=FALSE}
+conda config --set channel_priority flexible
+```
+
+Then proceed with the installation again
 
 ****************************************************************
 ## Temporary patches

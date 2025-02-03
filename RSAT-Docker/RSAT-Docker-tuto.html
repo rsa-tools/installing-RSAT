@@ -9,13 +9,13 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
-<meta name="author" content="Najla Ksouri, Bruno Contreras Moreira" />
+<meta name="author" content="Najla Ksouri, Fabián Robledo Yagüe, Bruno Contreras Moreira" />
 
-<meta name="date" content="2025-01-30" />
+<meta name="date" content="2025-02-03" />
 
 <title>Installing the RSAT Docker container</title>
 
-<script src="RSAT-Docker-tuto_files/header-attrs-2.21/header-attrs.js"></script>
+<script src="RSAT-Docker-tuto_files/header-attrs-2.29/header-attrs.js"></script>
 <script src="RSAT-Docker-tuto_files/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="RSAT-Docker-tuto_files/bootstrap-3.3.5/css/cerulean.min.css" rel="stylesheet" />
@@ -31,7 +31,7 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="RSAT-Docker-tuto_files/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<script src="RSAT-Docker-tuto_files/jqueryui-1.13.2/jquery-ui.min.js"></script>
 <link href="RSAT-Docker-tuto_files/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="RSAT-Docker-tuto_files/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="RSAT-Docker-tuto_files/navigation-1.1/tabsets.js"></script>
@@ -227,8 +227,9 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Installing the RSAT Docker container</h1>
-<h4 class="author">Najla Ksouri, Bruno Contreras Moreira</h4>
-<h4 class="date">2025-01-30</h4>
+<h4 class="author">Najla Ksouri, Fabián Robledo Yagüe, Bruno Contreras
+Moreira</h4>
+<h4 class="date">2025-02-03</h4>
 
 </div>
 
@@ -338,7 +339,7 @@ even if the container is turned off. They are listed here:</p>
 <td>contains motifs in <a
 href="https://rsat.eead.csic.es/plants/help.convert-matrix.html#io_format">TRANSFAC</a>
 format, readable by anybody</td>
-<td></td>
+<td><code>mkdir user_motifs; chmod -R a+w user_motifs</code></td>
 </tr>
 </tbody>
 </table>
@@ -465,8 +466,46 @@ format, saved in a file named <code>mymotifs.tf</code>:</p>
 docker run -v $PWD:/home/rsat_user -v $PWD/rsat_results:/home/rsat_user/out -v $PWD/user_motifs:/home/rsat_user/ext_motifs  $RSATDOCKER peak-motifs -i test.fa -outdir out -prefix test -motif_db custom transfac /home/rsat_user/ext_motifs/mymotifs.tf</code></pre>
 </div>
 </div>
-<div id="dockerfiles" class="section level1" number="7">
-<h1><span class="header-section-number">7</span> Dockerfiles</h1>
+<div id="adding-custom-motif-collections" class="section level1"
+number="7">
+<h1><span class="header-section-number">7</span> Adding custom motif
+collections</h1>
+<p>RSAT ships with several motif databases but also allows to add
+user-defined collections. In order to acomplish that, two extra items
+must be bound to the container to hold the data:</p>
+<ul>
+<li><p>/packages/motif_databases/db_matrix_files.tab, which contains the
+list of collections, IDs and where they are stored in the server.
+Location path must be a subdirectory relative to
+/package/motif_databases/, and can be copied from the container or
+downloaded dirctly from <a
+href="https://raw.githubusercontent.com/rsa-tools/motif_databases/refs/heads/master/db_matrix_files.tab">motif
+databases github repository</a>. Modify this file to add new motif
+collections: Each row represents a different collection, and each
+column, separated by tabs provides different information</p>
+<pre><code> ;Column description
+ ;1       DB_NAME Database name
+ ;2       FORMAT  Matrix format (see convert-matrices for supported formats)
+ ;3       FILE    Matrix file (path relative to the motif DB directory /packages/motif_databases/)
+ ;4       DESCR   Human-readable description of the database (source, data type, ...)
+ ;5       VERSION Version (date) of the import
+ ;6       URL     URL from the file from which matrices were obtained
+ ;7       LABEL   label to group in the web matrix selector
+ ;8       DATABASE        source database
+
+ #COLLECTION     FORMAT  FILE    DESCR   VERSION URL     CATEGORY        DATABASE
+ Yeastract      tf      Yeastract/yeastract_20150629.tf Yeastract s_cerevisiae  20130918        http://www.yeastract.com/       Fungi   Yeastract</code></pre></li>
+<li><p>/packages/motif_databases/ext_motifs, which contains the motif
+collections and allows rsat to access them.</p></li>
+</ul>
+<p>For example, to add a external database, modify the db_matrix_file.sb
+and add a new record. The database itself must be stored in that
+path:</p>
+<pre><code>#COLLECTION     FORMAT  FILE    DESCR   VERSION URL     CATEGORY        DATABASE
+ExternalDB   tf      ext_motifs/ExternalDB/ExternalDB.tf    ExternalDB      2015-11    http://example.edu/exampledb Vertebrate Metazoa  ExternalDB</code></pre>
+</div>
+<div id="dockerfiles" class="section level1" number="8">
+<h1><span class="header-section-number">8</span> Dockerfiles</h1>
 <p>Dockerfiles for the containers at <a
 href="https://hub.docker.com/r/biocontainers/rsat">biocontainers/rsat</a>
 can be found at <a

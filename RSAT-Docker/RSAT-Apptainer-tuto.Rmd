@@ -1,0 +1,294 @@
+---
+title: "Installing the RSAT Apptainer container"
+author: "Fabián Robledo Yagüe, Bruno Contreras Moreira"
+date: '`r Sys.Date()`'
+output:
+  html_document:
+    self_contained: no
+    fig_caption: yes
+    highlight: zenburn
+    number_sections: yes
+    theme: cerulean
+    toc: yes
+    toc_depth: 4
+    toc_float: yes
+  pdf_document:
+    fig_caption: yes
+    highlight: zenburn
+    number_sections: yes
+    toc: yes
+    toc_depth: 4
+  word_document: default
+editor_options: 
+  chunk_output_type: console
+#css: ../../course.css
+---
+
+
+```{r setup, include=FALSE}
+library(knitr, warn.conflicts = FALSE)
+
+knitr::opts_chunk$set(
+  echo = TRUE, 
+  eval = FALSE, 
+  cache = TRUE, 
+  message = FALSE, 
+  warning = FALSE, 
+  comment = "",  
+  fig.align = "center",
+  fig.width = 7, 
+  fig.height = 5,
+  out.width = "90%",
+  fig.path = "figures/")
+```
+
+****************************************************************
+# Introduction
+
+This page explains how to install and run an Apptainer container of the Regulatory Sequence Analysis Tools. 
+
+
+# Requirements
+
+## Availability
+
+RSAT Docker containers are available at https://hub.docker.com/r/biocontainers/rsat/tags . 
+These docker images can be used as a base to build Apptainer contianers. Comparing
+to the RSAT Docker image, which needs about 8GB of disk space, Apptainer only 
+needs 1.5 GB.
+
+As each release corresponds to a tag from https://github.com/rsa-tools/rsat-code/tags , 
+docker containers and apptiner continers are build upon those tags.
+
+## Operating systems
+
+Apptainer containers have so far been tested on Linux, but as they are derived from docker images, they should work in any platform in which apptainer is available and the docker image is tested.
+
+Please let us know or send us a PR at https://github.com/rsa-tools/installing-RSAT if you succeed in running it on other settings.
+
+## Apptainer
+
+To run containers you must have Apptainer or Singularity installed in your system. 
+
+You can find instructions for installing Apptainer runtime on **Linux** at https://apptainer.org/docs/admin/main/installation.html#install-from-pre-built-packages .
+
+On **Windows**, our recommended procedure is to i) install the Windows Subsystem for Linux (WSL) and then ii) the Apptainer runtime:
+
+ * The installation of WSL is simple, as it you can fetch it from the Microsoft Store for free (read more [here](https://learn.microsoft.com/en-us/windows/wsl/install) and 
+[here](https://devblogs.microsoft.com/commandline/the-windows-subsystem-for-linux-in-the-microsoft-store-is-now-generally-available-on-windows-10-and-11/)).
+
+
+# Binding local folders
+
+To run RSAT inside apptainer, some paths are required for binding local folders, so the container 
+can save files persistently (containers are read-only). Some are mandatory for the Apache
+webserver to work properly, while rsat paths are for persistent storage of the application
+
+| folder   |Path inside container |description | creation command |
+| -------- |---------------------|----------- | ---------------- |
+| rsat_data/| /packages/rsat/public_html/data/ | installed data, such as genomes and motifs, writable by anybody | `mkdir -p rsat_data/genomes; chmod -R a+w rsat_data` |
+| rsat_results/| /home/rsatuser/rsat_results | saved results, writable by anybody | `mkdir rsat_results; chmod -R a+w rsat_results` |
+| user_motifs/ |/packages/motif_databases/ext_motifs| contains motifs in [TRANSFAC](https://rsat.eead.csic.es/plants/help.convert-matrix.html#io_format) format, readable by anybody | `mkdir user_motifs; chmod -R a+w user_motifs` |
+| apache2_logs/|/var/log/apache2| contains apache logs, writable by user |`mkdir apache2_logs; chmod -R a+w apache2_logs`|
+| apache2/| /var/run/apache2 | contains apache pid file, writable by user|`mkdir apache2; chmod -R a+w apache2`|
+
+For convenience, in this tutorial all bound paths will be inside a rsat-paths 
+folder, with a folder for apache related stuff and then rsat, but you can use 
+whatever folder structure you want.
+
+# Installation instructions
+
+**Note**: This tutorial follows the same steps as the one performed when using the docker
+container, and when downloading data, the same steps as a normal installation. 
+The only changes made are those requiered to launch and use software inside the
+apptainer container. Note that any rsat tutorial which uses Docker
+can be performed with singularity.
+
+ 4.1. Download the container:
+
+        # set env variable with tag at the Linux/WSL terminal
+        export RSATDOCKER="biocontainers/rsat:20240507_cv1"          
+        
+        # actually pull container image
+        apptainer pull $RSATDOCKER rsat.sif
+
+This command generates a apptainer container file (rsat.sif) which is stored in your current working directory.
+From there, you can place it in whichever directory you want.
+
+4.2. Create local folders for input data and results, outside the container, as explained on section [Binding local folders](#binding-local-folders). The next example requires folders `rsat_data/` and `rsat_results/` in the current location (env variable `$PWD`). **Note:** you can place these folders anywhere in your system, but please check their paths and modify them in **step 3** accordingly:
+ 
+ To use these paths with the container, set the --bind variable with the desired folders.
+ In this example, all paths mentioned in the "Binding folders" chapter are bound, and also some optional ones:
+ The parameter follows the next pattern:
+ 
+  <Path in your computer>:<Path inside container>
+  
+  In case more bindings are needed, use a comma (with no spaces) to separate them.
+ 
+        bind_paths="rsat-paths/webserver/logs/:/var/log/apache2,rsat-paths/data/:/packages/rsat/public_html/data/,rsat-paths/webserver/conf/rsat.conf:/etc/apache2/sites-enabled/rsat.conf,rsat-paths/webserver/conf/ports.conf:/etc/apache2/ports.conf,rsat-paths/downloads:/packages/rsat/downloads/,/tmp/apache2:/var/run/apache2"
+ 
+ Important paths inside the container that should be bound:
+ 
+ - /packages/rsat/public_html/data/ -> This path stores downloaded and generated data 
+ and need to be bound to store data persistenly in disk. Not doing this erases all downloaded 
+ when the container ends.
+ 
+ - /home/rsat_user/rsat_results/ -> Analysis results are saved here, needed so
+ they can be read from outside the container and saved for future use.
+ 
+ - /packages/rsat/public_html/tmp/ -> Temporal files written by Rsat, needed
+ to download and install organisms
+ 
+ - /etc/apache2/sites-enabled/rsat.conf -> Rsat configuration for the
+ apache server are stored here.
+ 
+ - /etc/apache2/ports.conf -> More apache configuration file, to change the port
+ used by RSAT. Necessary to run apptainer **without root privileges**: apache default port (80) is
+ restricted to admin. Change it to any port higher than 1024.
+ 
+ - /var/run/apache2 -> Needed for apache to work correctly as an Apptainer container 
+ is Read Only by default
+ 
+ 4.3. Launch Apptainer RSAT container and open a terminal inside it. Note that the local folders from **step 2** are mounted as volumes in the container. If you changed their locations please adjust their paths to the right of the colons. **Note:** after this instruction, all other commands should be typed and executed at the container's terminal:
+
+        apptainer run --bind $bind-paths rsat.sif /bin/bash
+
+**Recommendation**: Start the RSAT server in a screen terminal to keep 
+the web server opened, for future access and interact with a terminal inside 
+the container
+
+In case you didn't bind /var/log/apache2 path, you'll see this error, informing
+that apache server could not be started. In case you plan to use the web server,
+please, bind both /var/log/apache2 and /var/run/apache2
+
+
+        # * Starting Apache httpd web server apache2
+        # (13)Permission denied: AH00091: apache2: could not open error log file /var/log/apache2/error.log.
+        # AH00015: Unable to open logs
+        # Action 'start' failed.
+        # The Apache error log may have more information
+
+
+ 4.4. Download an organism from public RSAT servers, such as the Plants server. Other available servers are http://fungi.rsat.eu, http://metazoa.rsat.eu, http://protists.rsat.eu and http://teaching.rsat.eu
+
+        download-organism -v 2 -org Prunus_persica.Prunus_persica_NCBIv2.60 -server https://rsat.eead.csic.es/plants
+
+ 4.5. Testing:
+
+        cd rsat_results 
+        make -f ../test_data/peak-motifs.mk RNDSAMPLES=2 all
+
+ 4.6. To install any organism, please follow the instructions at [managing-RSAT](https://rsa-tools.github.io/managing-RSAT/genome_installation/install_organisms_FASTA_GTF.html).
+
+ 4.7. To connect to RSAT Web server running from Docker container (Linux only): 
+
+        # to start the Web server launch the container and do
+        hostname -I # should return IP address
+
+        # finally open the following URL in your browser, using the IP address, ie http://172.17.0.2/rsat
+ 
+
+# Step-by-step interactive tutorial
+
+Once the installation is done you can follow our protocol on using a container interactively to carry out motif analysis in co-expression networks at: https://eead-csic-compbio.github.io/coexpression_motif_discovery/peach/Tutorial.html 
+
+Althought the tutorial was made with Docker in mind, the tutorial can be followed
+using the apptainer container instead of Docker
+
+# Calling RSAT tools non-interactively
+
+In addition to logging into the Apptainer container as explained in the previous sections,
+you can also call individual tools from the terminal non-interactively: 
+
+    apptainer run --bind $bind_paths rsat.sif peak-motif -h
+
+The container ships with **pre-installed motif databases** 
+(see <https://github.com/rsa-tools/motif_databases>), which can be used by different tools 
+to scan sequences or to annotate discovered DNA motifs. You can see which collections are 
+available with:
+
+    apptainer run --bind $bind_paths rsat.sif ls /packages/motif_databases
+    
+    # to check files in a particular database or collection
+    apptainer run --bind $bind_paths rsat.sif ls /packages/motif_databases/footprintDB
+
+The container ships with **no installed genomes**, but you can easily copy them
+from a Web instance, such as [RSAT::Plants](<https://rsat.eead.csic.es/plants/htmllink.cgi?title=RSAT-Data&file=data>),
+as explained in step 4.4:
+
+    apptainer run --bind $bind_paths rsat.sif download-organism -v 2 -org Prunus_persica.Prunus_persica_NCBIv2.38 -server https://rsat.eead.csic.es/plants
+
+You can now check whether the genomes are available with:
+
+    apptainer run --bind $bind_paths rsat.sif supported-organisms
+    
+## peak-motifs examples
+
+The next examples show how to run [*peak-motifs*](https://doi.org/10.1093/nar/gkr1104) non-interactively with a user-provided FASTA file (`test.fa`) in the current directory:
+
+    apptainer run --bind $bind_paths rsat.sif peak-motifs -i test.fa -outdir out -prefix test
+    
+**Note:** you can visualize the results by opening local folder `$PWD/rsat_results` with your browser.
+
+Two more examples follow, were any discovered motifs are compared to pre-installed database ([footprintDB](https://footprintdb.eead.csic.es)) and to user-provided motifs in [TRANSFAC](https://rsat.eead.csic.es/plants/help.convert-matrix.html#io_format) format, 
+saved in a file named `mymotifs.tf`:  
+
+    apptainer run --bind $bind_paths rsat.sif peak-motifs -i test.fa -outdir out -prefix test -motif_db footDB transfac /packages/motif_databases/footprintDB/footprintDB.plants.motif.tf
+    
+    apptainer run --bind $bind_paths rsat.sif peak-motifs -i test.fa -outdir out -prefix test -motif_db custom transfac /home/rsat_user/ext_motifs/mymotifs.tf
+
+# Adding custom motif collections
+
+RSAT ships with several motif databases but also allows to add
+user-defined collections. In order to acomplish that, two extra items must be bound
+to the container to hold the data:
+
+* /packages/motif_databases/db_matrix_files.tab, a file, which contains the list of collections,
+IDs and where they are stored in the server. Location path must be a subdirectory relative to
+/package/motif_databases/, and can be copied from the container or downloaded dirctly from
+[motif databases github repository](https://raw.githubusercontent.com/rsa-tools/motif_databases/refs/heads/master/db_matrix_files.tab).
+Modify this file to add new motif collections: Each row represents a different collection,
+and each column, separated by tabs, provides different information:
+
+       ;Column description
+       ;1       DB_NAME Database name
+       ;2       FORMAT  Matrix format (see convert-matrices for supported formats)
+       ;3       FILE    Matrix file (path relative to the motif DB directory /packages/motif_databases/)
+       ;4       DESCR   Human-readable description of the database (source, data type, ...)
+       ;5       VERSION Version (date) of the import
+       ;6       URL     URL from the file from which matrices were obtained
+       ;7       LABEL   label to group in the web matrix selector
+       ;8       DATABASE        source database
+
+       #COLLECTION     FORMAT  FILE    DESCR   VERSION URL     CATEGORY        DATABASE
+       Yeastract      tf      Yeastract/yeastract_20150629.tf Yeastract s_cerevisiae  20130918        http://www.yeastract.com/       Fungi   Yeastract
+
+
+* /packages/motif_databases/ext_motifs, a folder, which contains the motif collections
+and allows rsat to access them. 
+
+For example, to add a external database, modify the db_matrix_file.sb and add 
+a new record. The database itself must be stored in that path:
+
+    #COLLECTION     FORMAT  FILE    DESCR   VERSION URL     CATEGORY        DATABASE
+    ExternalDB   tf      ext_motifs/ExternalDB/ExternalDB.tf    ExternalDB      2015-11    http://example.edu/exampledb Vertebrate Metazoa  ExternalDB
+
+# Troubleshooting
+
+* I started RSAT with apptainer, but I killed the container. The webpage is blank, and I can't reopen it because the port is taken
+
+Apptainer is a bit tricky to use with services like apache, and when the container exits 
+with apache started, apptainer kills it immediately without liberating the port instead
+of waiting to end. If needed, stop apache `service apache2 stop` inside the container 
+to avoid this error before exiting the container.
+
+In case this error already happened, kill all processes of the container running
+apache in host, with `kill -9 $(ps -aux | grep apache2 | grep -v 'grep' | awk '{print $2}' | tr '\n' ' ')`,
+however you like or however your host allow to kill proceses. Note that this command
+may also kill apache running in the host system.
+
+* I couldn't finish an RSAT command because some folder could not be created
+
+Apptainer is read-only, and therefore, nothing can be saved unless is in a bound
+folder with read and write access. Check the bound folders in this page, to see 
+if some are missed, or bind that path to a folder of your liking
