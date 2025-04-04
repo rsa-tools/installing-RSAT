@@ -1,6 +1,6 @@
 ---
 title: "Installing rsat-core via conda"
-author: "Jacques van Helden"
+author: "Jacques van Helden, Fabián Robledo, Bruno Contreras Moreira"
 date: '`r Sys.Date()`'
 output:
   html_document:
@@ -47,7 +47,7 @@ knitr::opts_chunk$set(
 
 This page explains how to install the core package of the Regulatory Sequence Analysis Tools (**rsat-core**) via the [conda](https://docs.conda.io/) package manager. 
 
-The rsat-core package contains the RSAT command line tools, but no web server or web services. 
+The rsat-core package contains the RSAT command line tools, but no Web server, email or web services. 
 
 ****************************************************************
 # Requirements
@@ -62,13 +62,17 @@ The conda package **rsat-core** is available on the [**anaconda**](https://anaco
 
 - The package has been compiled for Linux and Mac OS X. 
 
-- It is not directly available as a conda package for Windows, but it could easily be included in a Docker or Singularity container. 
+- It is not directly available as a conda package for Windows, but it has been ported also as a container 
+([Docker](https://rsa-tools.github.io/installing-RSAT/RSAT-Docker/RSAT-Docker-tuto.html) or 
+[Apptainer](https://rsa-tools.github.io/installing-RSAT/RSAT-Docker/RSAT-Apptainer-tuto.html), smaller). 
 
 ## Miniconda
 
 This tutorial assumes that the conda package manager is installed on your operating system. 
 
-If it is not the case, you can easily install  [miniconda3](https://docs.conda.io/en/latest/miniconda.html). Note that for this it is not necessary to have admin rights. 
+If it is not the case, you can easily install  [miniconda3](https://docs.conda.io/en/latest/miniconda.html) or 
+[mamba](https://mamba.readthedocs.io/en/latest/installation/mamba-installation.html). 
+Note that for this it is not necessary to have admin rights. 
 
 For **Mac OS X** conda can now be installed with the standard Mac OS X package installer. 
 
@@ -127,7 +131,7 @@ conda install -c bioconda rsat-core
 You may or may not encounter an error in which RSAT could not be installed
 because r-jpeg cannot be installed due to conda strict policy at solving
 dependencies. This error is related to how conda manages channels in case some 
-package is available in several of them. If that is your case, config conda to 
+package is available in several. If that is your case, config conda to 
 use the flexible approach using this command:
 
 ```{bash eval=FALSE}
@@ -137,11 +141,12 @@ conda config --set channel_priority flexible
 Then proceed with the installation again
 
 ****************************************************************
-## Temporary patches
+## Fixing missing dependencies
 
-In the 2020.01.04 release, some Perl libraries are still missing from conda.
-
-We will soon package them for conda. In the meantime, it is easy to install them manually using `cpan` (especially if you created a conda environment for rsat, in which case you don't need admin rights to install Perl modules in the environment).
+<!--In the 2020.01.04 release-->
+A few scripts require some Perl libraries which are not included in the 
+[bioconda recipe](https://github.com/bioconda/bioconda-recipes/blob/master/recipes/rsat-core/meta.yaml). 
+If needed, it is easy to install them manually using `cpan` (especially if you created a conda environment for rsat, in which case you don't need admin rights to install Perl modules in the environment).
 
 First, if not done yet, you need to activate the conda environment where rsat-core has been installed. 
 
@@ -154,25 +159,21 @@ conda activate rsat
 
 ```
 
-We can now install the Perl modules with cpan. At the first usage, cpan might ask you which install mode you prefer between local::lib, sudo or manual. Simply type the enter key to choose the default (local::lib), in order to install the modules in the same environment as your rsat-core package. 
+We can now install the Perl modules with `cpan`. At the first usage, `cpan` might ask you which install mode you prefer between local::lib, sudo or manual. Simply type the enter key to choose the default (local::lib), in order to install the modules in the same environment as your rsat-core package. 
 
 ```{bash eval=FALSE}
-## Statistics::Distributions exists in conda but for some reason it is not working
+## in case conda version of Statistics::Distributions is not working
 cpan install Statistics::Distributions
 
-## Email::Sender::Simple is required for the Web server + some particular scripts
+## email-related scripts for Web server
 cpan install Email::Sender::Simple
+cpan install XML::Compile::Transport::SMTP
 
-## Required for matrix-clustering
-cpan install Parallel::ForkManager
-cpan install MCE::Shared
 
 ## For SOAP::WSDL Web services
 cpan install SOAP::WSDL	
 cpan install XML::Compile::SOAP11	
 cpan install XML::Compile::WSDL11	
-# cpan install XML::Compile::Transport::SOAPHTTP
-
 ```
 
 

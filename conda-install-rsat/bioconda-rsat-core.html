@@ -9,13 +9,13 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
-<meta name="author" content="Jacques van Helden" />
+<meta name="author" content="Jacques van Helden, Fabián Robledo, Bruno Contreras Moreira" />
 
-<meta name="date" content="2025-01-30" />
+<meta name="date" content="2025-04-04" />
 
 <title>Installing rsat-core via conda</title>
 
-<script src="bioconda-rsat-core_files/header-attrs-2.29/header-attrs.js"></script>
+<script src="bioconda-rsat-core_files/header-attrs-2.21/header-attrs.js"></script>
 <script src="bioconda-rsat-core_files/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="bioconda-rsat-core_files/bootstrap-3.3.5/css/cerulean.min.css" rel="stylesheet" />
@@ -31,7 +31,7 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="bioconda-rsat-core_files/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<script src="bioconda-rsat-core_files/jqueryui-1.11.4/jquery-ui.min.js"></script>
 <link href="bioconda-rsat-core_files/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="bioconda-rsat-core_files/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="bioconda-rsat-core_files/navigation-1.1/tabsets.js"></script>
@@ -57,7 +57,7 @@
 </style>
 <style type="text/css" data-origin="pandoc">
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -68,7 +68,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -328,8 +328,9 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Installing rsat-core via conda</h1>
-<h4 class="author">Jacques van Helden</h4>
-<h4 class="date">2025-01-30</h4>
+<h4 class="author">Jacques van Helden, Fabián Robledo, Bruno Contreras
+Moreira</h4>
+<h4 class="date">2025-04-04</h4>
 
 </div>
 
@@ -341,7 +342,7 @@ div.tocify {
 Sequence Analysis Tools (<strong>rsat-core</strong>) via the <a
 href="https://docs.conda.io/">conda</a> package manager.</p>
 <p>The rsat-core package contains the RSAT command line tools, but no
-web server or web services.</p>
+Web server, email or web services.</p>
 <hr />
 </div>
 <div id="requirements" class="section level1" number="2">
@@ -364,8 +365,11 @@ systems</h2>
 <ul>
 <li><p>The package has been compiled for Linux and Mac OS X.</p></li>
 <li><p>It is not directly available as a conda package for Windows, but
-it could easily be included in a Docker or Singularity
-container.</p></li>
+it has been ported also as a container (<a
+href="https://rsa-tools.github.io/installing-RSAT/RSAT-Docker/RSAT-Docker-tuto.html">Docker</a>
+or <a
+href="https://rsa-tools.github.io/installing-RSAT/RSAT-Docker/RSAT-Apptainer-tuto.html">Apptainer</a>,
+smaller).</p></li>
 </ul>
 </div>
 <div id="miniconda" class="section level2" number="2.3">
@@ -373,7 +377,9 @@ container.</p></li>
 <p>This tutorial assumes that the conda package manager is installed on
 your operating system.</p>
 <p>If it is not the case, you can easily install <a
-href="https://docs.conda.io/en/latest/miniconda.html">miniconda3</a>.
+href="https://docs.conda.io/en/latest/miniconda.html">miniconda3</a> or
+<a
+href="https://mamba.readthedocs.io/en/latest/installation/mamba-installation.html">mamba</a>.
 Note that for this it is not necessary to have admin rights.</p>
 <p>For <strong>Mac OS X</strong> conda can now be installed with the
 standard Mac OS X package installer.</p>
@@ -431,22 +437,24 @@ class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="
 <p>You may or may not encounter an error in which RSAT could not be
 installed because r-jpeg cannot be installed due to conda strict policy
 at solving dependencies. This error is related to how conda manages
-channels in case some package is available in several of them. If that
-is your case, config conda to use the flexible approach using this
-command:</p>
+channels in case some package is available in several. If that is your
+case, config conda to use the flexible approach using this command:</p>
 <div class="sourceCode" id="cb6"><pre
 class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="ex">conda</span> config <span class="at">--set</span> channel_priority flexible</span></code></pre></div>
 <p>Then proceed with the installation again</p>
 <hr />
-<div id="temporary-patches" class="section level2" number="4.1">
-<h2><span class="header-section-number">4.1</span> Temporary
-patches</h2>
-<p>In the 2020.01.04 release, some Perl libraries are still missing from
-conda.</p>
-<p>We will soon package them for conda. In the meantime, it is easy to
-install them manually using <code>cpan</code> (especially if you created
-a conda environment for rsat, in which case you don’t need admin rights
-to install Perl modules in the environment).</p>
+<div id="fixing-missing-dependencies" class="section level2"
+number="4.1">
+<h2><span class="header-section-number">4.1</span> Fixing missing
+dependencies</h2>
+<!--In the 2020.01.04 release-->
+<p>A few scripts require some Perl libraries which are not included in
+the <a
+href="https://github.com/bioconda/bioconda-recipes/blob/master/recipes/rsat-core/meta.yaml">bioconda
+recipe</a>. If needed, it is easy to install them manually using
+<code>cpan</code> (especially if you created a conda environment for
+rsat, in which case you don’t need admin rights to install Perl modules
+in the environment).</p>
 <p>First, if not done yet, you need to activate the conda environment
 where rsat-core has been installed.</p>
 <div class="sourceCode" id="cb7"><pre
@@ -455,27 +463,24 @@ class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="
 <span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a><span class="co">## Choose either base or rsat depending on your configuration</span></span>
 <span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a><span class="ex">conda</span> activate</span>
 <span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a><span class="ex">conda</span> activate rsat</span></code></pre></div>
-<p>We can now install the Perl modules with cpan. At the first usage,
-cpan might ask you which install mode you prefer between local::lib,
-sudo or manual. Simply type the enter key to choose the default
-(local::lib), in order to install the modules in the same environment as
-your rsat-core package.</p>
+<p>We can now install the Perl modules with <code>cpan</code>. At the
+first usage, <code>cpan</code> might ask you which install mode you
+prefer between local::lib, sudo or manual. Simply type the enter key to
+choose the default (local::lib), in order to install the modules in the
+same environment as your rsat-core package.</p>
 <div class="sourceCode" id="cb8"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="co">## Statistics::Distributions exists in conda but for some reason it is not working</span></span>
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="co">## in case conda version of Statistics::Distributions is not working</span></span>
 <span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a><span class="ex">cpan</span> install Statistics::Distributions</span>
 <span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a></span>
-<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a><span class="co">## Email::Sender::Simple is required for the Web server + some particular scripts</span></span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a><span class="co">## email-related scripts for Web server</span></span>
 <span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a><span class="ex">cpan</span> install Email::Sender::Simple</span>
-<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a></span>
-<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a><span class="co">## Required for matrix-clustering</span></span>
-<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a><span class="ex">cpan</span> install Parallel::ForkManager</span>
-<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a><span class="ex">cpan</span> install MCE::Shared</span>
-<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a></span>
-<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a><span class="co">## For SOAP::WSDL Web services</span></span>
-<span id="cb8-12"><a href="#cb8-12" tabindex="-1"></a><span class="ex">cpan</span> install SOAP::WSDL </span>
-<span id="cb8-13"><a href="#cb8-13" tabindex="-1"></a><span class="ex">cpan</span> install XML::Compile::SOAP11   </span>
-<span id="cb8-14"><a href="#cb8-14" tabindex="-1"></a><span class="ex">cpan</span> install XML::Compile::WSDL11   </span>
-<span id="cb8-15"><a href="#cb8-15" tabindex="-1"></a><span class="co"># cpan install XML::Compile::Transport::SOAPHTTP</span></span></code></pre></div>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a><span class="ex">cpan</span> install XML::Compile::Transport::SMTP</span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a></span>
+<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a><span class="co">## For SOAP::WSDL Web services</span></span>
+<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a><span class="ex">cpan</span> install SOAP::WSDL </span>
+<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a><span class="ex">cpan</span> install XML::Compile::SOAP11   </span>
+<span id="cb8-12"><a href="#cb8-12" tabindex="-1"></a><span class="ex">cpan</span> install XML::Compile::WSDL11   </span></code></pre></div>
 <hr />
 </div>
 </div>
