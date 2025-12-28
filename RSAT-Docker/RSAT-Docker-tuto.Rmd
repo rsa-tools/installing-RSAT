@@ -115,8 +115,8 @@ we set an **environmental variable** named `RSATDOCKER` with the chosen version:
  4.1. Download a container (this will take ~8GB of your filesystem):
 
         # set env variable with tag at the Linux/WSL terminal
-        export RSATDOCKER="biocontainers/rsat:20240507_cv1"          
-        
+        export RSATDOCKER="biocontainers/rsat:2025-03-26_cv1"
+
         # actually pull container image
         docker pull $RSATDOCKER
         
