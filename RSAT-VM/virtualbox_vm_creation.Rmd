@@ -42,23 +42,32 @@ Before starting the installation process, we recommend to download the following
 
 Virtualbox:  <https://www.virtualbox.org/wiki/Downloads>
 
-Ubuntu Desktop: current Ubuntu release is 22.04, but the installation procedure works on earlier versions (maybe some slight modifications) 
+Ubuntu Desktop: current Ubuntu release is 24.04, but the installation procedure works on earlier versions (maybe some slight modifications) 
 
 ### Recommended Ubuntu release
 
 Ubuntu releases can be found here : <http://releases.ubuntu.com/releases/>
 
+**Note:**
+
+- for the Macintosh computers with an **Apple Silicon processor** (M1/M2/M3), you absolutely need to download the **"arm" version** of the Ubuntu installation disk image. `ubuntu-24.04.3-desktop-arm64.iso`
+
+- for other computers, the **"amd" install disk** is fine: `ubuntu-24.04.3-desktop-arm64.iso`
+
+
 The latest release tested was this one
 
-- Ubuntu 22.04.04 LTS (Jamy Jellyfish)
+- Ubuntu 24.04.3 (Noble Numbat)
 
 RSAT has also been installed on VirtualBpx VMs with following releases
 
+- Ubuntu 22.04.04 LTS (Jamy Jellyfish)
 - Ubuntu 20.04.1 LTS (Focal Fossa)
 - Ubuntu 18.04.1 (Bionic Beaver)
 - Ubuntu 16.04.4 LTS (Xenial Xerus):
 - Ubuntu 14.04.5 LTS (Trusty Tahr)
 - Ubuntu 12.04.5 LTS (Precise Pangolin)
+
 
 ****************************************************************
 # Installation of the virtual machine
@@ -77,10 +86,10 @@ RSAT has also been installed on VirtualBpx VMs with following releases
     - Type: Linux
     - Select the Ubuntu installation disk image (file with .iso extension)
 
-  Check the option ***"Skip unattended installation"***
+  **Uncheck** the option ***"Proceed with unattended installation"***
 
 - Memory size:	2048 Mb (this can be modified afterwards). 
-- Processors: select it based on the number of cores of your computer and the inteded yse of the VM
+- Processors: select it based on the number of cores of your computer and the inteded use of the VM. 
 
 - Virtual Hard Disk: activate	*Create a virtual hard drive now*. 
 - Disk Size: 25Gb
@@ -117,7 +126,7 @@ At this stage, the VM has been created and needs to be configured before install
 
 Before configuring the virtual machine, we need to tell VirtualBox how it will enable your local virtual machines to interact with their host (the operating system of the machine on which the VM is running).
 
-1. In the **File** menu, select *Tools > Network Manager*
+1. In the **File** menu, select *Tools > Network*
 
 2. Select  *Host-only Networks manager* tab
 
