@@ -42,7 +42,7 @@ Before starting the installation process, we recommend to download the following
 
 Virtualbox:  <https://www.virtualbox.org/wiki/Downloads>
 
-Ubuntu Desktop: current Ubuntu release is 24.04, but the installation procedure works on earlier versions (maybe some slight modifications) 
+Ubuntu Desktop: current Ubuntu release is 26.04, but the installation procedure works on earlier versions (maybe some slight modifications) 
 
 ### Recommended Ubuntu release
 
@@ -50,14 +50,15 @@ Ubuntu releases can be found here : <http://releases.ubuntu.com/releases/>
 
 **Note:**
 
-- for the Macintosh computers with an **Apple Silicon processor** (M1/M2/M3), you absolutely need to download the **"arm" version** of the Ubuntu installation disk image. `ubuntu-24.04.3-desktop-arm64.iso`
+- for the Macintosh computers with an **Apple Silicon processor** (M1/M2/M3), you absolutely need to download the **"arm" version** of the Ubuntu installation disk image. `
+ubuntu-26.04-desktop-arm64.iso`
 
-- for other computers, the **"amd" install disk** is fine: `ubuntu-24.04.3-desktop-arm64.iso`
+- for other computers, the **"amd" install disk** is fine: `ubuntu-26.04-desktop-amd64.iso`
 
 
 The latest release tested was this one
 
-- Ubuntu 24.04.3 (Noble Numbat)
+- Ubuntu 26.04
 
 RSAT has also been installed on VirtualBpx VMs with following releases
 
@@ -92,7 +93,7 @@ RSAT has also been installed on VirtualBpx VMs with following releases
 - Processors: select it based on the number of cores of your computer and the inteded use of the VM. 
 
 - Virtual Hard Disk: activate	*Create a virtual hard drive now*. 
-- Disk Size: 25Gb
+- Disk Size: 25Gb, dynamically allocated
 
 <!--- Hard drive file type: *VMDK* (Virtual Machine Disk). 
 
@@ -108,14 +109,9 @@ RSAT has also been installed on VirtualBpx VMs with following releases
 - File location and size
 
     - name of virtual hard drive file:    rsat-vb-YYYY-MM_hdd
-    - max size of virtual hard drive:	    18GB
+    - max size of virtual hard drive:	    80GB
 
-        **Note:** the size has to be larger than your real needs, because Ubuntu will automatically create some big  partitions (/dev and /run/shm). Since we allow dynamical memory allocation, it is fine to set the max size to 18Gb, which will be grossly assigned as follows:
-
-        - max 14 Gb for the root partition /
-        - 2 Gb for /dev
-	      - 2 Gb for /run/user
-
+        **Note:** the size has to be larger than your real needs, because Ubuntu will automatically create some big  partitions (/dev and /run/shm). Since we allow dynamical memory allocation, it is fine to set the max size to 80Gb, which will enable you to install the operating systems, the languages, libraries and tools, and to dispose of some space for installing genomes.
 -->
 
 At this stage, the VM has been created and needs to be configured before installing the operating system. 
