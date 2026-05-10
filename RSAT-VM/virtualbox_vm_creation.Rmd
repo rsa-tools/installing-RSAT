@@ -207,6 +207,24 @@ The request sent to port 8080 on the host computer is transparently forwarded to
 
 Note: Port 80 is often already in use on the host system. Using port 8080 avoids conflicts while remaining a common convention for local web services.
 
+You can also add a port for https  (secured Web access) 
+- Name: https
+- Protocol: TCP
+- Host port: 8443
+- Guest port: 443
+
+Leave the other fields blank. 
+
+This configuration allows you to access the web server running inside the VM by opening the following URL in a browser on your host machine:
+
+`http://localhost:8080`
+
+
+The request sent to port 8080 on the host computer is transparently forwarded to port 80 of the virtual machine, where the Apache web server is listening.
+
+Note: Port 80 is often already in use on the host system. Using port 8080 avoids conflicts while remaining a common convention for local web services.
+
+
 ****************************************************************
 
 ## Starting the server for installation
