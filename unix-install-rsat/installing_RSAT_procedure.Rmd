@@ -21,7 +21,6 @@ output:
   word_document: default
 editor_options: 
   chunk_output_type: console
-#css: ../../course.css
 ---
 
 
@@ -621,7 +620,7 @@ We usually use the following tools as diagnostic of the proper functioning of a 
     - is the list of organisms is correctly displayed (obtained dynamically from UCSC) ?
     - run the demo: do you obtain fasta sequences ?
 
-3. **retrieven Ensembl seq**: 
+3. **retrieve Ensembl seq**: 
 
     - is the list of organisms is correctly displayed (obtained dynamically from Ensembl) ?
     - run the demo 1 (single organism): do you obtain fasta sequences ?
@@ -770,7 +769,6 @@ As an example, we are running `matrix-scan`'s [DEMO 1](http://embnet.ccg.unam.mx
 
 This is an example for using REST-API scripts which are available in your RSAT instance in dir `$RSAT/public_html/web_services/REST-API`. Demo data for these scripts is available at `$RSAT/public_html/web_services/REST-API/restclientexamples/demo-data_4rest-api.py`.
 
-\
 
 1. Open file `$RSAT/public_html/web_services/REST-API/matrix-scan.py` in the text editor of your choosing. 
 
@@ -780,7 +778,7 @@ This is an example for using REST-API scripts which are available in your RSAT i
 
 Edit the following arguments as follows, read the comments for information regarding them:
 
-```{python eval=FALSE}
+```{python eval=FALSE, python.reticulate = FALSE}
 # fasta sequences where we are going to look for sites (Drosophila melanogaster 5kbps upstream from eve gene)
         "i_string" : "http://rsat-tagc.univ-mrs.fr/rsat/demo_files/Dmelanogaster_eve_up5000.fasta", ##Input string specifying the query. The value can be the query content, the URL of a file available on some Web server, the internal path of the result file returned by another tool of this RSAT server (piping for workflows).
         "i_string_type" : "url", ##Type of information provided by the input string. Supported values: url: URL (Web address) to the input file; piping: result file from other tool; text: input content
@@ -813,7 +811,7 @@ Edit the following arguments as follows, read the comments for information regar
 
 6. You can add the following lines to store your results in a html document:
 
-```{python eval=FALSE}
+```{python eval=FALSE, python.reticulate = FALSE}
 completeName = "edit-here-for-name-of-file" + ".html" # edit this line
 
 # writes output file
