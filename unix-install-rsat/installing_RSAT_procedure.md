@@ -1,71 +1,33 @@
----
-title: "Installing RSAT on a Unix operating system"
-author: "Jacques van Helden, Bruno Contreras Moreira"
-date: '`r Sys.Date()`'
-output:
-  html_document:
-    self_contained: no
-    fig_caption: yes
-    highlight: zenburn
-    number_sections: yes
-    theme: cerulean
-    toc: yes
-    toc_depth: 4
-    toc_float: yes
-  pdf_document:
-    fig_caption: yes
-    highlight: zenburn
-    number_sections: yes
-    toc: yes
-    toc_depth: 4
-  word_document: default
-editor_options: 
-  chunk_output_type: console
----
+# Installing RSAT on Ubuntu or Mac OS
 
+## Introduction
 
-```{r setup, include=FALSE}
-library(knitr, warn.conflicts = FALSE)
+This tutorial explains how to install the software suite[Regulatory Sequence Analysis Tools (RSAT)](<http://rsat.eu/>) on Linux Ubuntu or Mac OS operating system.
 
-knitr::opts_chunk$set(
-  echo = TRUE, 
-  eval = FALSE, 
-  cache = TRUE, 
-  message = FALSE, 
-  warning = FALSE, 
-  comment = "",  
-  fig.align = "center",
-  fig.width = 7, 
-  fig.height = 5,
-  out.width = "90%",
-  fig.path = "figures/")
-```
+The RSAT code is available at [github.com/rsa-tools/rsat-code](https://github.com/rsa-tools/rsat-code)
 
-****************************************************************
-# Introduction
+This RSAT distribution contains the code to run
+- RSAT command line tools on a terminal
+- the web server interface
+- the application programmatic interface (web services)
 
-This tutorial explains how to install the complete [Regulatory Sequence Analysis Tools (RSAT)](<http://rsat.eu/>) suite via GitHub or from a tarball archive in Linux or Mac OS X systems.
-This RSAT distribution contains: (i) the _RSAT command line tools_, (ii) the _web server_ and (iii) the _web services_.
+## Requirements
 
-****************************************************************
-# Requirements {.tabset .tabset-fade}
-
-## Linux {.unlisted .unnumbered}
-<br>
+### Linux
 
 1. **Operating system**. If your Linux operating system (OS) is not Ubuntu some adaptation of the scripts used in the installation step will be necessary (e.g. system libraries).
+
 2. **Package manager**. The `apt-get` package manager should be already installed in the command line and it is recommended to update to the latest version.
+
 3. **Git and Git LFS**. If you are installing the GitHub repositories the `git` and `git-lfs` applications should be available in the command line. You can install `git` from [here](https://git-scm.com/downloads) and `git lfs` from [here](https://git-lfs.github.com/).
 
-<br>
 
-****************************************************************
+### Mac OS X
 
-## Mac OS X {.unlisted .unnumbered}
-<br>
+1. **Operating system**. This RSAT installation protocol is aimed at Mac OS X at least v10.14 (Mojave). RSAT installation in previous Mac OS X versions is feasible but a manual installation of packages (e.g. `brew` packages) is needed and it is beyond the scope of this tutorial.
 
-1. **Operating system**. This RSAT installation protocol is aimed at Mac OS X in Mojave (v10.14) and Catalina (v10.15). RSAT installation in previous Mac OS X versions is feasible but a manual installation of packages (e.g. `brew` packages) is needed and it is beyond the scope of this tutorial.
 2. **Xcode**. The complete version of the _Xcode_ application should already be installed in your Mac OS X. You can download and install _Xcode_ from [here](https://developer.apple.com/download/). Please be aware that downloading _Xcode_ versions for Mac OS X requires an Apple Developer account.
+
 3. **Package manager**. The `brew` package manager should be already installed in the command line and it is recommended to update to the latest version. You can install `brew` from [here](https://brew.sh/). At the moment `brew` in RSAT is only supported for Mac OS X in Mojave (v10.14) and Catalina (v10.15). 
 4. **Git and Git LFS**. If you are installing the GitHub repositories the `git` and `git-lfs` applications should be available in the command line.
 
