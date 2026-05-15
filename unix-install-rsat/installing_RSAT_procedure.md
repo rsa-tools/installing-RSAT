@@ -1,3 +1,9 @@
+---
+layout: default
+title: Installing RSAT on Ubuntu or macOS
+author: "Jacques van Helden, Bruno Contreras Moreira"
+date: 2026-05-15
+---
 # Installing RSAT on Ubuntu or Mac OS
 
 ## Introduction
